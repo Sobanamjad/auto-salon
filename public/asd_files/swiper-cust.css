@@ -1,0 +1,282 @@
+
+/*----------------------------------------------------------------------
+	{C} {idx} swiper js [輪播]
+-------------------------------- */
+.swiper-slide {
+	width: 100%; /* 這是 mobile first 的預設 */
+}
+
+.swiper-pagination{
+}
+.swiper-pagination-bullet{
+	vertical-align:middle;
+	width:10px; height:10px;
+	background: #ccc;
+	margin:2px;
+}
+.swiper-pagination-bullet:hover{
+	background:#fff;
+	 opacity: 1;
+}
+.swiper-pagination-bullet-active {
+	width:12px; height:12px;
+    background: #fff;
+    opacity: 1;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	{C} {idx} swiper js [輪播自訂：idx banner]
+-------------------------------- */
+.banner-container{
+	position:relative;
+}
+/* 確保 swiper 容器有明確的高度或隨內容撐開 */
+.swiper-banner {
+	width: 100%;
+	height: auto;
+}
+.banner-next, 
+.banner-prev {
+	position:absolute; z-index:10; top:50%;
+	width: 60px; height: 100%;
+	transform:translate(0,-50%);
+	transition: all 0.3s ease;
+}
+.banner-next { right: 0; }
+.banner-prev { left: 0; }
+
+.banner-next:before, 
+.banner-prev:before{
+	position:absolute; z-index:1; top:50%; left:50%; content:"";
+	width:40px; height:40px;
+	
+	background-color:#fff;
+	
+	-webkit-mask-position:center;
+			mask-position:center;
+	
+	-webkit-mask-repeat:no-repeat;
+			mask-repeat:no-repeat;
+	
+	-webkit-mask-size:100% 100%;
+			mask-size:100% 100%;
+			
+	transform:translate(-50%,-50%);
+}
+.banner-next:before{
+	-webkit-mask-image:url(../images/icon/icon_arrow_right.svg);
+			mask-image:url(../images/icon/icon_arrow_right.svg);
+}
+.banner-prev:before{
+	-webkit-mask-image:url(../images/icon/icon_arrow_left.svg);
+			mask-image:url(../images/icon/icon_arrow_left.svg);
+}
+@media (min-width:992px){
+	.banner-next:hover, 
+	.banner-prev:hover{
+		background:rgba(255,255,255,0.1);
+	}
+	.banner-next:hover:before, 
+	.banner-prev:hover:before{
+		background-color:var(--color-accent);
+	}
+}
+
+.idx-banner img{
+	display:block; max-width:100%; height:auto;
+    margin:0 auto;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	{C} {idx} #itemslide [首頁-項目輪播-use swiper js]
+-------------------------------- */
+
+/*避免初始閃現*/
+@media (min-width: 576px) {
+	.itemslide-container .swiper-slide {
+		width: calc(33.33% - 32px);
+	}
+}
+@media (min-width: 768px) {
+	.itemslide-container .swiper-slide {
+		width: calc(50% - 32px);
+	}
+}
+@media (min-width: 992px) {
+	.itemslide-container .swiper-slide {
+		width: calc(33.33% - 32px);
+	}
+}	
+@media (min-width: 1400px) {
+	.itemslide-container .swiper-slide {
+		width: calc(25% - 32px);
+	}
+}
+
+
+/* 確保 swiper 容器有明確的高度或隨內容撐開 */
+.swiper-itemslide {
+	width: 100%;
+	height: auto;
+}
+
+	
+/* 外層容器：負責預留兩側空間 */
+.itemslide-container {
+	position: relative;
+	padding: 0 60px; /* 左右各預留 60px 給按鈕 */
+	margin: 2rem auto;
+}
+
+.itemslide-container .itemslide-next, 
+.itemslide-container .itemslide-prev {
+	position:absolute; top:50%;
+	width: 40px; height: 40px;
+	background-color: var(--color-one);
+	border-radius: 50%;
+	transform:translate(0,-50%);
+	transition: all 0.3s ease;
+}
+.itemslide-container .itemslide-next { right: 5px; }
+.itemslide-container .itemslide-prev { left: 5px; }
+
+.itemslide-container .itemslide-next:before, 
+.itemslide-container .itemslide-prev:before{
+	position:absolute; z-index:1; top:0; left:0; content:"";
+	width:100%; height:100%;
+	
+	background-color:#fff;
+	
+	-webkit-mask-position:center;
+			mask-position:center;
+	
+	-webkit-mask-repeat:no-repeat;
+			mask-repeat:no-repeat;
+	
+	-webkit-mask-size:100% 100%;
+			mask-size:100% 100%;
+}
+.itemslide-container .itemslide-next:before{
+	-webkit-mask-image:url(../images/icon/icon_arrow_right.svg);
+			mask-image:url(..images/icon/icon_arrow_right.svg);
+}
+.itemslide-container .itemslide-prev:before{
+	-webkit-mask-image:url(../images/icon/icon_arrow_left.svg);
+			mask-image:url(../images/icon/icon_arrow_left.svg);
+}
+
+.itemslide-container .itemslide-next:hover, 
+.itemslide-container .itemslide-prev:hover {
+	background-color: var(--color-accent);
+}
+
+
+/* 當按鈕處於不可用狀態（項目太少）時 */
+.itemslide-container .swiper-button-disabled {
+	opacity: 0.2 !important; /* 強制設定透明度 */
+	cursor: default !important; /* 改回預設指標 */
+	pointer-events: none; /* 確保徹底無法點擊 */
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	230_#product [詳細頁-商品圖輪播]
+-------------------------------- */
+
+/* 確保 swiper 容器有明確的高度或隨內容撐開 */
+.carousel-container {
+	position:relative;
+	width: 100%; max-width:600px;
+	height: auto;
+}
+.carousel-container.thumbnail{
+	margin-top:var(--spacing-sm);
+}
+
+.carousel-main{ border:1px solid #eee; }
+
+.carousel-thumbnail .swiper-slide {
+	width: 25%; height: 100%;
+	border:3px solid transparent;
+	opacity: 0.8;
+	cursor:pointer;
+}
+.carousel-thumbnail .swiper-slide:hover{
+	opacity: 1;
+}
+
+.carousel-thumbnail .swiper-slide:hover.swiper-slide-thumb-active,
+.carousel-thumbnail .swiper-slide-thumb-active {
+	opacity: 1;
+	border-color:var(--color-accent);
+	cursor:default;
+}
+
+.carousel-thumbnail .slide-photo .fitimg{
+	-webkit-object-fit: cover;
+	   -moz-object-fit: cover;
+		    object-fit: cover;
+}
+
+	
+.carousel-container .carousel-next, 
+.carousel-container .carousel-prev {
+	position:absolute; z-index:100; bottom:0;
+	width: 40px; height: 40px;
+	transform:translate(0,-50%);
+	transition: all 0.3s ease;
+}
+.carousel-container .carousel-next { right: 5px; }
+.carousel-container .carousel-prev { left: 5px; }
+
+.carousel-container .carousel-next:before, 
+.carousel-container .carousel-prev:before{
+	position:absolute; z-index:1; top:0; left:0; content:"";
+	width:100%; height:100%;
+	
+	background-color:#fff;
+	
+	-webkit-mask-position:center;
+			mask-position:center;
+	
+	-webkit-mask-repeat:no-repeat;
+			mask-repeat:no-repeat;
+	
+	-webkit-mask-size:100% 100%;
+			mask-size:100% 100%;
+}
+.carousel-container .carousel-next:before{
+	-webkit-mask-image:url(../images/icon/icon_arrow_right.svg);
+			mask-image:url(..images/icon/icon_arrow_right.svg);
+}
+.carousel-container .carousel-prev:before{
+	-webkit-mask-image:url(../images/icon/icon_arrow_left.svg);
+			mask-image:url(../images/icon/icon_arrow_left.svg);
+}
+
+.carousel-container .carousel-next:hover, 
+.carousel-container .carousel-prev:hover {
+	background-color: var(--color-accent);
+}
+
+
+/* 當按鈕處於不可用狀態（項目太少）時 */
+.carousel-container .swiper-button-disabled {
+	opacity: 0.2 !important; /* 強制設定透明度 */
+	cursor: default !important; /* 改回預設指標 */
+	pointer-events: none; /* 確保徹底無法點擊 */
+}
+
