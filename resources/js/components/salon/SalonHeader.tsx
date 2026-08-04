@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 
 const menuItems = [
     { text: '首頁', subtext: 'Index', href: '/' },
@@ -109,7 +110,7 @@ const menuItems = [
     { text: '聯絡協會', subtext: '聯絡協會', href: '/contact' },
 ];
 
-export default function SalonHeader() {
+export default function SalonHeader({ banner }: { banner?: ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [openSubmenus, setOpenSubmenus] = useState<Record<number, boolean>>({});
     const sidebarRef = useRef<HTMLDivElement>(null);
@@ -291,6 +292,7 @@ export default function SalonHeader() {
                         </div>
                     </div>
                 </header>
+                {banner}
             </div>
         </>
     );

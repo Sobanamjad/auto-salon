@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="48px" height="48px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+<g id="底" display="none">
+	<g display="inline">
+		<defs>
+			<rect id="SVGID_11_" width="48" height="48"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_11_"  overflow="visible"/>
+		</clipPath>
+		<g clip-path="url(#SVGID_2_)">
+			<path fill="#FFFFFF" stroke="#040000" stroke-width="0.25" d="M48,0H0v48h48V0z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" stroke-opacity="0.95" d="M24,43.999c5.523,0,10.523-2.237,14.141-5.857
+				c3.621-3.618,5.857-8.618,5.857-14.142c0-5.522-2.236-10.522-5.857-14.143C34.523,6.239,29.523,3.999,24,3.999
+				S13.477,6.239,9.856,9.857C6.238,13.478,3.999,18.478,3.999,24c0,5.523,2.239,10.523,5.857,14.142
+				C13.477,41.762,18.477,43.999,24,43.999z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" d="M40,3.999H8v40h32V3.999z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" d="M43.998,8.001H3.999v32h39.999V8.001z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" d="M42,6H6v36h36V6z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" d="M36,12H12v24h24V12z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" stroke-linecap="round" stroke-linejoin="round" d="M24,33
+				c4.971,0,9-4.029,9-9s-4.029-9-9-9s-9,4.029-9,9S19.029,33,24,33z"/>
+			<path fill="none" stroke="#DADEE2" stroke-width="0.25" d="M24,3.999L46,42H2L24,3.999z"/>
+		</g>
+	</g>
+</g>
+<g id="圖層_2">
+	<g id="圖層_2_36_">
+		<g>
+			<path fill="#040000" d="M41.881,12.914c-1.309,0.577-2.729,0.981-4.213,1.156c1.518-0.905,2.676-2.347,3.23-4.061
+				c-1.418,0.841-2.99,1.452-4.67,1.78c-1.332-1.419-3.24-2.314-5.348-2.314c-4.049,0-7.334,3.285-7.334,7.335
+				c0,0.578,0.064,1.135,0.188,1.669c-6.104-0.306-11.504-3.22-15.125-7.662c-0.635,1.08-0.994,2.348-0.994,3.689
+				c0,2.542,1.297,4.791,3.264,6.1c-1.203-0.032-2.326-0.371-3.316-0.916v0.086c0,3.558,2.529,6.524,5.879,7.201
+				c-0.613,0.166-1.268,0.252-1.928,0.252c-0.473,0-0.93-0.043-1.387-0.131c0.938,2.916,3.643,5.03,6.852,5.096
+				c-2.512,1.965-5.676,3.134-9.113,3.134c-0.588,0-1.168-0.032-1.746-0.099c3.252,2.082,7.105,3.295,11.25,3.295
+				c13.49,0,20.867-11.176,20.867-20.865l-0.021-0.951C39.654,15.674,40.898,14.388,41.881,12.914L41.881,12.914z"/>
+		</g>
+	</g>
+</g>
+</svg>

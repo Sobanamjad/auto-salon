@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about'])])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,12 +8,16 @@
         <script>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
+                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about']) ? 'true' : 'false' }};
 
                 if (appearance === 'system') {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
                     if (prefersDark) {
-                        document.documentElement.classList.add('dark');
+                        // Don't add dark class on public salon pages — legacy CSS doesn't support it
+                        if (!isSalonPage) {
+                            document.documentElement.classList.add('dark');
+                        }
                     }
                 }
             })();
@@ -31,7 +35,9 @@
 
             /* Welcome page overrides dark mode bg */
             html.welcome-page,
-            html.welcome-page.dark {
+            html.welcome-page.dark,
+            html.salon-page,
+            html.salon-page.dark {
                 background-color: transparent;
             }
         </style>
