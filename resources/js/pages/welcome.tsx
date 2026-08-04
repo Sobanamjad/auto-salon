@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Head } from '@inertiajs/react';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonBanner from '@/components/salon/SalonBanner';
@@ -14,6 +15,23 @@ import SalonLinks from '@/components/salon/SalonLinks';
 import SalonFooter from '@/components/salon/SalonFooter';
 
 export default function Welcome() {
+    // Force light mode on welcome page — the original asd_files CSS
+    // does not support dark mode and Tailwind's dark class turns sections black.
+    useEffect(() => {
+        const html = document.documentElement;
+        const hadDark = html.classList.contains('dark');
+        const prevBg = html.style.backgroundColor;
+        html.classList.remove('dark');
+        html.style.colorScheme = 'light';
+        html.style.backgroundColor = 'transparent';
+        return () => {
+            if (hadDark) {
+                html.classList.add('dark');
+                html.style.colorScheme = 'dark';
+            }
+            html.style.backgroundColor = prevBg;
+        };
+    }, []);
     return (
         <>
             <Head>
