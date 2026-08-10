@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
@@ -15,6 +16,7 @@ const tabs = [
 ];
 
 export default function About({ tab = 'founding' }: Props) {
+    useForceLightMode();
     const activeTab = tabs.find(t => t.key === tab) ?? tabs[0];
 
     return (
