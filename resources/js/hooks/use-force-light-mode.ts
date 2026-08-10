@@ -6,8 +6,9 @@ import { useEffect } from 'react';
  * sections black, breaking the layout.
  *
  * Usage: Call this hook at the top of any salon page component.
+ * Monitors dependency array to re-apply on page/tab changes.
  */
-export function useForceLightMode() {
+export function useForceLightMode(dependencies: unknown[] = []) {
     useEffect(() => {
         const html = document.documentElement;
         const hadDark = html.classList.contains('dark');
@@ -26,5 +27,5 @@ export function useForceLightMode() {
             }
             html.style.backgroundColor = prevBg;
         };
-    }, []);
+    }, dependencies);
 }

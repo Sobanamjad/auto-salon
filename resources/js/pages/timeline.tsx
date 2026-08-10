@@ -51,9 +51,6 @@ export default function Timeline({ csn }: Props) {
                 <title>本會簡史-永康國際同濟會</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
-                <meta property="og:title" content="本會簡史-永康國際同濟會" />
-                <meta property="og:description" content="永康國際同濟會" />
-                <meta property="og:type" content="website" />
                 <link rel="stylesheet" href="/asd_files/base.css" />
                 <link rel="stylesheet" href="/asd_files/blue.css" />
                 <link rel="stylesheet" href="/asd_files/common.css" />

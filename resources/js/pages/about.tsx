@@ -16,7 +16,7 @@ const tabs = [
 ];
 
 export default function About({ tab = 'founding' }: Props) {
-    useForceLightMode();
+    useForceLightMode([tab]);
     const activeTab = tabs.find(t => t.key === tab) ?? tabs[0];
 
     return (
@@ -25,9 +25,6 @@ export default function About({ tab = 'founding' }: Props) {
                 <title>{activeTab.label}-永康國際同濟會</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
-                <meta property="og:title" content="永康國際同濟會" />
-                <meta property="og:description" content="永康國際同濟會" />
-                <meta property="og:type" content="website" />
                 {/* Legacy stylesheet bundle */}
                 <link rel="stylesheet" href="/asd_files/base.css" />
                 <link rel="stylesheet" href="/asd_files/blue.css" />
@@ -95,7 +92,7 @@ export default function About({ tab = 'founding' }: Props) {
                                                 {tabs.map(t => (
                                                     <li key={t.key} className={t.key === activeTab.key ? 'active' : ''}>
                                                         <a
-                                                            href={`/about?new_sn=${t.sn}`}
+                                                            href={`/about?new_sn=${t.sn}&lang=TS`}
                                                             title={t.label}
                                                         >
                                                             <span className="cate-text">{t.label}</span>

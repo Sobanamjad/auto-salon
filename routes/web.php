@@ -11,6 +11,8 @@ Route::get('/timeline', function () {
 
 Route::inertia('/people', 'people')->name('people');
 
+Route::inertia('/life', 'life')->name('life');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');

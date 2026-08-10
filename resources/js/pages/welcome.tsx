@@ -22,9 +22,6 @@ export default function Welcome() {
                 <title>永康國際同濟會</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
-                <meta property="og:title" content="永康國際同濟會" />
-                <meta property="og:description" content="永康國際同濟會" />
-                <meta property="og:type" content="website" />
                 <link rel="stylesheet" href="/asd_files/base.css" />
                 <link rel="stylesheet" href="/asd_files/blue.css" />
                 <link rel="stylesheet" href="/asd_files/swiper-bundle.min.css" />
