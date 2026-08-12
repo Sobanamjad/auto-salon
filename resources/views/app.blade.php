@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews'])])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job'])])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
         <script>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
-                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews']) ? 'true' : 'false' }};
+                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job']) ? 'true' : 'false' }};
 
                 if (appearance === 'system') {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -37,9 +37,16 @@
             html.welcome-page,
             html.welcome-page.dark,
             html.salon-page,
-            html.salon-page.dark {
+            html.salon-page.dark,
+            html[data-salon-page="true"],
+            html[data-salon-page="true"].dark {
                 background-color: transparent;
                 scrollbar-gutter: stable;
+            }
+
+            html.salon-page body,
+            html[data-salon-page="true"] body {
+                background-color: transparent !important;
             }
         </style>
 

@@ -37,12 +37,25 @@ const getStoredAppearance = (): Appearance => {
     return (localStorage.getItem('appearance') as Appearance) || 'system';
 };
 
+export { getStoredAppearance };
+
 const isDarkMode = (appearance: Appearance): boolean => {
     return appearance === 'dark' || (appearance === 'system' && prefersDark());
 };
 
+export { isDarkMode };
+
 const applyTheme = (appearance: Appearance): void => {
     if (typeof document === 'undefined') {
+        return;
+    }
+
+    const html = document.documentElement;
+
+    if (html.classList.contains('salon-page') || html.dataset.salonPage === 'true') {
+        html.classList.remove('dark');
+        html.style.colorScheme = 'light';
+        document.body.style.backgroundColor = 'transparent';
         return;
     }
 
@@ -50,6 +63,7 @@ const applyTheme = (appearance: Appearance): void => {
 
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+    document.body.style.backgroundColor = '';
 };
 
 const subscribe = (callback: () => void) => {

@@ -24,6 +24,13 @@ Route::get('/uninews', function () {
     return inertia('uninews', ['thisPage' => max(1, $page)]);
 })->name('uninews');
 
+Route::get('/job', function () {
+    return inertia('job', [
+        'newSn' => (string) request()->query('new_sn', '1100'),
+        'lang' => request()->query('lang'),
+    ]);
+})->name('job');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');

@@ -22,7 +22,7 @@ export default function About({ tab = 'founding' }: Props) {
     return (
         <>
             <Head>
-                <title>{activeTab.label}-永康國際同濟會</title>
+                <title>{`${activeTab.label}-永康國際同濟會`}</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
                 {/* Legacy stylesheet bundle */}
