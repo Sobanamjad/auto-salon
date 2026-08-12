@@ -1,35 +1,52 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import { useCallback, useState } from 'react';
+import { useEffect } from 'react';
 
 const MAP_EMBED_URL =
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.865656820449!2d120.18385617484994!3d22.991967117470566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e7672361574f7%3A0x2f6a8a6f784ac0db!2zNzA46Ie65Y2X5biC5a6J5bmz5Y2A5Y2U6YCy6YeM5Lit6I-v6KW_6Lev5LqM5q61MzE16Jmf!5e0!3m2!1szh-TW!2stw!4v1784613868430!5m2!1szh-TW!2stw';
 
+declare global {
+    interface Window {
+        CheckForm_TS?: () => boolean;
+        refreshContactCaptcha?: () => boolean;
+    }
+}
+
 export default function Contact() {
     useForceLightMode();
+    const { errors } = usePage().props as { errors?: Record<string, string> };
 
-    const [captchaKey, setCaptchaKey] = useState(() => Date.now());
-    const refreshCaptcha = useCallback(() => setCaptchaKey(Date.now()), []);
-
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, reset } = useForm({
         name: '',
         mobile: '',
         message: '',
         code: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    useEffect(() => {
+        const firstError = errors?.code || errors?.name || errors?.mobile || errors?.message;
+        if (firstError) {
+            alert(firstError);
+            window.refreshContactCaptcha?.();
+        }
+    }, [errors]);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (typeof window.CheckForm_TS === 'function' && !window.CheckForm_TS()) {
+            return;
+        }
+
         post('/contact', {
             preserveScroll: true,
             onSuccess: () => {
                 reset('name', 'mobile', 'message', 'code');
-                refreshCaptcha();
+                window.refreshContactCaptcha?.();
             },
-            onError: () => refreshCaptcha(),
+            onError: () => window.refreshContactCaptcha?.(),
         });
     };
 
@@ -39,14 +56,15 @@ export default function Contact() {
                 <title>聯絡協會-永康國際同濟會</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
-                <link rel="stylesheet" href="/asd_files/base.css" />
-                <link rel="stylesheet" href="/asd_files/blue.css" />
-                <link rel="stylesheet" href="/asd_files/common.css" />
-                <link rel="stylesheet" href="/asd_files/main.css" />
-                <link rel="stylesheet" href="/asd_files/animate.css" />
-                <script src="/asd_files/jquery-3.7.1.min.js" defer={true} />
-                <script src="/asd_files/customize.js" defer={true} />
-                <script src="/asd_files/marquee.js" defer={true} />
+                <link rel="stylesheet" href="/contact_files/base.css" />
+                <link rel="stylesheet" href="/contact_files/animate.css" />
+                <link rel="stylesheet" href="/contact_files/common.css" />
+                <link rel="stylesheet" href="/contact_files/main.css" />
+                <link rel="stylesheet" href="/contact_files/blue.css" />
+                <script src="/contact_files/jquery-3.7.1.min.js" defer={true} />
+                <script src="/contact_files/customize.js" defer={true} />
+                <script src="/contact_files/marquee.js" defer={true} />
+                <script src="/contact_files/contact-form.js" defer={true} />
             </Head>
 
             <div className="wrapper">
@@ -155,11 +173,18 @@ export default function Contact() {
                                             <div className="secbox_main">
                                                 <div className="formbox formbox_inquire formbox_dec">
                                                     <div className="form-describe">
-                                                        請詳細填寫以下表單並清楚告訴我們訴求，當本公司收到這封信時，我們會盡快回覆您。
+                                                        請詳細填寫以下表單並清楚告訴我們訴求，當本公司收到這封信時，我們會盡快回覆您。{' '}
                                                         <span className="data_required">(*)必填</span>
                                                     </div>
 
-                                                    <form className="formset" role="form" onSubmit={handleSubmit}>
+                                                    <form
+                                                        className="formset"
+                                                        role="form"
+                                                        method="post"
+                                                        action="/contact"
+                                                        name="my_form"
+                                                        onSubmit={handleSubmit}
+                                                    >
                                                         <ul className="formlist formlist_inquire">
                                                             <li className="formline name">
                                                                 <div className="inputbar">
@@ -177,14 +202,8 @@ export default function Contact() {
                                                                             placeholder="姓名..."
                                                                             value={data.name}
                                                                             onChange={e => setData('name', e.target.value)}
-                                                                            required
                                                                         />
                                                                     </div>
-                                                                    {errors.name && (
-                                                                        <div className="text-danger" style={{ marginTop: 4 }}>
-                                                                            {errors.name}
-                                                                        </div>
-                                                                    )}
                                                                 </div>
                                                             </li>
 
@@ -204,14 +223,8 @@ export default function Contact() {
                                                                             placeholder="連絡電話..."
                                                                             value={data.mobile}
                                                                             onChange={e => setData('mobile', e.target.value)}
-                                                                            required
                                                                         />
                                                                     </div>
-                                                                    {errors.mobile && (
-                                                                        <div className="text-danger" style={{ marginTop: 4 }}>
-                                                                            {errors.mobile}
-                                                                        </div>
-                                                                    )}
                                                                 </div>
                                                             </li>
 
@@ -233,11 +246,6 @@ export default function Contact() {
                                                                             required
                                                                         />
                                                                     </div>
-                                                                    {errors.message && (
-                                                                        <div className="text-danger" style={{ marginTop: 4 }}>
-                                                                            {errors.message}
-                                                                        </div>
-                                                                    )}
                                                                 </div>
                                                             </li>
 
@@ -265,28 +273,23 @@ export default function Contact() {
                                                                                         type="text"
                                                                                         placeholder=""
                                                                                         value={data.code}
-                                                                                        onChange={e =>
-                                                                                            setData('code', e.target.value)
-                                                                                        }
-                                                                                        required
+                                                                                        onChange={e => setData('code', e.target.value)}
                                                                                     />
                                                                                 </span>
                                                                                 <img
                                                                                     style={{ border: '1px solid #555' }}
-                                                                                    id="contact-captcha"
-                                                                                    src={`/contact/captcha?${captchaKey}`}
+                                                                                    id="i593"
+                                                                                    src="/contact/captcha"
                                                                                     alt="驗證碼"
-                                                                                    width={100}
-                                                                                    height={30}
                                                                                 />
                                                                                 <span style={{ marginLeft: 8, fontSize: '0.95rem' }}>
                                                                                     (
                                                                                     <a
                                                                                         style={{ color: 'blue' }}
-                                                                                        href="#"
+                                                                                        href="/contact"
                                                                                         onClick={e => {
                                                                                             e.preventDefault();
-                                                                                            refreshCaptcha();
+                                                                                            window.refreshContactCaptcha?.();
                                                                                         }}
                                                                                     >
                                                                                         更換
@@ -295,11 +298,6 @@ export default function Contact() {
                                                                                 </span>
                                                                             </div>
                                                                         </div>
-                                                                        {errors.code && (
-                                                                            <div className="text-danger" style={{ marginTop: 4 }}>
-                                                                                {errors.code}
-                                                                            </div>
-                                                                        )}
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -308,10 +306,11 @@ export default function Contact() {
                                                                 <div className="form-btnbar">
                                                                     <button
                                                                         type="submit"
+                                                                        value="確認送出"
                                                                         className="formbtn formbtn_submit"
                                                                         disabled={processing}
                                                                     >
-                                                                        {processing ? '送出中...' : '確認送出'}
+                                                                        確認送出
                                                                     </button>
                                                                 </div>
                                                             </li>
