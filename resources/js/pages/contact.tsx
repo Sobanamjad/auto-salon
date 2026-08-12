@@ -56,15 +56,15 @@ export default function Contact() {
                 <title>聯絡協會-永康國際同濟會</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
-                <link rel="stylesheet" href="/contact_files/base.css" />
-                <link rel="stylesheet" href="/contact_files/animate.css" />
-                <link rel="stylesheet" href="/contact_files/common.css" />
-                <link rel="stylesheet" href="/contact_files/main.css" />
-                <link rel="stylesheet" href="/contact_files/blue.css" />
-                <script src="/contact_files/jquery-3.7.1.min.js" defer={true} />
-                <script src="/contact_files/customize.js" defer={true} />
-                <script src="/contact_files/marquee.js" defer={true} />
-                <script src="/contact_files/contact-form.js" defer={true} />
+                <link rel="stylesheet" href="/asd_files/base.css" />
+                <link rel="stylesheet" href="/asd_files/blue.css" />
+                <link rel="stylesheet" href="/asd_files/common.css" />
+                <link rel="stylesheet" href="/asd_files/main.css" />
+                <link rel="stylesheet" href="/asd_files/animate.css" />
+                <script src="/asd_files/jquery-3.7.1.min.js" defer={true} />
+                <script src="/asd_files/customize.js" defer={true} />
+                <script src="/asd_files/marquee.js" defer={true} />
+                <script src="/asd_files/contact-form.js" defer={true} />
             </Head>
 
             <div className="wrapper">

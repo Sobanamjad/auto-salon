@@ -18,6 +18,12 @@ Route::get('/contact/captcha', [ContactController::class, 'captcha'])->name('con
 
 Route::inertia('/life', 'life')->name('life');
 
+Route::get('/uninews', function () {
+    $page = (int) request()->query('this_page', 1);
+
+    return inertia('uninews', ['thisPage' => max(1, $page)]);
+})->name('uninews');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
