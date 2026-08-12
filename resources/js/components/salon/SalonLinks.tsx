@@ -1,35 +1,4 @@
-const linkItems = [
-    {
-        href: 'https://www.kiwanis.org.tw/',
-        title: '國際同濟會台灣總會',
-        img: '/asd_files/s20260722143043100.png',
-        imgW: 1024, imgH: 1024,
-    },
-    {
-        href: 'https://www.youtube.com/@同濟新聞台',
-        title: '同濟新聞台',
-        img: '/asd_files/s2026072214362130.png',
-        imgW: 1024, imgH: 1024,
-    },
-    {
-        href: 'https://drive.google.com/drive/folders/0B1BHPOKkSSugZUFEckM3RTZjYkE?resourcekey=0-UgELiJx818yBj1p6SyfvnQ',
-        title: '網路硬碟',
-        img: '/asd_files/s2026072214383290.png',
-        imgW: 1024, imgH: 1024,
-    },
-    {
-        href: 'https://www.tainan.gov.tw/Default.aspx',
-        title: '台南市政府',
-        img: '/asd_files/s202507251351370.png',
-        imgW: 1024, imgH: 600,
-    },
-    {
-        href: 'https://b-partner.org/',
-        title: '商務夥伴協會',
-        img: '/asd_files/s2026071314025490.png',
-        imgW: 1024, imgH: 1024,
-    },
-];
+import { linkItems } from '@/data/link-items';
 
 export default function SalonLinks() {
     return (
@@ -50,8 +19,8 @@ export default function SalonLinks() {
 
                         <div className="secbox_main">
                             <ul className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                {linkItems.map((link, index) => (
-                                    <li key={index}>
+                                {linkItems.map(link => (
+                                    <li key={link.title}>
                                         <div className="card card_link effect_topslash fadeUp js-scroll">
                                             <div className="row g-3">
                                                 <div>

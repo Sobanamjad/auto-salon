@@ -31,6 +31,12 @@ Route::get('/job', function () {
     ]);
 })->name('job');
 
+Route::get('/link', function () {
+    return inertia('link', [
+        'csn' => request()->query('new_csn'),
+    ]);
+})->name('link');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
