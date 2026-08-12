@@ -86,13 +86,33 @@ const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('sidebar-overlay');
 const closeBtn = document.getElementById('sidebar-close');
 
+function lockBodyScroll() {
+	const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+	document.body.style.overflow = 'hidden';
+
+	if (scrollbarWidth > 0) {
+		document.body.style.paddingRight = scrollbarWidth + 'px';
+		document.querySelectorAll('.header_fixed').forEach(function (el) {
+			el.style.paddingRight = scrollbarWidth + 'px';
+		});
+	}
+}
+
+function unlockBodyScroll() {
+	document.body.style.overflow = '';
+	document.body.style.paddingRight = '';
+	document.querySelectorAll('.header_fixed').forEach(function (el) {
+		el.style.paddingRight = '';
+	});
+}
+
 function openSidebar(e) {
 	if (e) e.preventDefault();
 	
 	sidebar.classList.add('is-open');
 	overlay.classList.add('is-active');
-	// 防止背景頁面跟著捲動
-	document.body.style.overflow = 'hidden';
+	lockBodyScroll();
 }
 
 function closeSidebar(e) {
@@ -100,8 +120,7 @@ function closeSidebar(e) {
 	
 	sidebar.classList.remove('is-open');
 	overlay.classList.remove('is-active');
-	// 恢復背景頁面捲動
-	document.body.style.overflow = '';
+	unlockBodyScroll();
 }
 
 // 對每一個開啟按鈕綁定點擊事件

@@ -39,6 +39,7 @@
             html.salon-page,
             html.salon-page.dark {
                 background-color: transparent;
+                scrollbar-gutter: stable;
             }
         </style>
 

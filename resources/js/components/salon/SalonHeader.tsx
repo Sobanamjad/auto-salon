@@ -126,8 +126,33 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
     }, [sidebarOpen]);
 
     useEffect(() => {
-        document.body.style.overflow = sidebarOpen ? 'hidden' : '';
-        return () => { document.body.style.overflow = ''; };
+        const fixedHeaders = document.querySelectorAll<HTMLElement>('.header_fixed');
+
+        if (sidebarOpen) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.overflow = 'hidden';
+
+            if (scrollbarWidth > 0) {
+                document.body.style.paddingRight = `${scrollbarWidth}px`;
+                fixedHeaders.forEach(el => {
+                    el.style.paddingRight = `${scrollbarWidth}px`;
+                });
+            }
+        } else {
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            fixedHeaders.forEach(el => {
+                el.style.paddingRight = '';
+            });
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            fixedHeaders.forEach(el => {
+                el.style.paddingRight = '';
+            });
+        };
     }, [sidebarOpen]);
 
     const toggleSubmenu = (index: number) => {
