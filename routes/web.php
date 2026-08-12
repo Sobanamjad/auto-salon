@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
@@ -10,6 +11,10 @@ Route::get('/timeline', function () {
 })->name('timeline');
 
 Route::inertia('/people', 'people')->name('people');
+
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/contact/captcha', [ContactController::class, 'captcha'])->name('contact.captcha');
 
 Route::inertia('/life', 'life')->name('life');
 
