@@ -1907,6 +1907,124 @@ input[type="file"] {
 
 
 /*----------------------------------------------------------------------
+	{C} #jsmtree [多層次選單]
+-------------------------------- */
+.jsmtree li a{
+	position:relative;
+	display:block;
+	
+	border-width:0 0 1px 0;
+	border-style:dashed;
+	border-color:rgba(0,0,0,0.1);
+	
+	color:#333;
+	font-size:var(--text-base); font-weight:600;
+	padding:1rem 3rem 1rem 1rem;
+	text-decoration:none;
+}
+.jsmtree > li:first-child > a{
+	border-top-width:1px;
+}
+
+/* ===== 右側 is 有下層之提示圖樣(+號) */
+.jsmtree-subbtn{
+	display:block;
+	position:absolute; z-index:1; top:50%; right:10px;
+	width:24px; height:24px;
+	background:rgba(var(--color-one-rgb),0.1);
+	border-radius:50%;
+	cursor:pointer;
+	transform:translate(0, -50%);
+}
+.jsmtree-subbtn:before,
+.jsmtree-subbtn:after{
+    position:absolute; z-index:2; right:50%; top:50%; content:"";
+	width:2px; height:10px;
+    margin-right:-1px; margin-top:-5px;
+	background:rgba(var(--color-one-rgb),1);
+	border-radius:2px;
+	outline:0;
+	transform-origin:center;
+	transition:transform 0.4s ease-in-out;
+}
+.jsmtree-subbtn:before{ transform:rotate(90deg); }
+
+/* ===== 打開次分類之提示圖樣 */
+.jsmtree-subbtn.is-open:before{ transform:rotate(45deg); }
+.jsmtree-subbtn.is-open:after{ transform:rotate(-45deg); }
+
+
+/* ===== 次ul */
+.jsmtree ul{
+	display:none;
+	position:relative; top:0; left:0;
+	width:100%;
+	padding-left:var(--spacing-base);
+}
+.jsmtree ul.is-visible{ display:block; }
+
+
+
+/*----------------------------------------------------------------------
+	{C} {page} #pdmenu [產品-側邊多層選單]
+-------------------------------- */
+.pdmenu{
+    display:none;
+}
+@media (min-width:992px){
+	.pdmenu{ display:block; }
+}
+
+.pdmenu li a{
+	padding:0.75rem 3rem 0.75rem 1rem;
+}
+.pdmenu li a:hover{ color:var(--color-accent); }
+
+
+/* ===== 打開次分類的該項目 */
+.pdmenu li a.is-current{
+	color:var(--color-one);
+}
+
+
+/*====== 選中的項目有標記(圓圈)之設定 */
+.pdmenu li > a:after{
+	position: absolute; top:50%; left: -3px; content: "";
+	width: 8px; height: 8px;
+	background: var(--color-one);
+	transform:rotate(45deg) translate(0, -50%);
+	opacity:0.3;
+}
+.pdmenu li a:hover:after{
+	background:var(--color-accent);
+	opacity:1;
+}
+.pdmenu li.active > a:after,
+.pdmenu li > a.is-current:after{
+	background: var(--color-one);
+	opacity:1;
+}
+
+
+/* ===== 右側 is 有下層之提示圖樣(+號) */
+.pdmenu .jsmtree-subbtn{
+	background:transparent;
+}
+.pdmenu .jsmtree-subbtn:before,
+.pdmenu .jsmtree-subbtn:after{
+	background:#333;
+}
+
+
+/* ===== 打開次分類之提示圖樣 */
+.pdmenu .jsmtree-subbtn.is-open:before,
+.pdmenu .jsmtree-subbtn.is-open:after{
+	background:var(--color-one);
+}
+
+
+
+/*----------------------------------------------------------------------
 	{C} {page} #cateselect [分類-下拉選單式]
 -------------------------------- */
 .cateselect{
