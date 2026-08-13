@@ -62,6 +62,15 @@ Route::get('/article', function () {
     ]);
 })->name('article');
 
+Route::get('/download', function () {
+    $csn = request()->query('new_csn');
+
+    return inertia('download', [
+        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
+        'thisPage' => max(1, (int) request()->query('this_page', 1)),
+    ]);
+})->name('download');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
