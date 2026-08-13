@@ -53,6 +53,15 @@ Route::get('/product', function () {
     ]);
 })->name('product');
 
+Route::get('/article', function () {
+    $csn = request()->query('new_csn');
+
+    return inertia('article', [
+        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
+        'thisPage' => max(1, (int) request()->query('this_page', 1)),
+    ]);
+})->name('article');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
