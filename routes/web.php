@@ -44,6 +44,15 @@ Route::get('/qa', function () {
     ]);
 })->name('qa');
 
+Route::get('/product', function () {
+    return inertia('product', [
+        'csn' => (string) request()->query('new_csn', '7519'),
+        'upSn' => (string) request()->query('up_sn', '0'),
+        'thisPage' => max(1, (int) request()->query('this_page', 1)),
+        'searchTitle' => request()->query('sel_title'),
+    ]);
+})->name('product');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
