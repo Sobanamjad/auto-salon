@@ -37,6 +37,13 @@ Route::get('/link', function () {
     ]);
 })->name('link');
 
+Route::get('/qa', function () {
+    return inertia('qa', [
+        'csn' => request()->query('new_csn'),
+        'thisPage' => max(1, (int) request()->query('this_page', 1)),
+    ]);
+})->name('qa');
+
 Route::get('/about', function () {
     // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
