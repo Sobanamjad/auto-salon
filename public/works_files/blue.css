@@ -1,0 +1,30 @@
+
+/*blue-base*/
+
+:root {
+	
+	--color-one: #00A0E9;
+	--color-one-rgb: 0,160,233;
+	
+	--color-one-light: #15b1f8;
+	--color-one-lighter: #E5F5FD;
+	--color-one-dark:#00698E;
+	/*--color-one-gradient-toleft: linear-gradient(to left, rgba(0,160,233,1) , transparent );*/ /*左至透明*/
+
+    
+	--color-two: #3BD1D1;
+	--color-two-rgb: 59,209,209;
+	
+	--color-two-light: #3ce5e5;
+	--color-two-lighter: #EBFAFA;
+	--color-two-dark: #00C2D1;
+	/*--color-two-gradient-toleft: linear-gradient(to left, rgba(59,209,209,1) , transparent );*/ /*左至透明*/
+	
+	
+	--color-three: #FFE8A6; /*輔助-淺色*/
+
+
+	--color-accent: #FF8643; /*強調色*/
+	
+	--color-marquee-text: #fff;
+}

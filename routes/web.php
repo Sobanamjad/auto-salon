@@ -85,6 +85,15 @@ Route::get('/about', function () {
     return inertia('about', ['tab' => $tab]);
 })->name('about');
 
+Route::get('/works', function () {
+    $csn = request()->query('new_csn');
+
+    return inertia('works', [
+        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
+        'searchTitle' => request()->query('sel_title'),
+    ]);
+})->name('works');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
