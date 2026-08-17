@@ -94,6 +94,15 @@ Route::get('/works', function () {
     ]);
 })->name('works');
 
+Route::get('/member', function () {
+    $csn = request()->query('new_csn');
+
+    return inertia('member', [
+        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
+        'searchTitle' => request()->query('sel_title'),
+    ]);
+})->name('member');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
