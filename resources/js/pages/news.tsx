@@ -97,145 +97,109 @@ export default function News({ csn = null, searchTitle = null }: Props) {
                             <div className="container">
                                 <div className="secbox_inner">
 
+                                    {/* Category buttons (horizontal) */}
+                                    <div className="category_box">
+                                        <ul className="category_list">
+                                            {newsCategories.map(category => (
+                                                <li
+                                                    key={category.label}
+                                                    className={(category.csn ?? null) === activeCsn ? 'active' : ''}
+                                                >
+                                                    <a
+                                                        href={
+                                                            category.csn
+                                                                ? `/news?new_csn=${category.csn}`
+                                                                : '/news'
+                                                        }
+                                                        title={category.label}
+                                                    >
+                                                        <span className="cate-text">{category.label}</span>
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
                                     <div className="heading heading_main">
                                         <h1 className="heading-text">{activeLabel}</h1>
                                     </div>
 
-                                    <div className="main-columns-wrap">
-                                        {/* Sidebar: search + category filter */}
-                                        <div className="main-columns-left">
-                                            <div className="searchbar">
-                                                <div className="search">
-                                                    <form
-                                                        name="form1"
-                                                        method="get"
-                                                        action="/news"
-                                                        role="search"
-                                                    >
-                                                        <input type="hidden" name="this_page" value="1" />
-                                                        {activeCsn && (
-                                                            <input type="hidden" name="new_csn" value={activeCsn} />
-                                                        )}
-                                                        <input
-                                                            type="text"
-                                                            className="search-input"
-                                                            name="sel_title"
-                                                            defaultValue={searchTitle ?? ''}
-                                                            placeholder="搜尋..."
-                                                        />
-                                                        <button type="submit" className="search-btn" title="搜尋">
-                                                            <img src="/asd_files/icon-search.png" width={20} alt="搜尋" />
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-
-                                            <ul className="jsmtree pdmenu">
-                                                {newsCategories.map(category => (
-                                                    <li
-                                                        key={category.label}
-                                                        className={
-                                                            `cate-item ${(category.csn ?? null) === activeCsn ? 'active' : ''}`
-                                                        }
-                                                    >
-                                                        <a
-                                                            href={
-                                                                category.csn
-                                                                    ? `/news?new_csn=${category.csn}`
-                                                                    : '/news'
-                                                            }
-                                                            title={category.label}
-                                                            className={
-                                                                (category.csn ?? null) === activeCsn ? 'is-current' : ''
-                                                            }
-                                                        >
-                                                            <span className="cate-text">{category.label}</span>
-                                                        </a>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-
-                                        {/* Main content: news cards */}
-                                        <div className="main-columns-right">
-                                            <ul className="row row-cols-sm-2 row-cols-lg-1 row-cols-xl-2">
-                                                {items.map(news => {
-                                                    const date = formatDate(news.date);
-                                                    return (
-                                                        <li key={news.sn}>
-                                                            <div className="card card_news js-scroll">
-                                                                <div className="row g-3 g-lg-4 align-center">
-                                                                    <div className="col-lg-3">
-                                                                        <div className="card-header">
-                                                                            <div className="card-date-box">
-                                                                                <div className="card-date-item">
-                                                                                    <span className="card-date year">{date.year}</span>
-                                                                                    <span className="card-date month">{date.month}</span>
-                                                                                    <span className="card-date day">{date.day}</span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-lg-3">
-                                                                        <div className="card-photo">
-                                                                            <a href={newsViewHref(news.sn)} title={`${news.title}-永康國際同濟會`}>
-                                                                                <div className="item-fitimg">
-                                                                                    <img
-                                                                                        src={news.photo}
-                                                                                        alt={news.title}
-                                                                                        width={news.photoW}
-                                                                                        height={news.photoH}
-                                                                                        loading="lazy"
-                                                                                        className="fitimg"
-                                                                                    />
-                                                                                </div>
-                                                                                <div className="card-mask"></div>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-lg-6">
-                                                                        <div className="card-body">
-                                                                            <h3 className="card-name">
-                                                                                <a href={newsViewHref(news.sn)} title={`${news.title}-永康國際同濟會`}>
-                                                                                    <span className="card-name-text">
-                                                                                        {news.title}
-                                                                                    </span>
-                                                                                </a>
-                                                                            </h3>
-                                                                            {news.excerpt && (
-                                                                                <div className="card-text img-hidden text-limit limit-line-2">
-                                                                                    {news.excerpt}
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="hidden">
-                                                                        <div className="card-btnbar card-btnbar_more">
-                                                                            <a
-                                                                                href={newsViewHref(news.sn)}
-                                                                                className="card-btn card-btn_more"
-                                                                                title={`${news.title}-永康國際同濟會`}
-                                                                            >
-                                                                                <span className="card-btn-text">更多</span>
-                                                                                <span className="iconsvg icon-view-more"></span>
-                                                                            </a>
+                                    {/* News cards */}
+                                    <ul className="row row-cols-sm-2 row-cols-lg-1 row-cols-xl-2">
+                                        {items.map(news => {
+                                            const date = formatDate(news.date);
+                                            return (
+                                                <li key={news.sn}>
+                                                    <div className="card card_news js-scroll">
+                                                        <div className="row g-3 g-lg-4 align-center">
+                                                            <div className="col-lg-3">
+                                                                <div className="card-header">
+                                                                    <div className="card-date-box">
+                                                                        <div className="card-date-item">
+                                                                            <span className="card-date year">{date.year}</span>
+                                                                            <span className="card-date month">{date.month}</span>
+                                                                            <span className="card-date day">{date.day}</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
+                                                            <div className="col-lg-3">
+                                                                <div className="card-photo">
+                                                                    <a href={newsViewHref(news.sn)} title={`${news.title}-永康國際同濟會`}>
+                                                                        <div className="item-fitimg">
+                                                                            <img
+                                                                                src={news.photo}
+                                                                                alt={news.title}
+                                                                                width={news.photoW}
+                                                                                height={news.photoH}
+                                                                                loading="lazy"
+                                                                                className="fitimg"
+                                                                            />
+                                                                        </div>
+                                                                        <div className="card-mask"></div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-lg-6">
+                                                                <div className="card-body">
+                                                                    <h3 className="card-name">
+                                                                        <a href={newsViewHref(news.sn)} title={`${news.title}-永康國際同濟會`}>
+                                                                            <span className="card-name-text">
+                                                                                {news.title}
+                                                                            </span>
+                                                                        </a>
+                                                                    </h3>
+                                                                    {news.excerpt && (
+                                                                        <div className="card-text img-hidden text-limit limit-line-2">
+                                                                            {news.excerpt}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                            <div className="hidden">
+                                                                <div className="card-btnbar card-btnbar_more">
+                                                                    <a
+                                                                        href={newsViewHref(news.sn)}
+                                                                        className="card-btn card-btn_more"
+                                                                        title={`${news.title}-永康國際同濟會`}
+                                                                    >
+                                                                        <span className="card-btn-text">更多</span>
+                                                                        <span className="iconsvg icon-view-more"></span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
 
-                                            <div className="page">
-                                                <span>1</span>
-                                                <br />
-                                                <br />
-                                                Total {items.length} - 1 / 1
-                                                <br />
-                                            </div>
-                                        </div>
+                                    <div className="page">
+                                        <span>首頁</span> <span>1</span> <span>末頁</span>
+                                        <br />
+                                        Total {items.length} - 1 / 1
+                                        <br />
                                     </div>
                                 </div>
                             </div>
