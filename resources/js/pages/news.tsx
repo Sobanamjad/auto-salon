@@ -196,7 +196,12 @@ export default function News({ csn = null, searchTitle = null }: Props) {
                                     </ul>
 
                                     <div className="page">
-                                        <span>首頁</span> <span>1</span> <span>末頁</span>
+                                        <a href="/news" target="_self">首頁</a>
+                                        {'\u00A0'}
+                                        <span>1</span>
+                                        {'\u00A0'}
+                                        <a href="/news">末頁</a>
+                                        <br />
                                         <br />
                                         Total {items.length} - 1 / 1
                                         <br />
