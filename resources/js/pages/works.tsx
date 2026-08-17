@@ -1,5 +1,4 @@
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
@@ -8,6 +7,7 @@ import {
     filterWorksItems,
     getWorksCategoryLabel,
     worksCategories,
+    worksItemHref,
 } from '@/data/works-items';
 
 type Props = {
@@ -20,19 +20,7 @@ export default function Works({ csn = null, searchTitle = null }: Props) {
 
     const activeCsn = csn ?? null;
     const activeLabel = getWorksCategoryLabel(activeCsn);
-
-    const [searchInput, setSearchInput] = useState(searchTitle ?? '');
-
     const items = filterWorksItems(activeCsn, searchTitle);
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        const params = new URLSearchParams();
-        if (activeCsn) params.set('new_csn', activeCsn);
-        if (searchInput.trim()) params.set('sel_title', searchInput.trim());
-        params.set('this_page', '1');
-        window.location.href = `/works${params.toString() ? '?' + params.toString() : ''}`;
-    };
 
     return (
         <>
@@ -99,25 +87,33 @@ export default function Works({ csn = null, searchTitle = null }: Props) {
 
                             <div className="container">
                                 <div className="secbox_inner">
+
+                                    <div className="heading heading_main">
+                                        <h1 className="heading-text">{activeLabel}</h1>
+                                    </div>
+
                                     <div className="main-columns-wrap">
 
                                         {/* Sidebar: search + category filter */}
                                         <div className="main-columns-left">
                                             <div className="searchbar">
                                                 <div className="search">
-                                                    <form role="search" onSubmit={handleSearch}>
+                                                    <form
+                                                        name="form1"
+                                                        method="get"
+                                                        action="/works"
+                                                        role="search"
+                                                    >
+                                                        <input type="hidden" name="this_page" value="1" />
                                                         <input
                                                             type="text"
                                                             className="search-input"
                                                             name="sel_title"
-                                                            value={searchInput}
-                                                            onChange={e => setSearchInput(e.target.value)}
+                                                            defaultValue={searchTitle ?? ''}
                                                             placeholder="搜尋..."
                                                         />
-                                                        <input type="hidden" name="sel_check_id" value="1" />
-                                                        <input type="hidden" name="this_page" value="1" />
                                                         <button type="submit" className="search-btn" title="搜尋">
-                                                            <img src="/works_files/icon-search.png" width={20} alt="搜尋" />
+                                                            <img src="/asd_files/icon-search.png" width={20} alt="搜尋" />
                                                         </button>
                                                     </form>
                                                 </div>
@@ -149,21 +145,17 @@ export default function Works({ csn = null, searchTitle = null }: Props) {
                                             </ul>
                                         </div>
 
-                                        {/* Main content: heading + cards */}
+                                        {/* Main content: cards */}
                                         <div className="main-columns-right">
-                                            <div className="heading heading_main">
-                                                <h1 className="heading-text">{activeLabel}</h1>
-                                            </div>
-
                                             <ul className="row row-cols-sm-2 row-cols-lg-3">
                                                 {items.map(member => (
-                                                    <li key={member.href + member.title}>
+                                                    <li key={member.sn}>
                                                         <div className="card card_works effect_dec_vt fadeUp js-scroll">
                                                             <div className="row g-3">
                                                                 <div>
                                                                     <div className="card-photo">
-                                                                        <a href={member.href} title={member.title}>
-                                                                            <div className="item-fitimg">
+                                                                        <a href={worksItemHref(member.sn)} title={member.title}>
+                                                                            <div className="item-fitimg" style={{ paddingBottom: '132%' }}>
                                                                                 <img
                                                                                     src={member.img}
                                                                                     alt={member.title}
@@ -180,19 +172,18 @@ export default function Works({ csn = null, searchTitle = null }: Props) {
                                                                 <div>
                                                                     <div className="card-body">
                                                                         <h3 className="card-name">
-                                                                            <a href={member.href} title={member.title}>
+                                                                            <a href={worksItemHref(member.sn)} title={member.title}>
                                                                                 <span className="card-name-text">
                                                                                     {member.title}
                                                                                 </span>
                                                                             </a>
                                                                         </h3>
-                                                                        <div className="card-text img-hidden hidden"></div>
                                                                     </div>
                                                                 </div>
                                                                 <div>
                                                                     <div className="card-btnbar card-btnbar_more">
                                                                         <a
-                                                                            href={member.href}
+                                                                            href={worksItemHref(member.sn)}
                                                                             className="card-btn card-btn_more"
                                                                             title={member.title}
                                                                         >

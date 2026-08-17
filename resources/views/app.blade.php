@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job', 'link', 'qa', 'product', 'article', 'download'])])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job', 'link', 'qa', 'product', 'article', 'download', 'works'])])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
         <script>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
-                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job', 'link', 'qa', 'product', 'article', 'download']) ? 'true' : 'false' }};
+                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job', 'link', 'qa', 'product', 'article', 'download', 'works']) ? 'true' : 'false' }};
 
                 if (appearance === 'system') {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
