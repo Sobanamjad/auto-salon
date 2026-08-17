@@ -1,0 +1,3170 @@
+
+/*----------------------------------------------------------------------
+	實色按鈕-預約/會議 [in designer_view / mainbtm]
+-------------------------------- */
+.btn_reserve,
+.card-btn_reserve,
+.card-btn_meeting{
+	border: 3px solid #fff;
+	color:#fff;
+	adding: var(--spacing-sm) var(--spacing-md);
+}
+.btn_reserve{
+	width:100%; max-width:180px;
+}
+
+.btn_reserve,
+.card-btn_reserve{ background:var(--color-reserve); }
+.card-btn_meeting{ background:var(--color-meeting); }
+
+.btn_reserve:before,
+.card-btn_reserve:before{ background:var(--color-reserve); }
+.card-btn_meeting:before{ background:var(--color-meeting); }
+
+.btn_reserve .iconsvg:before,
+.card-btn_reserve .iconsvg:before,
+.card-btn_meeting .iconsvg:before{ background-color:#fff; }
+
+.btn_reserve:hover,
+.card-btn_reserve:hover,
+.card-btn_meeting:hover{
+	background:#fff;
+	border-color:#fff;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+
+
+/*----------------------------------------------------------------------
+	邊框按鈕-預約/會議 [in designer / namecard]
+-------------------------------- */
+.card_designer .card-btn,
+.card_qrcode .card-btn{
+	background:#fff;
+	border:1px solid #ccc;
+}
+.card_designer .card-btn_reserve,
+.card_qrcode .card-btn_reserve{
+	border-color:var(--color-reserve);
+	color:var(--color-reserve);
+}
+.card_designer .card-btn_meeting,
+.card_qrcode .card-btn_meeting{
+	border-color:var(--color-meeting);
+	color:var(--color-meeting);
+}
+
+.card_designer .card-btn_reserve:before,
+.card_qrcode .card-btn_reserve:before{
+	background-color:var(--color-reserve);
+}
+.card_designer .card-btn_meeting:before,
+.card_qrcode .card-btn_meeting:before{
+	background-color:var(--color-meeting);
+}
+
+.card_designer .card-btn_reserve .iconsvg:before,
+.card_qrcode .card-btn_reserve .iconsvg:before{
+	background-color:var(--color-reserve);
+}
+.card_designer .card-btn_meeting .iconsvg:before,
+.card_qrcode .card-btn_meeting .iconsvg:before{
+	background-color:var(--color-meeting);
+}
+
+
+.card_designer .card-btn:hover,
+.card_qrcode .card-btn:hover{
+	border-color:#fff;
+	color:#fff;
+	box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.card_designer .card-btn:hover .iconsvg:before,
+.card_qrcode .card-btn:hover .iconsvg:before{
+	background-color:#fff;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	#card
+-------------------------------- */
+.card{
+	background:#fff;
+	border-radius:0;
+}
+
+
+/* ===== 名稱 */
+.card-name,
+.card-name a{
+	color:#000;
+}
+.card-name a:hover,
+.card:hover .card-name a:hover{
+	color:var(--color-accent);
+}
+
+
+/* ===== 介紹文字 */
+.card-text{
+	font-size: var(--text-sm);
+	line-height: 1.6;
+}
+
+
+/* ===== 資訊列 */
+.card-info{
+    font-size: var(--text-sm);
+}
+.card-info,
+.card-info a{}
+.card-info a:hover{
+	color: var(--color-accent);
+}
+
+.card_job .card-info .card-info-text,
+.card_store .card-info .card-info-text{
+	flex:1 1 auto;
+    width:1%; min-width:0;
+}
+
+
+
+.card-infobar{
+	gap:var(--spacing-2xs);
+}
+.card-infobar .card-info{
+	align-items:flex-start;
+	gap:var(--spacing-xs);
+	
+	width:100%;
+	font-size:var(--text-xs); font-weight:600;
+	padding:var(--spacing-2xs) var(--spacing-xs);
+	text-align:left;
+}
+.card-infobar .card-info,
+.card-infobar .card-info a{
+	color:#333;
+}
+.card-infobar .card-info a:hover{
+	color:var(--color-accent);
+}
+.card-infobar .card-info .iconsvg{
+	margin-top:2px;
+}
+.card-infobar .card-info .iconsvg:before{
+	background-color:#333;
+}
+.card-infobar .card-info .card-info-text{
+	flex:1 1 auto;
+    width:1%; min-width:0;
+}
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	{C} #js-scroll [加上 scroll動畫特效]
+-------------------------------- */
+.cardlist_jsscroll .card.js-scroll{
+    opacity: 0;
+    
+	-webkit-transform: translateX(-5rem);
+			transform: translateX(-5rem);
+    
+	-webkit-transition-property: opacity, -webkit-transform;
+    		transition-property: opacity, -webkit-transform;
+    		transition-property: opacity, transform;
+    		transition-property: opacity, transform, -webkit-transform;
+    
+	-webkit-transition-duration: 1s;
+    		transition-duration: 1s;
+			
+    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+.cardlist_jsscroll li:nth-of-type(2n) .card.js-scroll{
+	-webkit-transform: translateX(5rem);
+			transform: translateX(5rem);
+}
+.cardlist_jsscroll li .card.js-scroll.is-active {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    		transform: translateY(0);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	{C} #effect_dec_hz [橫式]
+-------------------------------- */
+.effect_dec_hz{
+	border:1px solid #fff;
+	padding:1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	overflow:hidden;
+}
+
+.effect_dec_hz:before,
+.effect_dec_hz:after{
+	position:absolute; right:0; bottom:0; content:"";
+	width:100%;
+
+	transition: opacity 0.8s ease-out,
+				right 0.8s ease-out,
+				bottom 0.8s ease-out;
+}
+.effect_dec_hz:before{
+	z-index:-1;
+	height:110px;
+	background:var(--color-one);
+	transform-origin:right bottom;
+	transform:skewY(-12deg);
+	opacity:0.1;
+}
+.effect_dec_hz:after{
+	z-index:-2;
+	height:80px;
+	background:var(--color-two);
+	transform-origin:left bottom;
+	transform:skewY(10deg);
+	opacity:0.2;
+}
+@media (min-width:640px){
+	.effect_dec_hz:before,
+	.effect_dec_hz:after{
+		height:100%;
+	}
+	.effect_dec_hz:before{
+		top:0; bottom:auto;
+		width:130px; 
+		transform-origin:right bottom;
+		transform:skewX(-25deg) skewY(0);
+		opacity:0.1;
+	}
+	.effect_dec_hz:after{
+		bottom:0;
+		width:90px; 
+		transform-origin:right top;
+		transform:skewX(15deg) skewY(0);
+		opacity:0.2;
+	}
+	.effect_dec_hz:hover:before,
+	.effect_dec_hz:hover:after{
+		right:-30px;
+		opacity:1;
+	}
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	{C} #effect_dec_vt [直式]
+-------------------------------- */
+.effect_dec_vt{
+	border:1px solid #fff;
+	padding:1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	overflow:hidden;
+}
+.effect_dec_vt:before,
+.effect_dec_vt:after{
+	position:absolute; bottom:0; content:"";
+	width:100%;
+	
+	transition: opacity 0.8s ease-out,
+				bottom 0.8s ease-out;
+}
+.effect_dec_vt:before{
+	z-index:-1; right:0;
+	height:110px;
+	background:var(--color-one);
+	transform-origin:right bottom;
+	transform:skewY(-12deg);
+	opacity:0.1;
+}
+.effect_dec_vt:after{
+	z-index:-2; left:0;
+	height:80px;
+	background:var(--color-two);
+	transform-origin:left bottom;
+	transform:skewY(10deg);
+	opacity:0.2;
+	
+	transition-delay: 0.1s;
+}	
+@media (min-width:992px){
+	.effect_dec_vt:hover:before,
+	.effect_dec_vt:hover:after{
+		bottom:-30px;
+		opacity:1;
+	}
+}
+
+.effect_dec_vt .card-name{
+	margin-bottom:var(--spacing-base);
+}
+
+
+
+/*----------------------------------------------------------------------
+	{C} #effect_topslash [直式]
+-------------------------------- */
+.effect_topslash{
+	border:1px solid #fff;
+	padding:1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	overflow:hidden;
+}
+.effect_topslash:before{
+	position:absolute; top:0; left:0; content:"";
+	width:100%; height:150px;
+	background:rgba(var(--color-two-rgb),0.3);
+	
+	transform: skewY(-15deg);
+	transform-origin: top left;
+	
+	transition: background 0.5s ease, height 0.5s ease;
+}
+.effect_topslash:hover:before{
+	height:200px;
+	background:rgba(var(--color-two-rgb),1);
+}
+.effect_topslash .card-photo{
+	max-width:240px;
+	background:#fff;
+	border:10px solid var(--color-two);
+	border-radius:50%;
+	overflow:hidden;
+	margin:1rem auto 0 auto;
+}
+.effect_topslash .fitimg{
+	-webkit-object-fit: cover;
+	   -moz-object-fit: cover;
+		    object-fit: cover;
+}
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	219_#about [關於我們]
+-------------------------------- */
+.card_about_one,
+.card_about_two{
+	background:transparent;
+}
+
+/* ===== in idx */
+.card_about_one .card-name,
+.card_about_two .card-name{
+	display:none;
+}
+
+.card_about_one .card-text,
+.card_about_two .card-text{
+	font-size:var(--text-lg);
+	margin-top:0;
+}
+
+.card_about_one .card-text, .card_about_one .card-text a,
+.card_about_two .card-text, .card_about_two .card-text a{
+	color:#333;
+}
+.card_about_one .card-text a:hover
+.card_about_two .card-text a:hover{
+	color:var(--color-accent);
+}
+
+
+/* ===== 多則之第一則 [in idx] */
+.idx_about_one{
+	position:relative;
+	max-width:1000px;
+	padding-bottom:var(--spacing-md);
+	margin:0 auto;
+}
+
+.card_about_one{
+	border-width:0;
+	margin-bottom:var(--spacing-md);
+}
+.card_about_one .card-photo{
+	background:transparent;
+	margin-bottom:var(--spacing-md);
+}
+.card_about_one .card-photo img{
+	margin-left:auto; margin-right:auto;
+	/* 圖片小於限定區塊時，圖片置中 */
+}
+
+.card_about_one .card-btnbar{
+	justify-content: center;
+	margin-top:var(--spacing-md);
+}
+
+
+
+/* ===== 多則之第二則以後 [in idx] */
+.card_about_two{
+	border-width:0;
+	margin-bottom:var(--spacing-md);
+}
+
+.idx_about_two_figure{
+	position:relative;
+	max-width:1000px;
+	margin:0 auto;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	220_#albums [相簿管理]
+-------------------------------- */
+.card_albums{
+	text-align:center;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	293_#download [文件下載]
+-------------------------------- */
+.card_download{
+	padding:1rem 1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.card_download .card-text{
+	font-size:1rem;
+	padding-left:2rem;
+}
+
+.card_download .card-btnbar{
+	justify-content:flex-end;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	225_#qa [常見問題] [use #accordion:component]
+-------------------------------- */
+.card_qa{
+}
+.card_qa .card-header{
+	padding: 1.5rem 5rem 1.5rem 3.8rem;
+}
+
+.card_qa .card-body{
+	border:1px solid #eee;
+	padding: 1rem 1.5rem 1rem 3.8rem;
+}
+
+
+/*符號-q*/
+.card_qa .card-sign_q{
+	position:absolute; top:50%; left:15px;
+    display:block;
+    width:36px; height:36px;
+	background:var(--color-one); 
+	transform:translate(0, -50%);
+	border-radius:50%;
+}
+.card_qa .card-sign_q:before{
+	position:absolute; top:0; left:0; content:"";
+	width:100%; height:100%;
+	background-color:#fff; 
+
+    -webkit-mask-position:center;
+    mask-position:center;
+    
+    -webkit-mask-repeat:no-repeat;
+    mask-repeat:no-repeat;
+    
+    -webkit-mask-size:65% 65%;
+    mask-size:65% 65%;
+	
+	-webkit-mask-image:url(../images/icon/icon_q.svg);
+    mask-image:url(../images/icon/icon_q.svg);
+}
+.card_qa .card-sign_q:after{
+	position:absolute; z-index:1; bottom:1px; right:-12px; content:"";
+	width:0; height:0;
+	
+	border-left:8px solid var(--color-one);
+
+	transform:rotate(21deg);
+}
+
+.card_qa .card-sign_a{ display:none; }
+
+
+
+/*開啟項目*/
+.card_qa .accordion-button.active .card-name{
+	color:#fff;
+}
+.card_qa .accordion-button.active .card-sign_q{
+	background:#fff;
+}
+.card_qa .accordion-button.active .card-sign_q:before{
+	background-color:var(--color-one); 
+}
+
+
+
+.card_qa .card-text{
+	font-size:var(--tex-base);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	244_#member [會員管理] [use #accordion:component]
+-------------------------------- */
+.card_member{
+}
+
+
+.card_member_headline,
+.card_member .card-header{
+	padding: 0.75rem 3rem 0.75rem 1rem;
+}
+.card_member_headline{
+	padding-top:0.25rem;
+	padding-bottom:0.25rem;
+}
+@media (min-width:768px){
+	.card_member_headline,
+	.card_member .card-header{
+		padding-right:5rem;
+	}
+}
+
+
+.card_member .card-body{
+	border:1px solid #eee;
+	padding: 1rem 1rem;
+}
+
+
+.card_member .card-td.jobtitle{
+	display:none;
+}
+@media (min-width:768px){
+	.card_member .card-td.jobtitle{
+		display:block;
+	}
+}
+
+.card_member .card-name{
+	margin:0;
+}
+.card_member .card-name span{
+	display:block;
+}
+.card_member .card-name span:last-child{
+	font-size:var(--text-sm);
+}
+@media (min-width:768px){
+	.card_member .card-name span{
+		display:inline;
+	}
+}
+
+.card_member .card-jobtitle{
+	display:inline-block;
+	background:rgba(var(--color-one-rgb),0.1);
+	border-radius:30px;
+	color:var(--color-dark);
+	font-size:var(--text-sm); font-weight:600;
+	padding:0.25rem 1rem;
+}
+
+
+/*開啟項目*/
+.card_member .accordion-button.active .card-name{
+	color:#fff;
+}
+.card_member .accordion-button.active .card-jobtitle{
+	background-color: rgba(255,255,255,0.2);
+	color:#fff;
+}
+
+
+
+
+.card_member .card-body-left{
+	margin-bottom:var(--spacing-md);
+}
+@media (min-width:768px){
+	.card_member .card-body-row{
+		display:flex; flex-wrap:wrap;
+	}
+	.card_member .card-body-left{
+		width:200px;
+		margin-right:30px; margin-bottom:0;	
+	}
+	.card_member .card-body-right{
+		flex:1 1 auto;
+		width:1%; min-width:0;
+	}
+}
+
+.card_member .card-photo{
+	max-width:400px; margin:0 auto;
+}
+
+
+/*開啟區塊-資訊組*/
+.card_member .card-infolist .card-info,
+.card_member .card-infolist .card-info a{
+	color:#333;
+}
+.card_member .card-infolist a{
+	text-decoration:underline;
+}
+.card_member .card-infolist .card-info a:hover{
+	color:var(--color-accent); 
+}
+
+.card_member .card-infolist{
+	gap:0;
+}
+.card_member .card-infolist li:hover{
+	background:rgba(var(--color-one-rgb),0.05);
+}
+.card_member .card-infolist .card-info{
+	padding:0.5rem 0;
+	font-size:var(--text-base); font-weight:600;
+	border-bottom:1px dashed rgba(var(--color-one-rgb),0.1);
+}
+.card_member .card-infolist .card-info-title{
+	position:relative;
+	color:var(--color-one);
+	width:100px;
+	padding:0 1rem 0 0;
+	text-align:right;
+}
+.card_member .card-infolist .card-info-title:after{
+	position:absolute; top:2px; right:0; content:"：";
+	line-height:1;
+}
+	
+.card_member .card-infolist .card-info-text{
+	flex:1 1 auto;
+	width:1%; min-width:0;
+	
+	padding-left:0;
+}
+@media (min-width:1200px){
+	.card_member .card-infolist{
+		display:flex; flex-wrap:wrap;
+		align-items:center;
+		margin-top:0;
+	}
+	.card_member .card-infolist li{
+		width:calc( (100% - var(--spacing-xs)) / 2 );
+	}
+	.card_member .card-infolist li.full-w{
+		width:100%;
+	} 
+
+}
+
+
+/*開啟區塊-編輯器*/
+.card_member .card-intro{
+	margin-top:var(--spcing-md);
+}
+.card_member .card-intro-heading{
+    display:block;
+	border-bottom:1px dashed #ccc;
+    
+    color:var(--color-dark);
+	
+	font-size:var(--text-sm); font-weight:600;
+    text-align:center;
+    padding:var(--spacing-2xs) 0;
+    margin:var(--spacing-lg) 0 var(--spacing-sm) 0;
+}
+
+.card_member .card-intro-text{
+	font-size:var(--text-base);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	227_#location [經銷地區]
+-------------------------------- */
+.card_location .card-iframe{
+	position:relative; z-index:3;
+	padding-bottom:50%;
+}
+.card_location .card-body{
+	padding:0 var(--spacing-sm);
+}
+.card_location .card-text{
+	text-align:left;
+}
+.card_location .card-btnbar{
+	position:relative; z-index:3;
+	margin-bottom:var(--spacing-base);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	230_#product [產品管理]
+-------------------------------- */
+
+/* ===== 商品詳細頁 */
+.pro-view-area{
+	border-bottom:1px dashed rgba(var(--color-two-rgb),0.6);
+	padding-bottom:var(--spacing-md);
+	margin-bottom:var(--spacing-sm);
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	453_#agent_pd [代理產品] 
+-------------------------------- */
+.card_agent_pd{
+	border:1px solid #eee;
+	text-align:center;
+}
+.card_agent_pd .price_sale {
+    font-size:var(--text-2xl);
+}
+.card_agent_pd .card-footer{
+	margin-bottom:var(--spacing-sm);
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	235_#works [作品管理]
+-------------------------------- */
+.card_works .card-name{
+	text-align:center;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	237_#designer [設計師(使用者)] 
+	331_個人介紹
+-------------------------------- */
+
+
+
+/*----------------------------------------------------------------------
+	會議列表 [以未開放為初始顏色設定]
+-------------------------------- */
+.card_meeting{
+	background:#fff;
+	border:1px solid #fff;
+	border-top:4px solid #ccc;
+	border-radius:10px;
+	padding:var(--spacing-base);
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.card_meeting:hover{ border-color:#fff; border-top-color:#ccc; }
+
+.card-badgebar{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content: right;
+}
+.card_meeting .card-badge{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content: center;
+	gap: var(--spacing-2xs);
+
+	position:relative;
+	background:var(--color-disabled-container);
+	color:var(--color-disabled);
+	font-size: var(--text-xs);
+	font-weight: 700;
+	padding: var(--spacing-2xs) var(--spacing-sm);
+	border-radius: 60px;
+}
+.card_meeting .card-badge-tag{
+	display:block;
+	width: 8px; height: 8px;
+	border-radius: 50%;
+	background:var(--color-disabled);
+}
+
+.card_meeting .card-body{
+	background-color: #f8fafc;
+	border-radius:8px;
+	padding:var(--spacing-xs) var(--spacing-sm);
+}
+.card_meeting .card-infolist{
+	margin:0;
+}
+.card_meeting .card-info{
+	gap:var(--spacing-sm);
+}
+.card_meeting .card-info .iconsvg{
+	display:none;
+}
+.card_meeting .card-info-text{
+	color:#333;
+}
+
+/*按鈕-視訊與否*/
+.card_meeting .btn_switch{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content: center;
+	gap: var(--spacing-2xs);
+	
+	width:100%;
+	background:var(--color-disabled-container);
+	border-radius: 8px;
+	color:var(--color-disabled);
+	font-weight:600;
+	cursor: pointer;
+	padding: var(--spacing-sm) var(--spacing-base);
+	transition: background-color 0.2s ease;
+
+	cursor: not-allowed;
+}
+.card_meeting .btn_switch .iconsvg{
+	width:20px; height:20px;
+}
+.card_meeting .btn_switch .iconsvg:before{
+	background-color:var(--color-disabled);
+}
+
+
+/*參加視訊*/
+.card_meeting.meeting-available{
+	border-color:var(--color-one);
+}
+.card_meeting .card-badge.available{
+	background:var(--color-success-container);
+	color:var(--color-success);
+}
+.card_meeting .card-badge.available .card-badge-tag{
+	background:var(--color-success);
+}
+
+.card_meeting .btn_switch.meeting-available{
+	background-color: var(--color-one);
+	color:#fff;
+	cursor:pointer;
+}
+.card_meeting .btn_switch.meeting-available .iconsvg:before{
+	background-color:#fff;
+}
+.card_meeting .btn_switch.meeting-available:hover{
+	background-color: var(--color-accent);
+	color:#fff;
+}
+
+
+/*未開放視訊*/
+.card_meeting.meeting-disabled .card-name{
+	color:var(--text-muted);
+}
+.card_meeting.meeting-disabled .card-text{
+	color:var(--text--muted-low);
+}
+
+
+
+
+
+/* ===== 詳細頁-個人介紹 [in designer_view] */
+.card_summary{
+	max-width:400px;
+	border:1px solid #ccc;
+	border-radius:10px;
+	margin:0 auto var(--spacing-md) auto;
+	overflow:hidden;
+	box-shadow:2px 2px 5px rgba(0,0,0,0.1);
+}
+.card_summary .col-two,
+.card_summary .col-three{
+	padding:0 var(--spacing-md); 
+}
+
+.card_summary .card-photo .fitimg{
+	object-position: top;
+}
+
+.card_summary .card-name{
+	margin-bottom:var(--spacing-xs);
+	padding-bottom:var(--spacing-xs);
+	border-bottom:2px dashed rgba(var(--color-two-rgb),0.3);
+}
+
+.card_summary .card-name,
+.card_summary .card-text{
+	color:#333;
+}
+
+.card_summary .card-btnbar{
+	justify-content: center;
+}
+.card_summary .card-btn{
+	width:45%;
+}
+
+
+.card_summary .card-box_qrcode{
+    max-width:120px;
+    margin:1rem auto;
+	text-align:center;
+}
+.card_summary .card-info_scan{
+	justify-content: center;
+	color:#333;
+}
+.card_summary .card-info_scan .card-info-text{
+	font-size:var(--text-sm); font-weight:600;
+}
+.card_summary .card-info_scan .iconsvg{
+	display:none;
+}
+.card_summary .card-box_qrcode .card-photo{
+	border:1px solid #ccc;
+	margin-top:var(--spacing-2xs);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	274_#link [相關連結]
+-------------------------------- */
+.card_link .card-name{
+	text-align:center;
+	margin-top:1rem;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	343_#announecment [活動管理]
+-------------------------------- */
+.card_activity{
+	padding:var(--spacing-md) var(--spacing-sm);
+}
+
+.card_activity .card-photo{
+	background:transparent;
+	border-width:0;
+}
+
+.card_activity .card-name{
+	position:static;
+}
+
+.card_activity .card-text{
+	font-size:var(--text-sm);
+	color:#333;
+}
+
+
+/* ===== 狀態*/
+.card_activity .card-status{
+	justify-content:center;
+	font-weight:600;
+	margin:var(--spacing-sm) 0;
+}
+
+
+/* ===== 活動資料 */
+.card_activity .card-infolist{
+	border-width:1px 0 0 0;
+	border-style:dashed;
+	border-color:#ccc;
+	padding:var(--spacing-xs) 0 0 0;
+	margin:var(--spacing-sm) 0 0 0;
+}
+
+.card-info_event{
+	align-items:flex-start;
+	
+    font-size:var(--text-sm); font-weight:600;
+	color:#333;
+	text-align:left;
+}
+.card-info_event .card-info-title{
+	display:block;
+	width:120px;
+	background:#fff;
+	border:1px solid #ccc;
+	border-radius:5px;
+	color:rgba(0,0,0, 0.7);
+	padding:var(--spacing-2xs);
+	text-align:center;
+}
+.card-info_event .card-info-text{
+	width:100%;
+	padding:10px 0 10px 24px;
+}
+
+@media (min-width:576px){
+	.card-info_event .card-info-text{
+		flex:1 1 auto;
+		width:1%; min-width:0;
+		
+		padding-top:var(--spacing-2xs); padding-left:var(--spacing-xs);
+	}
+}
+
+.card-info_event .day_sat,
+.card-info_event .day_sun{
+	display:inline-block;
+	width:18px; height:20px;
+	background:rgba(255,255,255,1);
+	border-radius:50%;
+	font-size:var(--text-xs); line-height:20px;
+	text-align:center;
+}
+.card_activity .card-info_event .day_sat{ color:green; }
+.card_activity .card-info_event .day_sun{ color:red; }
+
+
+.card_activity .card-btnbar{
+	position:relative; z-index:5;
+	display:block;
+}
+@media (min-width:992px){
+	.card_activity .card-btnbar{
+		margin-top:0;
+		justify-content: flex-end;
+	}
+}
+
+
+.calendar_box{
+	text-align:center;
+	margin:var(--spacing-lg) 0;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	406_#job [人才招募]
+-------------------------------- */
+.card_job{
+	position:relative;
+	padding:var(--spacing-sm);
+	margin:var(--spacing-xl) 0;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.card_job .card-name{
+	color:var(--color-one);
+	text-align:center;
+	margin-bottom:var(--spacing-lg);
+}
+
+.card_job .card-infolist{
+	display:grid;
+	gap: var(--spacing-2xs);
+}
+
+.card_job .card-info{
+	position: relative;
+	align-items: flex-start;
+	
+	border-bottom:1px dashed #ccc;
+	font-size: var(--text-base); font-weight:600;
+	color: #333;
+	padding: var(--spacing-xs) 0;
+}
+.card_job .card-info .card-info-title{
+	position: relative;
+	display: block;
+	width: 100%;
+	color:var(--color-one-dark);
+    font-weight: 600;
+	margin-bottom: var(--spacing-2xs);
+}
+.card_job .card-info .card-info-text{
+	padding: 0 0 0 var(--spacing-sm);
+	margin-bottom: var(--spacing-2xs);
+}
+.card_job .card-info .card-info-text p{
+	margin-top:0;
+}
+
+@media (min-width: 576px){
+    .card_job .card-info .card-info-title{
+        width: 145px;
+        margin-right: var(--spacing-2xs);
+        padding-right: var(--spacing-md);
+		text-align: right;
+    }
+    .card_job .card-info .card-info-title:after{
+        position: absolute; top: 2px; right: 0; content: "：";
+		color:var(--color-one-dark);
+        line-height: 1;
+    }
+    .card_job .card-info .card-info-text{
+        padding: 0;
+    }
+}
+
+@media (min-width: 992px){
+	.card_job{
+		padding: var(--spacing-lg);
+	}
+    .card_job .card-infolist{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .card_job .card-infolist > li.w-100{
+		grid-column: span 2 / span 2;
+	}
+}
+
+
+
+/* ====== in idx */
+.card_recruit{
+}
+.card_recruit .card-name{
+	text-align:center;
+	padding:var(--spacing-sm) 0;
+}
+	
+.card_recruit .card-infolist li{
+    margin-bottom:var(--spacing-sm);
+}
+.card_recruit .card-infolist li:last-child{
+	margin-bottom:0;
+}
+.card_recruit .card-info span{
+    width:100%;
+}
+.card_recruit .card-info .iconsvg{
+	display:none;
+}
+.card_recruit .card-info .card-info-title{
+	width:auto;
+    background: var(--color-one-dark);
+	color:#fff;
+    font-weight:600;
+	padding:0 10px;
+    margin-bottom:5px;
+	transform: skewX(-5deg);
+}
+.card_recruit .card-info .card-info-text{
+    padding-left:var(--spacing-md);
+    color:#333;
+}
+
+
+.card_recruit .card-btnbar{
+	position:relative; z-index:5;
+	padding:0 var(--spacing-sm);
+	margin:var(--spacing-2xs) 0;
+	justify-content:center;
+}
+.card_recruit .card-btn{
+	width:100%;
+	margin:0;
+}
+@media (min-width:768px){
+	.card_recruit .card-btn{
+		width:auto;
+	}	
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	435_#equipment [設備資料]
+-------------------------------- */
+
+
+
+/*----------------------------------------------------------------------
+	454_#franchiser_event [加盟主活動]
+-------------------------------- */
+
+
+
+
+
+/*----------------------------------------------------------------------
+	455_#franchiser [加盟主資訊]
+-------------------------------- */
+.card_franchiser .card-name{
+	margin-top: 0;
+}
+.card_franchiser .card-body{
+	padding: var(--spacing-sm);
+}
+.card_franchiser .card-info{
+	align-items: flex-start;
+	margin-bottom: 0;
+}
+.card_franchiser .card-info .iconsvg{
+	display: block;
+	margin-top: var(--spacing-2xs);
+}
+.card_franchiser .card-info{
+	font-size: var(--text-sm);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	484_#timeline [時間記事]
+-------------------------------- */
+
+/*項目*/
+.card_timeline{
+    background: #fff;
+    padding: var(--spacing-sm);
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.card_timeline .card_row{
+	display:flex; flex-wrap:wrap;
+	gap:var(--spacing-sm);
+}
+.card_timeline .card-one,
+.card_timeline .card-two{
+	width:100%;
+}
+.card_timeline .card-one{ order:2; }
+.card_timeline .card-two{ order:1; }
+@media (min-width:576px){
+	.card_timeline .card-one{
+		width: 30%;
+	}
+	.card_timeline .card-two{
+		flex:1 1 auto;
+		width:1%; min-width:0;
+	}
+}
+
+
+/*項目-header */
+.card_timeline .card-header{
+	border-bottom:1px dashed #ccc;
+}
+.card_timeline .header_row{
+    display:flex; flex-wrap:wrap;
+    align-items:center;
+	gap:var(--spacing-sm);
+}
+.card_timeline .header_row > .header-one{
+	width:70px;
+}
+.card_timeline .header_row > .header-two{
+	flex:1 1 auto;
+	width:1%; min-width:0;
+}
+
+
+/*項目-日期*/
+.card_timeline .card-date-box{
+	position:relative;
+	padding:5px;
+}
+.card_timeline .card-date-box:before{
+	position:absolute; z-index:-1; top:0; right:0; content:"";
+	width:100%; height:100%;
+	background:var(--color-one);
+	
+	-webkit-clip-path: polygon(0 0, 90% 0%, 100% 100%, 0% 100%);
+			clip-path: polygon(0 0, 90% 0%, 100% 100%, 0% 100%);
+}
+
+.card_timeline .card-date-item{
+    display:flex; flex-wrap:wrap;
+    justify-content:center;
+    text-align:center;
+}
+.card_timeline .card-date-item .card-date{
+    display:block;
+	color:#fff;
+    font-size:var(--text-sm); line-height:1;
+    font-family:Helvetica;
+    padding:0.25rem 0;
+}
+.card_timeline .card-date.year{ order:2; }
+.card_timeline .card-date.year:after{ content:"-"; }
+
+.card_timeline .card-date.month{ order:3; }
+
+.card_timeline .card-date.day{
+	order:1;
+    width:100%;
+    font-size:26px; font-weight:600;
+}
+@media (min-width:992px){
+	.card_timeline .card-date.day{
+		font-size:32px;
+	}
+}
+
+/*行數限制*/
+.card_timeline .card-name{
+	display:-webkit-box;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	
+	-webkit-line-clamp:2;
+	-webkit-box-orient:vertical;
+	white-space:normal;
+}
+
+
+/*年份*/
+.timeline-year{
+    position: relative; z-index: 2;
+    width: 100%;
+    margin: var(--spacing-xl) 0 var(--spacing-lg) 0;
+    text-align: center;
+}
+.timeline-year:first-child{ margin-top:0; }
+.timeline-year-text{
+	position: relative;
+	display:inline-block;
+	color:#fff;
+	font-size:var(--text-lg); font-weight:600; line-height:1;
+	padding:0.75rem 1.5rem;
+	margin-left:-1px;
+}
+.timeline-year-text:before{
+	position:absolute; z-index:-1; top:0; left:0; content:"";
+	width:100%; height:100%;
+	background:var(--color-one);
+	transform: skewX(-20deg);
+}
+
+
+.timeline-box{
+    margin-bottom:var(--spacing-md);
+}
+
+
+@media (min-width:992px){
+
+	.timeline-event{
+		position:relative;
+		padding-bottom:var(--spacing-lg);
+		margin:var(--spacing-lg) 0;
+	}
+
+    /*消除float*/
+    .timeline-area{}
+    .timeline-area:before, .timeline-area:after{ display:table; content:" " }
+    .timeline-area:after{ clear:both }
+	
+    .timeline-year{
+        float:left;
+        clear:both;
+        margin-top:var(--spacing-sm);
+    }
+    .timeline-year:nth-child(1){ margin-top:0; }
+        
+    .timeline-box{
+        float:left;
+        width:55%;
+        padding-right:calc(5% + 60px);
+        margin-bottom: var(--spacing-xl);
+        margin-top: -80px;
+    }
+    .timeline-box:nth-of-type(2n){
+        float:right;
+        padding-left:calc(5% + 60px);
+        padding-right:0;
+    }
+	
+    /*中間年份 與 漂浮項目之設定 */
+    .timeline-year + .timeline-box{ margin-top:0; }
+
+
+
+	/*中間線*/
+	.timeline-event:before{
+		position:absolute; top:0; left:50%; content:"";
+		width:2px; height:100%;
+		
+		background:#ccc;
+		
+		transform:translate(-50%, 0);
+	}
+	
+	/*中間線底的圓圈*/
+	.timeline-event:after{
+		position:absolute; bottom:0; left:50%; content:"";
+		width:12px; height:12px;
+		
+		background:#ccc;
+		
+		border-radius:50%;
+		transform:translate(-50%, 0);
+	}
+
+
+
+	/*項目-延伸至中間的線條 */
+    .card_timeline:before{
+        position:absolute; top:30px; right:-60px; content:"";
+        width:60px; height:1px;
+		border-top:2px dashed #ccc;
+    }
+    .timeline-box:nth-of-type(2n) .card_timeline:before{
+        left:-60px; right:auto;
+    }
+	.card_timeline:hover:before{ border-color:var(--color-accent); }
+	
+	
+    /*項目-延伸至中間的圓圈 */
+    .card_timeline:after{
+        position:absolute; top:31px; right:-60px; content:"";
+        width:14px; height:14px;
+        margin-top:-7px;
+        margin-right:-7px;
+        background:#fff;
+        border-radius:50%;
+        border:2px solid #ccc;
+    }
+    .card_timeline:hover:after{ border-color:var(--color-accent); }
+    .timeline-box:nth-of-type(2n) .card_timeline:after{
+        left:-60px; right:auto;
+		margin-left:-8px;
+		margin-right:0;
+    }
+
+}
+
+
+
+/*加上 scroll動畫特效*/
+.timeline-box{
+    opacity: 0;
+    
+	-webkit-transform: translateX(-5rem);
+			transform: translateX(-5rem);
+    
+	-webkit-transition-property: opacity, -webkit-transform;
+    		transition-property: opacity, -webkit-transform;
+    		transition-property: opacity, transform;
+    		transition-property: opacity, transform, -webkit-transform;
+    
+	-webkit-transition-duration: 1s;
+    		transition-duration: 1s;
+			
+    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+.timeline-box:nth-of-type(2n){
+	-webkit-transform: translateX(5rem);
+			transform: translateX(5rem);
+}
+.timeline-box.js-scroll.is-active {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    		transform: translateY(0);
+}
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	490_#people [人物介紹] [use effect_profile]
+-------------------------------- */
+.card_people
+}
+
+.card_people .card-name{
+	text-align:center;
+}
+.card_people .card-name a:before{
+	display:none;
+}
+
+.card_people .card-slogan{
+	position:relative;
+	background:rgba(var(--color-one-rgb),0.06);
+	color:var(--color-one);
+	font-size:var(--text-lg); font-weight:600;
+	padding:var(--spacing-sm);
+	margin:var(--spacing-xs) 0 var(--spacing-base) 0;
+}
+
+.card_people .card-text{
+	color:#000;
+	font-size:var(--text-base);
+	padding:0 var(--spacing-sm);
+}
+
+
+.card_people .card-callerbar{
+	display: flex; align-items: center;
+	align-items:center; justify-content: center;
+	gap:0.5rem;
+	
+	max-width:360px;
+	margin:var(--spacing-md) auto var(--spacing-sm) auto;
+}
+.card_people .card-callerbar a{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content: center;
+
+	flex: 1;
+	max-width:150px;
+	background:rgba(var(--color-one-rgb),0.03);
+	border:1px solid rgba(var(--color-one-rgb),0.5);
+	border-radius:20px;
+	color:var(--color-one-dark);
+	font-weight:600;
+	padding:var(--spacing-2xs) var(--spacing-sm);
+	text-align:center;
+}
+.card_people .card-callerbar a:hover{
+	background:var(--color-one);
+	border-color:var(--color-one);
+	color:#fff;
+	box-shadow:2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card_people .card-body .card-callerbar{
+	display:none;
+}
+@media (min-width:992px){
+	.card_people .card-callerbar{
+		display:none;
+	}
+	.card_people .card-body .card-callerbar{
+		display:flex;
+	}
+}
+
+
+/* .card_people .card-infobar{
+	justify-content: center;
+	gap:var(--spacing-2xs);
+	
+	margin-top:var(--spacing-md);
+}
+.card_people .card-infobar .card-info{
+	width:100%;
+	color:#333;
+	font-size:var(--text-xs); font-weight:600;
+	padding:var(--spacing-2xs) var(--spacing-xs);
+}
+.card_people .card-infobar .card-info .iconsvg:before{
+	background-color:var(--color-one-dark);
+} */
+
+
+
+
+
+/*----------------------------------------------------------------------
+	512_#store [推薦店家]
+-------------------------------- */
+.card_store{}
+
+.card_store .card-infolist{
+	gap:var(--spacing-xs);
+	
+	padding-top:var(--spacing-sm);
+	border-top:1px dashed #ccc;
+}
+
+.card_store .card-info{
+	align-items:flex-start;
+	color:#333;
+	font-size:var(--text-sm);
+}
+.card_store .card-info .iconsvg{
+	display:block;
+	width:16px; height:16px;
+	border-radius:50%;
+	margin-top:2px;
+}
+
+.card_store .card-info.location{
+	text-align:right;
+}
+.card_store .card-info.location .iconsvg{
+	display:none;
+}
+
+
+/* ===== in store_view ===== */
+.card_store_summary{
+	max-width:400px;
+	border:1px solid #ccc;
+	border-radius:10px;
+	margin:0 auto var(--spacing-md) auto;
+	overflow:hidden;
+	box-shadow:2px 2px 5px rgba(0,0,0,0.1);
+}
+.card_store_summary:hover{
+	background:transparent;
+	border-color:#ccc;
+}
+
+.card_store_summary .card-body{
+	padding:var(--spacing-xs); padding-top:0;
+}
+
+
+.card_store_summary .card-infolist{
+	gap:0;
+}
+.card_store_summary .card-infolist > li{
+	width:100%;
+	padding:var(--spacing-xs) var(--spacing-2xs);
+}
+.card_store_summary .card-infolist > li:hover{
+	background:rgba(var(--color-one-rgb),0.05);
+}
+
+.card_store_summary .card-info{
+	font-size:var(--text-base);
+}
+.card_store_summary .card-info,
+.card_store_summary .card-info a{
+	color:#333;
+}
+.card_store_summary .card-info a:hover{
+	color:var(--color-accent);
+}
+.card_store_summary .card-info .iconsvg{
+	display:block;
+	width:16px; height:16px;
+}
+.card_store_summary .card-info .iconsvg:before{
+	background-color:var(--color-one);
+}
+
+.card_store_summary .card-info .card-info-title{
+	position:relative;
+	width:80px;
+	color:var(--color-one-dark);
+	font-weight:600;
+	margin-right:0;
+	padding-right:16px;
+	
+
+	/*文字左右對齊*/
+	text-align:justify;
+	text-align-last:justify;
+	text-justify:inter-word;
+}
+.card_store_summary .card-info .card-info-title:after{
+	position:absolute; top:0; right:0; content:"：";
+	color:var(--color-one);
+}
+
+.card_store_summary .card-info .card-info-text{
+	flex:1 1 auto;
+	width:1%; min-width:0;
+}
+
+
+.mapbox_store{
+	height:300px;
+	margin-top:var(--spacing-xl);
+}
+.mapbox_store iframe{
+	width:100%; height:100%;
+}
+
+
+/* ===== 地圖檢視 [in store_map] */
+.around-map{
+	text-align:center;
+	margin:var(--spacing-xl) 0;
+}
+.around-map-item{
+	display:inline-block;
+	border:1px solid #ccc;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	519_#god [供奉神明]
+-------------------------------- */
+.card_god .card-name{
+	margin:1rem 0 1.5rem 0;
+	text-align:center;
+}
+.card_god .card-name-text{
+	position:relative; z-index:1;
+	display:inline-block;
+	padding:0 15px;
+}
+.card_god .card-name-text:before{
+	position:absolute; z-index:-1; left:0; bottom:-2px; content:"";
+	width:100%; height:15px;
+	
+	background-color: #ccc;
+	 
+	-webkit-mask-image: url(../images/icon/icon_god_frame.svg);
+    mask-image: url(../images/icon/icon_god_frame.svg);
+
+    -webkit-mask-position: center;
+    mask-position: center;
+    
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    
+    -webkit-mask-size: auto 100%;
+    mask-size: auto 100%;
+	
+	opacity:0.7;
+}
+
+
+
+
+/* ===== in god_view */
+.card_god_summary{
+	margin-bottom:var(--spacing-xl);
+	text-align:center;
+}
+.card_god_summary .card-photo{
+	max-width:280px;
+	border:8px solid #fff;
+	border-radius:50%;
+	overflow:hidden;
+	box-shadow:2px 2px 5px rgba(0,0,0,0.2);
+	margin:0 auto;
+}
+.card_god_summary .card-photo .fitimg{
+	-webkit-object-fit: cover;
+	   -moz-object-fit: cover;
+		    object-fit: cover;
+}
+
+.card_god_summary .card-name-text{
+	position:relative; z-index:2;
+	color:#990000;
+	font-weight:600;
+	margin:0;
+	padding:0;
+}
+
+.card_god_summary .card-name-text:before{
+    position:absolute; z-index:-1; content:attr(data-storke);
+    
+    -webkit-text-stroke:5px #F6DB82;
+			text-stroke:5px #F6DB82;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	523_#case_result [陳情成果]
+-------------------------------- */
+.card_case_result{
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	overflow:hidden;
+}
+
+/* =====標題 */
+.card_case_result .card-name{
+	font-size:var(--text-lg);
+	text-align:center;
+	margin:var(--spacing-lg) 0 var(--spacing-base) 0;
+}
+
+.card_case_result .card-footer{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content:center;
+	
+	border-top:1px solid #eee;
+	padding-top:var(--spacing-base);
+	margin-top:var(--spacing-base);
+}
+.card_case_result .progress-infobox{
+	width:100%; max-width:100px;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	523_#case [陳情案件]
+-------------------------------- */
+
+/* ===== case [card-status] color set */
+.card-status.case_finish,
+.card-status.case_ongoing{
+	font-weight:600;
+}
+.card-status.case_finish .iconsvg,
+.card-status.case_ongoing .iconsvg{
+	width:24px; height:24px;
+}
+
+/* card-status 狀態：已完成*/
+.card-status.case_finish .iconsvg:before{
+	background-color:var(--color-case-finish);
+}
+.card-status.case_finish .card-status-text{
+	color:var(--color-case-finish);
+}
+
+/* card-status 狀態：進行中*/
+.card-status.case_ongoing .iconsvg:before{
+	background-color:var(--color-case-ongoing);
+}
+.card-status.case_ongoing .card-status-text{
+	color:var(--color-case-ongoing);
+}
+
+
+
+
+/* ===== card_case */
+.card_case{
+	position:relative;
+	background:#fff;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+    overflow: hidden;
+	padding:1rem;
+	box-shadow: 0 4px 6px rgb(0 0 0 / 5%);
+	
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/*狀態:進行中 */
+.card_case.case_ongoing{
+	border-left:6px solid var(--color-case-ongoing);
+}
+
+/*狀態:已結案 */
+.card_case.case_finish{
+	border-left:6px solid var(--color-case-finish);
+}
+
+
+.card_case .card-header{
+	display:flex; flex-wrap:wrap;
+	align-items:center;
+	
+	border-bottom:1px dashed #ccc;
+	padding-bottom:1rem;
+	margin-bottom:1rem;
+}
+
+/*狀態*/
+.card_case .card-status{
+	margin-bottom:1rem;
+}
+@media (min-width:768px){
+	.card_case .card-status{
+		position:absolute; top:1.1rem; right:1.4rem;
+		width:auto;
+		font-size:var(--text-sm);
+		margin-bottom:0;
+	}
+}
+
+.card_case .card-infolist{
+	margin:0;
+}
+@media (min-width:768px){
+	.card_case .card-infolist li{ width:auto; }
+}
+
+.card_case .card-info{
+	width:auto;
+	font-size:var(--text-base); font-weight:600;
+	color:#333;
+}
+.card_case .card-info-title{
+	position:relative;
+	padding-right:0.75rem;
+	width:80px;
+	
+	/*文字左右對齊*/
+	text-align:justify;
+	text-align-last:justify;
+	text-justify:inter-word;
+}
+.card_case .card-info-title:after{
+	position:absolute; top:0; right:0; content:"：";
+	font-size:var(--text-sm); font-weight:600;
+	color:#666;
+}
+@media (min-width:768px){
+	.card_case .card-info{
+		background:rgba(0,0,0,0.05);
+		border-radius:1rem;
+		font-size:var(--text-sm);
+		padding:0.25rem 1rem;
+	}
+	.card_case .card-info-title{
+		width:auto;
+	}
+}
+
+
+.card_case .card-body{
+	margin:1rem 0;
+}
+@media (min-width:992px){
+	.card_case .card-body{
+		padding-right:200px;
+		margin-bottom:0;
+	}
+}
+
+.card_case .card-text{
+	color:#333;
+	font-size:var(--text-base);
+}
+
+
+.card_case .card-btn{
+	width:100%;
+	background:rgba(var(--color-one-rgb),0.1);
+	border-radius: 20px;
+	border:1px solid var(--color-one);
+	border-width:0;
+	color:var(--color-one);
+	padding: var(--spacing-sm) var(--spacing-md);
+	margin:0;
+}
+.card_case .card-btn:hover{
+	background:var(--color-accent);
+	border-color:var(--color-accent);
+	color:#fff;
+}
+@media (min-width:992px){
+	.card_case .card-btnbar{
+		position:absolute; bottom:1rem; right:1rem;
+		margin:0;
+	}
+	.card_case .card-btn{
+		width:auto;
+	}
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	523_#case_petition_c [完成陳情]
+-------------------------------- */
+.petition-success{
+	text-align:center;
+	color:var(--color-one);
+	font-size:var(--text-lg); font-weight:600;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	523_#case_track [陳情追蹤]
+-------------------------------- */
+
+/* =====案件追蹤*/
+.infolist_case_track{
+	gap:0;
+
+	background:#fff;
+	border:1px solid #ccc;
+	border-radius: 0.25rem;
+	margin:var(--spacing-lg) auto var(--spacing-2xl) auto;
+	padding:1rem;
+    overflow: hidden;
+	box-shadow: 0 4px 6px rgb(0 0 0 / 5%);
+}
+.infolist_case_track li{
+	width:100%;
+	padding:var(--spacing-xs) 0;
+	border-top:1px dashed #ccc;
+}
+.infolist_case_track li:nth-child(1){
+	border-top-width:0;
+}
+@media (min-width:992px){
+	.infolist_case_track li:nth-child(2){
+		border-top-width:0;
+	}
+
+	.infolist_case_track li.status,
+	.infolist_case_track li.serialnum{
+		width:calc( (100% - 1rem) / 2);
+	}
+	.infolist_case_track li.status{ order:2; }
+	.infolist_case_track li.serialnum{ order:1; }
+	.infolist_case_track li.subject{ order:3; }
+	.infolist_case_track li.reply{ order:4; }
+}
+
+
+.infolist_case_track .info{
+	font-weight:600;
+}
+.infolist_case_track .info-title{
+	background:var(--color-one);
+	color:#fff;
+	padding:2px 4px;
+}
+.infolist_case_track .info-text{
+	width:100%;
+	padding-left:var(--spacing-sm);
+}
+@media (min-width:992px){
+	.infolist_case_track .info{
+		gap:var(--spacing-base);
+	}
+	.infolist_case_track .info-title{
+		position:relative;
+		width:120px;
+		text-align:center;
+	}
+	.infolist_case_track .info .info-text{
+		flex:1 1 auto;
+		width:1%; min-width:0;
+		
+		padding-left:0;
+	}
+}
+
+
+/* ===== 狀態 */
+.infolist_case_track li.status{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content: flex-end;
+}
+.case_status{
+	display:inline-flex; flex-wrap:wrap;
+	align-items:center;
+	gap:var(--spacing-2xs);
+	font-size:var(--text-lg); font-weight:600;
+}
+.case_status .iconsvg,
+.case_status-text{
+	position:relative;
+	display:block;
+}
+.case_status .iconsvg{
+	width:24px; height:24px;
+}
+
+/*案件-狀態：進行中*/
+.case_status.ongoing{ color:var(--color-case-ongoing); }
+.case_status.ongoing .iconsvg:before{ background-color:var(--color-case-ongoing); }
+
+/*案件-狀態：已完成*/
+.case_status.finish{ color:var(--color-case-finish); }
+.case_status.finish .iconsvg:before{ background-color:var(--color-case-finish); }
+
+
+
+
+/* ====== card_case_track */
+.card_case_track{
+	max-width:1000px;
+	background:#fff;
+	border:1px solid #ccc;
+	border-radius: 0.25rem;
+	margin:0 auto;
+    overflow: hidden;
+	box-shadow: 0 4px 6px rgb(0 0 0 / 5%);
+}
+
+.card_case_track .card-header,
+.card_case_track .card-body,
+.card_case_track .card-footer{
+	padding:var(--spacing-xs);
+}
+.card_case_track .card-header{
+	background:#eee;
+}
+
+.card_case_track .card-infolist{
+    margin-top: 0;
+}
+.card_case_track .card-info{
+	color:#333;
+	font-size:var(--text-sm); font-weight:600;
+}
+.card_case_track .card-info .iconsvg{
+	width:16px; height:16px;
+}
+.card_case_track .card-info .card-info-title{
+	position:relative;
+	padding-right:var(--spacing-md);
+}
+.card_case_track .card-info .card-info-title:after{
+	position:absolute; top:0; right:0; content:"：";
+}
+
+/*狀態*/
+.card_case_track .card-status{
+	justify-content: flex-end;
+}
+
+.card_case_track .card-text{
+	color:#333;
+	font-size:var(--text-base);
+	margin-top:0;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	609_#post [數據中心] [news,uninews,life,article、uniarticle]
+-------------------------------- */
+.card_post{
+	border:1px solid #fff;
+	padding:1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 10px 0px;
+	overflow:hidden;
+}
+.card_post:hover{
+	box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+}
+
+
+.card_post:before,
+.card_post:after{
+	position:absolute; right:0; content:"";
+	height:100%;
+}
+.card_post:before{
+	z-index:-1;
+	top:0;
+	width:100px; 
+	background:var(--color-one);
+	transform-origin:right bottom;
+	transform:skewX(-25deg) skewY(0);
+	opacity:0.1;
+}
+.card_post:after{
+	z-index:-2;
+	bottom:0;
+	width:70px; 
+	background:var(--color-two);
+	transform-origin:right top;
+	transform:skewX(15deg) skewY(0);
+	opacity:0.2;
+}
+
+@media (min-width:1200px){
+	.card_post:before,
+	.card_post:after{
+		position:absolute; top:auto; right:auto; bottom:0; content:"";
+		width:100%;
+		
+		transition: opacity 0.8s ease-out,
+					bottom 0.8s ease-out;
+	}
+	.card_post:before{
+		z-index:-1; right:0;
+		height:100px;
+		background:var(--color-one);
+		transform-origin:right bottom;
+		transform:skewY(-12deg);
+		opacity:0.1;
+	}
+	.card_post:after{
+		z-index:-2; left:0;
+		height:70px;
+		background:var(--color-two);
+		transform-origin:left bottom;
+		transform:skewY(10deg);
+		opacity:0.2;
+		
+		transition-delay: 0.1s;
+	}	
+}
+
+.card_post .card-body{
+	padding:var(--spacing-xs);
+}
+@media (min-width:1200px){
+	.card_post .card-body{
+		padding:var(--spacing-sm);
+	}
+}
+
+
+.card_post .card-name{
+	margin:0;
+}
+/*取消將連結擴展至整個card*/
+.card_post .card-name a:before{
+	display:none;
+}
+
+.card_post .card-name-text{
+	display:-webkit-box;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	
+	-webkit-box-orient:vertical;
+	white-space:normal;
+	-webkit-line-clamp:3;
+}
+
+
+.card_post .card-infolist{
+	margin-top:var(--spacing-xs);
+}
+.card_post .card-info{
+	color:#333;
+	font-size:var(--text-sm); font-weight:600;
+}
+.card_post .card-info .iconsvg{
+	display:block;
+	margin-left:0;
+}
+.card_post .card-info .card-info-text{
+	padding:0;
+	margin:0;
+}
+
+
+/*分類標籤*/
+.card_post .card-info_cate{
+	font-size: 0.875rem;
+	margin:var(--spacing-xs) 0;
+}
+.card_post .card-info_cate .iconsvg{
+	display:none;
+}
+.card_post .card-info_cate .card-info-text a{
+	display:inline-block;
+	background:var(--color-one);
+	color:#fff;
+	padding:var(--spacing-2xs) var(--spacing-2xs);
+	border-radius:2px;
+}
+.card_post .card-info_cate .card-info-text a:hover{
+	background:var(--color-accent);
+	color:#fff;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	609_#post_sub [數據中心-側邊] [uniarticle]
+-------------------------------- */
+.card_post_sub{
+}
+@media (min-width:1200px){
+	.card_post_sub{
+		background:transparent;
+		border-width:0;
+	}
+	.card_post_sub .card-photo{
+		border-radius:20px;
+		overflow:hidden;
+	}
+}
+
+.card_post_sub .card-photo .fitimg{
+	-webkit-object-fit: cover;
+	   -moz-object-fit: cover;
+		    object-fit: cover;
+}
+
+
+/*取消將連結擴展至整個card*/
+.card_post_sub .card-name a:before{
+	display:none;
+}
+.card_post_sub .card-name-text{
+	display:-webkit-box;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	
+	-webkit-box-orient:vertical;
+	white-space:normal;
+	-webkit-line-clamp:3;
+}
+
+.card_post_sub .card-body{
+	padding:var(--spacing-xs);
+}
+.card_post_sub .card-name{
+	margin:0;
+}
+@media (min-width: 1200px){
+	.card_post_sub .card-body{
+		padding:0;
+	}
+	.card_post_sub .card-name{
+		font-size: var(--text-base);
+	}
+	.card_post_sub .card-name-text{
+		-webkit-line-clamp:2;
+	}
+}
+
+
+.card_post_sub .card-infolist{
+	display:flex; flex-wrap:wrap;
+	margin-top:var(--spacing-2xs);
+}
+.card_post_sub .card-infolist > li{
+	margin-right:var(--spacing-xs);
+}
+.card_post_sub .card-infolist > li:last-child{
+	margin-right:0;
+}
+.card_post_sub .card-info .iconsvg{
+	display:none;
+}
+.card_post_sub .card-info{
+	margin:0;
+}
+.card_post_sub .card-info,
+.card_post_sub .card-info a{
+	color:#666;
+	font-size:var(--text-sm); font-weight:600;
+}
+.card_post_sub .card-info a:hover{
+	color:var(--color-accent);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	609_#listicle [數據中心詳細-延伸閱讀-條列清單] [uniarticle]
+-------------------------------- */
+.card_listicle{
+	background:transparent;
+	border-width:0;
+	padding-left:20px;
+}
+.card_listicle:before{
+	position: absolute; top: 6px; left: 5px; content: "";
+    width: 8px; height: 8px;
+    background: var(--color-dark);
+    transform: rotate(45deg);
+}
+.card_listicle .card-name{
+	margin:0;
+}
+@media (min-width: 1400px){
+	.card_listicle:before{
+		top: 10px;
+	}
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	221_#news [最新消息] [數據中心]
+-------------------------------- */
+.card_news{
+	padding:2rem 1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.card_news:before{
+	position:absolute; bottom:0; right:0; content:"";
+	width:20px; height:20px;
+	background:var(--color-one);
+	
+	-webkit-clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+	opacity:0.4;
+}
+.card_news:hover:before{
+	background:var(--color-accent);
+	opacity:1;
+}
+
+
+.card_news .card-header{
+	position:relative;
+}
+
+.card_news .card-date-item{
+    display:flex; flex-wrap:wrap;
+	justify-content:center;
+	text-align:center;
+}
+.card_news .card-date-item .card-date{
+    display:block;
+	color:#333;
+    font-size:0.75rem; font-weight:600;
+	line-height:1;
+    padding:5px 0;
+	text-align:center;
+}
+.card_news .card-date.year{}
+.card_news .card-date.year:after{ content:"/"; }
+
+.card_news .card-date.month{}
+
+.card_news .card-date.day{
+    width:100%;
+	color:#333;
+    font-size:2.5rem;
+}
+
+.card_news .card-text{
+	font-size:1rem;
+}
+@media (min-width:992px){
+	.card_news .card-name{
+		margin-top:0;
+	}
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	223_#article [文章] [數據中心]
+-------------------------------- */
+.card_article{
+	padding:1rem 1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.card_article:before{
+	position:absolute; bottom:0; right:0; content:"";
+	width:20px; height:20px;
+	background:var(--color-one);
+	
+	-webkit-clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+	opacity:0.4;
+	
+}
+.card_article:hover:before{
+	background:var(--color-accent);
+	opacity:1;
+}
+
+.card_article .card-text{
+	font-size:1rem;
+	padding-left:2rem;
+}
+
+
+
+/*----------------------------------------------------------------------
+	491_#uninews [在地新聞] [數據中心]
+-------------------------------- */
+
+
+
+/*----------------------------------------------------------------------
+	492_#life [在地生活] [數據中心]
+-------------------------------- */
+
+
+
+/*----------------------------------------------------------------------
+	D1_#define [自訂選單]
+-------------------------------- */
+
+
+
+/*----------------------------------------------------------------------
+	D2_#contact [聯絡我們-聯絡資料]
+-------------------------------- */
+.contact-info-box{
+	max-width:1000px;
+	margin-left:auto; margin-right:auto;
+}
+
+.contact-info_row{ display: flex; flex-wrap: wrap; }
+
+.contact-info-left,
+.contact-info-right{
+	width: 100%;
+}
+.contact-info-right{
+	margin-top: var(--spacing-lg);
+}
+@media (min-width: 992px){
+	.contact-info-left,
+	.contact-info-right{
+		width:46%;
+		margin:0 2%;
+	}
+}
+
+
+.mapbox_contact{ height: 200px; }
+.mapbox_contact iframe{ height: 100%; }	
+@media (min-width: 992px){
+	.mapbox_contact{ height: 100%; }
+}
+
+
+
+.infolist_contact_company{
+	display:flex; flex-wrap:wrap;
+	gap:1rem;
+	margin-top:var(--spacing-md);
+}
+.infolist_contact_company li{
+	width:100%;
+}
+/*@media (min-width: 992px){
+	.infolist_contact_company li{
+		width:calc((100% - 1rem) / 2);
+	}
+}*/
+.infolist_contact_company .info{
+	display:flex; flex-wrap:wrap;
+	font-size:var(--text-base);
+}
+
+.infolist_contact_company .info .iconsvg{
+	width:28px; height:28px;
+	
+	background:var(--color-one);
+
+	border-radius:50%;
+	margin-right:var(--spacing-xs);
+}
+.infolist_contact_company .info .iconsvg:before{
+	background-color:#fff;
+	
+	-webkit-mask-size:60% 60%;
+	mask-size:60% 60%;
+}
+.infolist_contact_company .info:hover .iconsvg{
+	background:var(--color-accent);
+}
+
+.infolist_contact_company .info-title{
+	min-width:80px;
+	color:var(--color-dark);
+	font-weight:600;
+	margin-right:24px;
+
+	/*文字左右對齊*/
+	text-align:justify;
+	text-align-last:justify;
+	text-justify:inter-word;
+}
+.infolist_contact_company .info:hover .info-title{
+	color:var(--color-accent);
+}
+
+.infolist_contact_company .info-title:after{
+	position:absolute; top:0; right:-15px; content:"/";
+	color:var(--color-dark);
+	font-weight:600;
+}
+
+.infolist_contact_company .info .info-text{
+	flex:1 1 auto;
+	width:1%; min-width:0;
+}
+
+.infolist_contact_company .info ,
+.infolist_contact_company .info a{
+	color:#333;
+}
+.infolist_contact_company .info a:hover{
+	color:var(--color-accent);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	D2_#contact [分店資訊]
+-------------------------------- */
+.card_branch{
+	background: #fff;
+    padding: 1rem;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.card_branch .card-iframe{
+	height:100%;
+    padding-bottom:0;
+}
+.card_branch .card-iframe iframe{
+	position:relative; top:0; left:0;
+	width:100%; height:100%;
+}
+
+.card_branch .card-body{
+	padding:var(--spacing-sm);
+}	
+.card_branch .card-name{
+	margin-top:0;
+	margin-bottom:var(--spacing-md);
+}
+
+.card_branch .card-infolist{
+	gap:0;
+}
+.card_branch .card-infolist > li{
+	width:100%;
+}
+.card_branch .card-infolist > li:hover{
+	background:rgba(var(--color-one-rgb),0.05);
+}
+.card_branch .card-info{
+	font-size:var(--text-base);
+	padding:var(--spacing-xs)var(--spacing-2xs);
+}
+.card_branch .card-info,
+.card_branch .card-info a{
+	color:#333;
+}
+.card_branch .card-info a:hover{
+	color:var(--color-accent);
+}
+
+.card_branch .card-info-title{
+	min-width:80px;
+	border-bottom:1px dashed #ccc;
+	color:#333;
+	font-weight:600;
+	margin-right:var(--spacing-xs);
+	padding:0 var(--spacing-2xs);
+
+	/*文字左右對齊*/
+	text-align:justify;
+	text-align-last:justify;
+	text-justify:inter-word;
+}
+.card_branch .card-info:hover .card-info-title{
+	color:var(--color-accent);
+}
+.card_branch .card-info-text{
+	flex:1 1 auto;
+	width:1%; min-width:0;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	#consult [問題諮詢]
+-------------------------------- */
+/* 按鈕 */
+.btn_consult{
+	background:#fff;
+	border:1px solid #CC3333;
+	border-radius:40px;
+	color:#CC3333;
+	overflow:hidden;
+}
+.btn_consult .iconsvg{
+	position:absolute; right:-5px; top:50%;
+	width:64px; height:64px;
+	margin-top:-32px;
+	opacity:0.2;
+	transform:rotate(10deg);
+}
+.btn_consult .iconsvg:before{
+	background-color:#CC3333;
+}
+.btn_consult:hover{
+	box-shadow:1px 1px 3px rgba(0,0,0,0.3);
+} 
+@media (min-width: 992px){
+	 .btn_consult{
+		border-radius:22px;
+	}
+	.btn_consult .iconsvg{
+		width:54px; height:54px;
+		margin-top:-28px;
+	}
+}
+
+.btn_consult:hover{
+	border-color:var(--color-accent);
+}
+.btn_consult:hover .iconsvg{
+	opacity:0.5;
+}
+
+
+
+.consult{
+	padding-top:var(--spacing-md);
+}
+.consult .page{
+	margin:var(--spacing-md) 0 0 0;
+}
+
+/*in view*/
+.consult_view .consult_inner{
+	background:rgba(var(--color-one-rgb),0.05);
+	padding-top:5rem;
+	padding:7rem 1.5rem 1rem 1.5rem;
+	margin-top:-6rem;
+}
+
+.card-btnbar.consult{
+	position: relative; z-index: 2;
+	justify-content:center;
+}
+
+
+
+.card_consult{
+	background:#fff;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	padding:1rem;
+}
+
+.card_consult .card-header{
+	display:flex; flex-wrap:wrap;
+	align-items:center;
+}
+.card_consult .card-info_sign{
+	gap:0;
+	width: 32px; height: 32px;
+	
+	justify-content: center;
+	background: var(--color-one-dark);
+	border-radius: 50%;
+	color: #fff;
+	font-size: var(--text-sm); font-weight:600; line-height: 32px;
+    font-family: Helvetica, sans-serif;
+	text-align: center;
+	margin-right:var(--spacing-xs);
+}
+
+.card_consult .card-name{
+	flex:1 1 auto;
+	width:1%; min-width:0;
+}
+
+.card_consult .card-info-title,
+.card_consult .card-info-text{
+	margin: 0;
+	flex: none;
+	width: auto; min-width: auto;
+}
+
+.card_consult .card-name{
+	color: var(--color-dark);
+	font-weight: 600;
+	margin: 0;
+}
+
+
+.card_consult .card-body{
+	padding-left:2.5rem;
+}
+.card_consult .card-body .card-info_sign{ display: none; }
+.card_consult .card-text{
+	color: #333;
+	font-size: var(--text-base);
+	margin: 0;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	#advertise [母子新聞]
+-------------------------------- */
+.card_advertise{
+	position:relative;
+	border:1px solid rgba(var(--color-one-rgb), 0.3);
+	padding:1rem;
+}
+/* .card_advertise .card_row{ align-items:center; }
+.card_advertise .card-left{ width:100px; }
+.card_advertise .card-right{
+	width:calc( 100% - 100px );
+	padding-left:var(--spacing-sm);
+	margin:0;
+} */
+
+.card_advertise .card-photo{
+	background:#fff;
+}
+
+.card_advertise .card-name{
+	font-size:var(--text-sm);
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	#appdownload [首次使用商務夥伴APP in idx]
+-------------------------------- */
+.btnbar_appdownload{
+	justify-content:flex-end;
+	margin:var(--spacing-sm) auto;
+}
+@media (min-width:992px){
+	.btnbar_appdownload{
+		margin-top:calc(var(--spacing-lg) * -1);
+	}
+}
+.btn_appdownload{
+	font-size:var(--text-sm);
+	margin:0;
+}
+
+
+/* ===== 標題 */
+.heading_appdownload{
+	display:flex; flex-wrap:wrap;
+	align-items:center; justify-content: center;
+	gap: var(--spacing-2xs);
+	margin-bottom:var(--spacing-lg);	
+}
+.heading_appdownload .heading-icon{
+	width:50px; height:50px;
+}
+.heading_appdownload .heading-icon img{
+	display:block; max-width:100%; height:auto;
+}
+.heading_appdownload .heading-text{
+	color:#fff;
+	font-size: var(--text-4xl); font-weight:600;
+}
+
+
+/* ===== 列表 */
+.cardlist_appdownload{
+    max-width:500px;
+    margin:0 auto;
+    text-align:center;
+}
+.cardlist_appdownload > li{
+    display:inline-block;
+    width:160px;
+    margin:var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
+}
+
+
+.card-app{
+	background:transparent;
+	border-width:0;
+}
+.card-app .card-name{ margin-top:var(--spacing-sm); }
+.card-app .card-name, 
+.card-app .card-name a{
+    color:#fff;
+}
+
+
+
+
+
+/*----------------------------------------------------------------------
+	#caller [叫號系統]
+-------------------------------- */
+.callerbox{
+	max-width:1000px; margin:0 auto;
+}
+
+.card_caller{
+	background:#fff;
+	padding:var(--spacing-sm);
+	text-align:center;
+	box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+}
+.card_caller .card-photo{
+	max-width:110px; max-height:110px;
+	border-width:0;
+	margin-left:auto; margin-right:auto;
+}
+@media (min-width:992px){
+	.card_caller{
+		text-align:left;
+	}
+	.card_caller .card-photo{
+		margin:0;
+	}
+}
+.card_caller .card-info,
+.card_caller .card-info a{
+	display:block;
+	color:#333;
+}
+
+.card_caller .card-info a:hover{
+	color:var(--color-one);
+}
+
+
+
+
+/*----------------------------------------------------------------------
+	#namecard [雲端名片]
+-------------------------------- */
+.namecardbox{
+	max-width:1000px; margin:0 auto;
+}
+.card_namecard{
+	background:#fff;
+	border-width:0;
+	padding:var(--spacing-sm);
+	box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+}
+
+.card_qrcode{
+	background:transparent;
+	
+	border-width:0 0 1px 0;
+	border-style:solid;
+	border-color:rgba(var(--color-one-rgb),0.1);
+	
+	padding:var(--spacing-sm);
+	margin:0;
+	text-align:center;
+	height:100%;
+}
+.card_qrcode:hover{
+	border-color:rgba(var(--color-one-rgb),0.1);
+}
+.card_namecard .row > div:nth-child(4) .card_qrcode{
+	border-width:0;
+}
+@media (min-width:576px){
+	.card_qrcode{ border-width:0; }
+	
+	.card_namecard .row > div:nth-child(1) .card_qrcode,
+	.card_namecard .row > div:nth-child(3) .card_qrcode{
+		border-right-width:1px;
+	}
+	.card_namecard .row > div:nth-child(3) .card_qrcode,
+	.card_namecard .row > div:nth-child(4) .card_qrcode{
+		border-top-width:1px;
+	}
+}
+
+
+.card_qrcode .card-photo{
+	max-width:110px; max-height:110px;
+	border-width:0;
+	margin-left:auto; margin-right:auto;
+}
+@media (min-width:992px){
+	.card_qrcode .card-photo{
+		margin:0;
+	}
+}
+
+.card_qrcode .card-name{
+	font-size:var(--text-base);
+	margin-bottom:0.5rem;
+	text-align:center;
+}
+.card_qrcode .card-name-text,
+.card_qrcode .card-info_jobtitle{
+	display:inline-block; vertical-align:middle;
+	padding:0;
+	margin:0;
+}
+.card_qrcode .card-name-text{
+	color:var(--color-one);
+	font-size:var(--text-xl);
+}
+@media (min-width:992px){
+	.card_qrcode .card-name{
+		text-align:left;
+	}
+}
+
+.card_qrcode .card-btn{
+	border-radius:5px;
+	font-size:var(--text-sm);
+	padding:var(--spacing-xs) var(--spacing-xs);
+}
+.card_qrcode .card-btn .iconsvg{
+	width:16px; height:16px;
+}
+@media (min-width:992px){
+	.card_qrcode .card-btnbar{
+		justify-content: flex-end;
+		margin:0;
+	}
+}
+
+
+/* ===== 加line好友(in idx namecard) */
+.card_qrcode .card-info{
+	justify-content: center;
+    font-weight:600;
+}
+@media (min-width:992px){
+	.card_qrcode .card-info{
+		justify-content: flex-start;
+	}
+}
+
+.card_qrcode .card-info,
+.card_qrcode .card-info a{
+	color:#333;
+}
+
+.card_qrcode .card-info a:hover{
+	color:var(--color-one);
+}
+
+.card_qrcode .card-info .card-info-text{
+	flex:none;
+	width:auto;
+}
+
+.card_qrcode .card-info_phone{ margin-bottom:0; }
+.card_qrcode .card-info_phone .card-info-title{
+    display:none;
+}
+
+.card_qrcode .card-info_add span,
+.card_qrcode .card-info_linecard span{
+    display:inline-block;
+    vertical-align:middle;
+    margin:0.25rem 0;
+}
+.card_qrcode .card-info_add .iconsvg,
+.card_qrcode .card-info_linecard .iconsvg{
+    width:26px; height:26px;
+}
+
+.card_qrcode .card-info_lineadd,
+.card_qrcode .card-info_lineadd a,
+.card_qrcode .card-info_linecard,
+.card_qrcode .card-info_linecard a{
+   color:var(--color-line);
+}
+.card_qrcode .card-info_lineadd a,
+.card_qrcode .card-info_linecard a{
+	padding:var(--spacing-xs) 0;
+}
+.card_qrcode .card-info_lineadd .iconsvg:before,
+.card_qrcode .card-info_linecard .iconsvg:before{
+    background-color:var(--color-line);
+}
+
+.card_qrcode .card-info_lineadd a:hover span,
+.card_qrcode .card-info_linecard a:hover span{
+	color:var(--color-accent);
+}
+.card_qrcode .card-info_lineadd a:hover .iconsvg:before,
+.card_qrcode .card-info_linecard a:hover .iconsvg:before{
+	background-color:var(--color-accent);
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------
+	#card_figure [相片集]
+-------------------------------- */
+.card_figure,
+.card_about_figure{
+	border-width:0;
+	transition:box-shadow 0.5s ease-in-out;
+}
+
+.card_about_figure .card-photo,
+.card_figure .card-photo{
+	background:#fff;
+	border:1px solid #eee;
+	border-radius:0;
+	padding:0.5rem;
+	box-shadow:1px 1px 2px rgb(0,0,0,0.4);
+}
+
+.card_figure:hover .card-photo,
+.card_about_figure:hover .card-photo{
+	box-shadow:1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.card_figure .card-text,
+.card_about_figure .card-text{
+	color:#666;
+	font-size:var(--text-sm);
+	text-align:center;
+	margin-top:var(--spacing-2xs);
+}

@@ -112,6 +112,17 @@ Route::get('/news', function () {
     ]);
 })->name('news');
 
+Route::get('/announcement', function () {
+    $newCsn = request()->query('new_csn');
+    $selNncsn = request()->query('sel_nncsn');
+
+    return inertia('announcement', [
+        'new_csn' => $newCsn !== null && $newCsn !== '' ? (string) $newCsn : null,
+        'sel_nncsn' => $selNncsn !== null && $selNncsn !== '' ? (string) $selNncsn : null,
+        'searchTitle' => request()->query('sel_title'),
+    ]);
+})->name('announcement');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
