@@ -34,15 +34,14 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
                 <title>會員資訊-永康國際同濟會</title>
                 <meta name="description" content="永康國際同濟會" />
                 <meta name="keywords" content="永康國際同濟會" />
-                <link rel="stylesheet" href="/memmer_files/base.css" />
-                <link rel="stylesheet" href="/memmer_files/blue.css" />
-                <link rel="stylesheet" href="/memmer_files/common.css" />
-                <link rel="stylesheet" href="/memmer_files/main.css" />
-                <link rel="stylesheet" href="/memmer_files/animate.css" />
-                <script src="/memmer_files/jquery-3.7.1.min.js" defer={true} />
-                <script src="/memmer_files/customize.js" defer={true} />
-                <script src="/memmer_files/marquee.js" defer={true} />
-                <script src="/memmer_files/accordion.js" defer={true} />
+                <link rel="stylesheet" href="/asd_files/base.css" />
+                <link rel="stylesheet" href="/asd_files/blue.css" />
+                <link rel="stylesheet" href="/asd_files/common.css" />
+                <link rel="stylesheet" href="/asd_files/main.css" />
+                <link rel="stylesheet" href="/asd_files/animate.css" />
+                <script src="/asd_files/jquery-3.7.1.min.js" defer={true} />
+                <script src="/asd_files/customize.js" defer={true} />
+                <script src="/asd_files/marquee.js" defer={true} />
             </Head>
 
             <div className="wrapper">
@@ -122,7 +121,7 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
                                                             placeholder="搜尋..."
                                                         />
                                                         <button type="submit" className="search-btn" title="搜尋">
-                                                            <img src="/memmer_files/icon-search.png" width={20} alt="搜尋" />
+                                                            <img src="/asd_files/icon-search.png" width={20} alt="搜尋" />
                                                         </button>
                                                     </form>
                                                 </div>
