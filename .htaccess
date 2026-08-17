@@ -1,0 +1,16 @@
+Options -Indexes
+RewriteEngine On
+
+# Allow SSL validation
+RewriteRule ^\.well-known/ - [L]
+
+# Prevent rewrite loop
+RewriteRule ^public/ - [L]
+
+# Serve every existing public file or directory
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -d
+RewriteRule ^(.*)$ public/$1 [END]
+
+# Send application routes to Laravel
+RewriteRule ^(.*)$ public/index.php [END]
