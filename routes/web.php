@@ -123,6 +123,16 @@ Route::get('/announcement', function () {
     ]);
 })->name('announcement');
 
+Route::get('/albums', function () {
+    $newMcsn = request()->query('new_mcsn');
+    $year = request()->query('year');
+
+    return inertia('albums', [
+        'new_mcsn' => $newMcsn !== null && $newMcsn !== '' ? (string) $newMcsn : null,
+        'initialYear' => $year !== null && $year !== '' ? (string) $year : null,
+    ]);
+})->name('albums');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
