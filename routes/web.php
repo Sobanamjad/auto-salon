@@ -6,15 +6,13 @@ use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Guest routes
     Route::middleware('guest')->group(function () {
-        Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+        Route::get('/', [AuthController::class, 'showLogin'])->name('login');
+        Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     });
-
-    // Admin routes (only for logged-in admins)
-    Route::middleware('auth')->group(function () {
-        Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
 });
