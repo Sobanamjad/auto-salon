@@ -53,9 +53,9 @@ const menuItems = [
         text: '活動剪影', subtext: '活動剪影', href: '/albums',
         children: [
             { text: '全部', href: '/albums' },
-            { text: '2026年', href: '/albums?new_mcsn=2383' },
-            { text: '2025年', href: '/albums?new_mcsn=2382' },
-            { text: '2024年', href: '/albums?new_mcsn=2381' },
+            { text: '2026年', href: '/albums?year=2026' },
+            { text: '2025年', href: '/albums?year=2025' },
+            { text: '2024年', href: '/albums?year=2024' },
         ],
     },
     {
