@@ -24,10 +24,11 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $two_factor_recovery_codes
  * @property Carbon|null $two_factor_confirmed_at
  * @property string|null $remember_token
+ * @property string|null $role  
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role'])]  
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
@@ -44,9 +45,27 @@ class User extends Authenticatable implements PasskeyUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => 'string', 
             /* @chisel-2fa */
             'two_factor_confirmed_at' => 'datetime',
             /* @end-chisel-2fa */
         ];
+    }
+
+    //  Helper methods for role checking
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user' || $this->role === null;
+    }
+
+    // Check if user has specific role
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
     }
 }
