@@ -92,6 +92,7 @@ export const getAlbumsByCategory = (category?: string): AlbumItem[] => {
     if (!category || category === 'all') {
         return albumsItems;
     }
+
     return albumsItems.filter(item => item.category === category);
 };
 
@@ -99,5 +100,6 @@ export const getAlbumsByYear = (year?: string): AlbumItem[] => {
     if (!year) {
         return albumsItems;
     }
+
     return albumsItems.filter(item => item.category === `${year}年`);
 };

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Head } from '@inertiajs/react';
+import React from 'react';
+import { Head, router } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '../components/salon/SalonHeader';
 import SalonMarquee from '../components/salon/SalonMarquee';
@@ -12,14 +12,18 @@ interface AlbumsPageProps {
 
 export default function AlbumsPage({ initialYear }: AlbumsPageProps) {
     useForceLightMode();
-    const [selectedCategory, setSelectedCategory] = useState(initialYear || 'all');
+    const selectedCategory = initialYear || 'all';
 
     const filteredAlbums = initialYear
         ? getAlbumsByYear(initialYear)
         : getAlbumsByCategory(selectedCategory);
 
     const handleCategoryClick = (categoryId: string) => {
-        setSelectedCategory(categoryId);
+        if (categoryId === 'all') {
+            router.get('/albums');
+        } else {
+            router.get('/albums', { year: categoryId });
+        }
     };
 
     return (
@@ -123,7 +127,7 @@ export default function AlbumsPage({ initialYear }: AlbumsPageProps) {
                                                 <li key={album.id}>
                                                     <div className="card card_albums effect_dec_vt fadeUp js-scroll">
                                                         <div className="row g-3">
-                                                            <div className="">
+                                                            <div className="col-12">
                                                                 <div className="card-photo">
                                                                     <a href={album.viewUrl} title={`${album.title}-永康國際同濟會`}>
                                                                         <div className="item-fitimg">
@@ -141,7 +145,7 @@ export default function AlbumsPage({ initialYear }: AlbumsPageProps) {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="">
+                                                            <div className="col-12">
                                                                 <div className="card-body">
                                                                     <h3 className="card-name">
                                                                         <a href={album.viewUrl} title={`${album.title}-永康國際同濟會`}>
@@ -151,7 +155,7 @@ export default function AlbumsPage({ initialYear }: AlbumsPageProps) {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="">
+                                                            <div className="col-12">
                                                                 <div className="card-btnbar card-btnbar_more">
                                                                     <a href={album.viewUrl} className="card-btn card-btn_more" title={`${album.title}-永康國際同濟會`}>
                                                                         <span className="card-btn-text">更多</span>
