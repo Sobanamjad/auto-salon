@@ -90,7 +90,7 @@ export default function AdminLogin() {
                                         type="checkbox"
                                         checked={data.remember}
                                         onChange={(e) => setData('remember', e.target.checked)}
-                                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                        className="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 focus:ring-offset-0"
                                     />
                                     <span className="ml-2 text-sm text-gray-600">Remember me</span>
                                 </label>
