@@ -14,6 +14,48 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        
+        // 管理者
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+        
+        // 網頁模組
+        Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+        Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
+        Route::get('/about', [AdminController::class, 'about'])->name('about');
+        Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
+        Route::get('/albums', [AdminController::class, 'albums'])->name('albums');
+        Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
+        Route::get('/news', [AdminController::class, 'news'])->name('news');
+        Route::get('/member-announcements', [AdminController::class, 'memberAnnouncements'])->name('member-announcements');
+        Route::get('/club-news', [AdminController::class, 'clubNews'])->name('club-news');
+        Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
+        Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
+        Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
+        Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
+        Route::get('/directors', [AdminController::class, 'directors'])->name('directors');
+        Route::get('/links', [AdminController::class, 'links'])->name('links');
+        Route::get('/guestbook', [AdminController::class, 'guestbook'])->name('guestbook');
+        Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
+        Route::get('/members', [AdminController::class, 'members'])->name('members');
+        Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
+        Route::get('/products', [AdminController::class, 'products'])->name('products');
+        Route::get('/events', [AdminController::class, 'events'])->name('events');
+        Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
+        Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
+        Route::get('/timeline', [AdminController::class, 'timeline'])->name('timeline');
+        
+        // 會員收費
+        Route::get('/payment-settings', [AdminController::class, 'paymentSettings'])->name('payment-settings');
+        Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
+        Route::get('/payment-reports', [AdminController::class, 'paymentReports'])->name('payment-reports');
+        
+        // 記帳系統
+        Route::get('/journal', [AdminController::class, 'journal'])->name('journal');
+        Route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
+        
+        // 客服系統
+        Route::get('/red-white-categories', [AdminController::class, 'redWhiteCategories'])->name('red-white-categories');
+        Route::get('/red-white', [AdminController::class, 'redWhite'])->name('red-white');
     });
 });
 

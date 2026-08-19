@@ -1,9 +1,8 @@
-import AdminLayout from './Layouts/AdminLayout';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard() {
     return (
-        <AdminLayout title="Dashboard">
+        <>
             <Head title="Admin Dashboard" />
             
             <div className="bg-white rounded-xl shadow-sm p-6">
@@ -25,6 +24,6 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-        </AdminLayout>
+        </>
     );
 }

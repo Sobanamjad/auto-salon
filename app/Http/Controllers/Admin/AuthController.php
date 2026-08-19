@@ -27,7 +27,7 @@ class AuthController extends Controller
             // Check if user is admin
             if ($user->role === 'admin') {
                 $request->session()->regenerate();
-                return redirect()->intended('/admin');
+                return redirect()->intended('/admin/dashboard');
             }
             
             // Not admin - logout and redirect back
@@ -47,6 +47,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/admin/login');
+        return redirect('/admin');
     }
 }
