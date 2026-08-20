@@ -10,7 +10,10 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
-import { Link as TipTapLink } from '@tiptap/extension-link'; 
+import { Link as TipTapLink } from '@tiptap/extension-link';
+import { Text } from '@tiptap/extension-text';
+import FontFamily from '@tiptap/extension-font-family';
+import Image from '@tiptap/extension-image'; 
 
 interface EventFormData {
     title: string;
@@ -68,6 +71,9 @@ export default function EventCreate() {
             TextStyle,
             Color,
             Underline,
+            Text,
+            FontFamily,
+            Image,
             Table.configure({
                 resizable: true,
             }),
@@ -146,6 +152,12 @@ export default function EventCreate() {
                 }
                 .ProseMirror * {
                     color: #000;
+                }
+                .ProseMirror img {
+                    max-width: 100%;
+                    height: auto;
+                    display: block;
+                    margin: 1em 0;
                 }
                 .ProseMirror table {
                     border-collapse: collapse;
@@ -426,7 +438,7 @@ export default function EventCreate() {
                         </div>
                     </div>
 
-                    {/* ✅ Content Section with TinyMCE */}
+                    {/* Content Section with TinyMCE */}
                     <div className="bg-gray-50 rounded-lg p-4">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                             <FaTag className="text-blue-500" /> 活動內容
@@ -437,7 +449,7 @@ export default function EventCreate() {
                                 活動詳細內容
                             </label>
                             
-                            {/* ✅ TipTap Editor */}
+                            {/* TipTap Editor */}
                             <div className="border border-gray-300 rounded-lg overflow-hidden">
                                 {/* Toolbar */}
                                 <div className="bg-gray-50 border-b border-gray-300 p-2 flex flex-wrap gap-1">
@@ -456,6 +468,61 @@ export default function EventCreate() {
                                     >
                                         ↷
                                     </button>
+                                    <div className="w-px bg-gray-300 mx-1"></div>
+                                    
+                                    {/* Styles */}
+                                    <select
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (value === 'p') {
+                                                editor?.chain().focus().setParagraph().run();
+                                            } else if (value.startsWith('h')) {
+                                                editor?.chain().focus().toggleHeading({ level: parseInt(value[1]) as 1 | 2 | 3 | 4 | 5 | 6 }).run();
+                                            }
+                                        }}
+                                        className="px-2 py-1 rounded border border-gray-300 text-gray-900 text-sm"
+                                    >
+                                        <option value="p">段落</option>
+                                        <option value="h1">標題 1</option>
+                                        <option value="h2">標題 2</option>
+                                        <option value="h3">標題 3</option>
+                                        <option value="h4">標題 4</option>
+                                        <option value="h5">標題 5</option>
+                                        <option value="h6">標題 6</option>
+                                    </select>
+                                    
+                                    {/* Font Size */}
+                                    <select
+                                        onChange={(e) => {
+                                            const size = e.target.value;
+                                            editor?.chain().focus().setMark('textStyle', { fontSize: size }).run();
+                                        }}
+                                        className="px-2 py-1 rounded border border-gray-300 text-gray-900 text-sm"
+                                    >
+                                        <option value="12px">12pt</option>
+                                        <option value="14px">14pt</option>
+                                        <option value="16px">16pt</option>
+                                        <option value="18px">18pt</option>
+                                        <option value="24px">24pt</option>
+                                        <option value="32px">32pt</option>
+                                    </select>
+                                    
+                                    {/* Font Family */}
+                                    <select
+                                        onChange={(e) => {
+                                            const font = e.target.value;
+                                            editor?.chain().focus().setMark('textStyle', { fontFamily: font }).run();
+                                        }}
+                                        className="px-2 py-1 rounded border border-gray-300 text-gray-900 text-sm"
+                                    >
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="'Courier New', monospace">Courier New</option>
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                        <option value="'微軟正黑體', sans-serif">微軟正黑體</option>
+                                    </select>
+                                    
                                     <div className="w-px bg-gray-300 mx-1"></div>
                                     
                                     {/* Text Formatting */}
@@ -500,6 +567,19 @@ export default function EventCreate() {
                                         />
                                     </div>
                                     
+                                    {/* Background Color */}
+                                    <div className="flex items-center gap-1">
+                                        <label className="text-gray-900 text-sm">Bg</label>
+                                        <input
+                                            type="color"
+                                            onChange={(e) => {
+                                                editor?.chain().focus().setMark('textStyle', { backgroundColor: e.target.value }).run();
+                                            }}
+                                            className="w-6 h-6 rounded cursor-pointer"
+                                            title="Background Color"
+                                        />
+                                    </div>
+                                    
                                     {/* Lists */}
                                     <button
                                         onClick={() => editor?.chain().focus().toggleBulletList().run()}
@@ -539,6 +619,30 @@ export default function EventCreate() {
                                     >
                                         Right
                                     </button>
+                                    <button
+                                        onClick={() => editor?.chain().focus().setTextAlign('justify').run()}
+                                        className={`p-2 rounded hover:bg-gray-200 text-gray-900 ${editor?.isActive({ textAlign: 'justify' }) ? 'bg-gray-300' : ''}`}
+                                        title="Justify"
+                                    >
+                                        Justify
+                                    </button>
+                                    <div className="w-px bg-gray-300 mx-1"></div>
+                                    
+                                    {/* Indent */}
+                                    <button
+                                        onClick={() => editor?.chain().focus().outdent().run()}
+                                        className="p-2 rounded hover:bg-gray-200 text-gray-900"
+                                        title="Outdent"
+                                    >
+                                        ←
+                                    </button>
+                                    <button
+                                        onClick={() => editor?.chain().focus().indent().run()}
+                                        className="p-2 rounded hover:bg-gray-200 text-gray-900"
+                                        title="Indent"
+                                    >
+                                        →
+                                    </button>
                                     <div className="w-px bg-gray-300 mx-1"></div>
                                     
                                     {/* Table */}
@@ -562,6 +666,29 @@ export default function EventCreate() {
                                         title="Add Link"
                                     >
                                         Link
+                                    </button>
+                                    
+                                    {/* Image */}
+                                    <button
+                                        onClick={() => {
+                                            const url = window.prompt('Enter Image URL:');
+                                            if (url) {
+                                                editor?.chain().focus().setImage({ src: url }).run();
+                                            }
+                                        }}
+                                        className="p-2 rounded hover:bg-gray-200 text-gray-900"
+                                        title="Add Image"
+                                    >
+                                        🖼️
+                                    </button>
+                                    
+                                    {/* Clear Formatting */}
+                                    <button
+                                        onClick={() => editor?.chain().focus().unsetAllMarks().run()}
+                                        className="p-2 rounded hover:bg-gray-200 text-gray-900"
+                                        title="Clear Formatting"
+                                    >
+                                        🗑️
                                     </button>
                                 </div>
                                 
