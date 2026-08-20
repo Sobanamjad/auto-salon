@@ -18,10 +18,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         
-        // ✅ Event Management Route - CORRECTED
-        Route::get('/events', function () {
+        // Event Management Route 
+       Route::get('/events', function () {
             return Inertia::render('Admin/EventManagement');
         })->name('events');
+        Route::get('/events/create', function () {
+            return Inertia::render('Admin/EventCreate');
+        })->name('events.create');
+        Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
+        
+
         
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
