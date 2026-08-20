@@ -224,7 +224,6 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                                         onClick={item.children ? (e) => { e.preventDefault(); toggleSubmenu(index); } : undefined}
                                     >
                                         <span className="menu-text">{item.text}</span>
-                                        <span className="menu-subtext">{item.subtext}</span>
                                         {item.children && (
                                             <div className={`menu-subbtn${openSubmenus[index] ? ' is-open' : ''}`}></div>
                                         )}
@@ -280,7 +279,6 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                                             <div className="menulink">
                                                 <a href={item.href} title={item.text}>
                                                     <span className="menu-text">{item.text}</span>
-                                                    <span className="menu-subtext">{item.subtext}</span>
                                                 </a>
                                             </div>
                                         </li>

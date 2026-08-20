@@ -1515,7 +1515,7 @@ html, body {
 	flex:0 1 auto;
 	width:auto;
 }
-@media (min-width:1440px){
+@media (min-width:1024px){
 	.header_main .header-one{
 		flex:none;
 		width:250px;

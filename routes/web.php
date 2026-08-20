@@ -4,15 +4,31 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
+// Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/', [AuthController::class, 'showLogin'])->name('login');
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     });
+    
     Route::middleware(['auth', 'admin'])->group(function () {
+        // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        
+        // Event Management Route 
+       Route::get('/events', function () {
+            return Inertia::render('Admin/EventManagement');
+        })->name('events');
+        Route::get('/events/create', function () {
+            return Inertia::render('Admin/EventCreate');
+        })->name('events.create');
+        Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
+        
+
+        
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
         // 管理者
@@ -39,7 +55,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/members', [AdminController::class, 'members'])->name('members');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/products', [AdminController::class, 'products'])->name('products');
-        Route::get('/events', [AdminController::class, 'events'])->name('events');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
         Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
         Route::get('/timeline', [AdminController::class, 'timeline'])->name('timeline');
@@ -59,7 +74,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-
+// Public Routes
 Route::inertia('/', 'welcome')->name('home');
 
 Route::get('/timeline', function () {
@@ -77,7 +92,6 @@ Route::inertia('/life', 'life')->name('life');
 
 Route::get('/uninews', function () {
     $page = (int) request()->query('this_page', 1);
-
     return inertia('uninews', ['thisPage' => max(1, $page)]);
 })->name('uninews');
 
@@ -112,7 +126,6 @@ Route::get('/product', function () {
 
 Route::get('/article', function () {
     $csn = request()->query('new_csn');
-
     return inertia('article', [
         'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
         'thisPage' => max(1, (int) request()->query('this_page', 1)),
@@ -121,7 +134,6 @@ Route::get('/article', function () {
 
 Route::get('/download', function () {
     $csn = request()->query('new_csn');
-
     return inertia('download', [
         'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
         'thisPage' => max(1, (int) request()->query('this_page', 1)),
@@ -129,7 +141,6 @@ Route::get('/download', function () {
 })->name('download');
 
 Route::get('/about', function () {
-    // Support both ?tab= (internal links) and ?new_sn= (original site URLs)
     $newSn = request()->query('new_sn');
     $tab   = request()->query('tab', 'founding');
 
@@ -144,7 +155,6 @@ Route::get('/about', function () {
 
 Route::get('/works', function () {
     $csn = request()->query('new_csn');
-
     return inertia('works', [
         'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
         'searchTitle' => request()->query('sel_title'),
@@ -153,7 +163,6 @@ Route::get('/works', function () {
 
 Route::get('/member', function () {
     $csn = request()->query('new_csn');
-
     return inertia('member', [
         'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
         'searchTitle' => request()->query('sel_title'),
@@ -162,7 +171,6 @@ Route::get('/member', function () {
 
 Route::get('/news', function () {
     $csn = request()->query('new_csn');
-
     return inertia('news', [
         'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
         'searchTitle' => request()->query('sel_title'),
@@ -172,7 +180,6 @@ Route::get('/news', function () {
 Route::get('/announcement', function () {
     $newCsn = request()->query('new_csn');
     $selNncsn = request()->query('sel_nncsn');
-
     return inertia('announcement', [
         'new_csn' => $newCsn !== null && $newCsn !== '' ? (string) $newCsn : null,
         'sel_nncsn' => $selNncsn !== null && $selNncsn !== '' ? (string) $selNncsn : null,
@@ -183,7 +190,6 @@ Route::get('/announcement', function () {
 Route::get('/albums', function () {
     $newMcsn = request()->query('new_mcsn');
     $year = request()->query('year');
-
     return inertia('albums', [
         'new_mcsn' => $newMcsn !== null && $newMcsn !== '' ? (string) $newMcsn : null,
         'initialYear' => $year !== null && $year !== '' ? (string) $year : null,
