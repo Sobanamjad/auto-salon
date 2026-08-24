@@ -141,3 +141,110 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* TipTap Editor Styles */
+.ProseMirror {
+    outline: none;
+    color: #000000 !important; /* Force black text */
+    background-color: #ffffff !important; /* Force white background */
+}
+
+.ProseMirror > * {
+    color: #000000 !important;
+}
+
+.ProseMirror p {
+    margin: 0.5em 0;
+    color: #000000 !important;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+    margin: 0.5em 0;
+    font-weight: bold;
+    color: #000000 !important;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+    padding-left: 1.5em;
+    margin: 0.5em 0;
+}
+
+.ProseMirror ul {
+    list-style-type: disc;
+}
+
+.ProseMirror ol {
+    list-style-type: decimal;
+}
+
+.ProseMirror li {
+    margin: 0.25em 0;
+    color: #000000 !important;
+}
+
+.ProseMirror strong {
+    font-weight: bold;
+    color: #000000 !important;
+}
+
+.ProseMirror em {
+    font-style: italic;
+    color: #000000 !important;
+}
+
+.ProseMirror a {
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+.ProseMirror blockquote {
+    border-left: 3px solid #e5e7eb;
+    padding-left: 1em;
+    margin: 0.5em 0;
+    color: #000000 !important;
+}
+
+.ProseMirror code {
+    background-color: #f3f4f6;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #000000 !important;
+}
+
+.ProseMirror pre {
+    background-color: #1f2937;
+    color: #f9fafb;
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+}
+
+.ProseMirror pre code {
+    background-color: transparent;
+    padding: 0;
+    color: inherit;
+}
+
+/* Toolbar Styles - White background with black text */
+.editor-toolbar {
+    background-color: #ffffff !important;
+    border-color: #e5e7eb !important;
+}
+
+.editor-toolbar button {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+.editor-toolbar button:hover {
+    background-color: #f3f4f6 !important;
+}
+
+.editor-toolbar button.bg-gray-800 {
+    background-color: #e5e7eb !important;
+}

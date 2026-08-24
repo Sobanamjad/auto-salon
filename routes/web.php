@@ -18,15 +18,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         
-        // Event Management Route 
-       Route::get('/events', [AdminController::class, 'events'])->name('events');
+        // Event Management
+        Route::get('/events', [AdminController::class, 'events'])->name('events');
         Route::get('/events/create', function () {
             return Inertia::render('Admin/EventCreate');
         })->name('events.create');
         Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
         
-
+        // Album Management
+        Route::get('/albums', [AdminController::class, 'albums'])->name('albums');
+        Route::get('/albums/create', function () {
+            return Inertia::render('Admin/AlbumCreate');
+        })->name('albums.create');
+        Route::post('/albums', [AdminController::class, 'storeAlbum'])->name('albums.store');
+        Route::get('/albums/{id}/edit', function ($id) {
+            return Inertia::render('Admin/AlbumEdit', ['id' => $id]);
+        })->name('albums.edit');
+        Route::put('/albums/{id}', [AdminController::class, 'updateAlbum'])->name('albums.update');
+        Route::delete('/albums/{id}', [AdminController::class, 'deleteAlbum'])->name('albums.delete');
         
+        // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
         // 管理者
@@ -37,7 +48,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
         Route::get('/about', [AdminController::class, 'about'])->name('about');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
-        Route::get('/albums', [AdminController::class, 'albums'])->name('albums');
+        // Route::get('/albums', [AdminController::class, 'albums'])->name('albums'); // ❌ REMOVE DUPLICATE
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
         Route::get('/news', [AdminController::class, 'news'])->name('news');
         Route::get('/member-announcements', [AdminController::class, 'memberAnnouncements'])->name('member-announcements');
