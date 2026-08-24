@@ -8,7 +8,7 @@ import {
 export default function Dashboard() {
     // Navigation items data - Chinese Traditional
     const navItems = [
-        { icon: FaCalendar, label: '活動管理', href: '/admin/events' }, // ✅ Direct URL
+        { icon: FaCalendar, label: '活動管理', href: '/admin/events' }, 
         { icon: FaImage, label: '活動花絮', href: '/albums/public/ad_cate.php?right_sn=260725' },
         { icon: FaLeaf, label: '關於本會', href: '/about/public/ad_about.php?right_sn=260723' },
         { icon: FaBullhorn, label: '最新消息', href: '/news/public/ad_news.php?right_sn=260727' },

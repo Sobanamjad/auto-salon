@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             text: '管理者',
             category: '管理者',
             children: [
-                { text: '基本設定', href: '/admin/settings', subcategory: '使用者' },
+                { text: '基本設定', href: '/admin/basic-setting', subcategory: '使用者' },
             ]
         },
         {
@@ -83,7 +83,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             text: '會員收費',
             category: '會員收費',
             children: [
-                { text: '基本設定', href: '/admin/payment-settings', subcategory: '基本設定' },
+                { text: '基本設定', href: '/admin/basic-setting', subcategory: '基本設定' },
                 { text: '繳費作業', href: '/admin/payments', subcategory: '作業管理' },
                 { text: '報表統計', href: '/admin/payment-reports', subcategory: '報表統計' },
             ]

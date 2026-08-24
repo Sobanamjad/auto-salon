@@ -58,6 +58,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/timeline', [AdminController::class, 'timeline'])->name('timeline');
         
         // 會員收費
+        Route::get('/basic-setting', function () {
+            return Inertia::render('Admin/BasicSettings');
+        })->name('basic-setting');
         Route::get('/payment-settings', [AdminController::class, 'paymentSettings'])->name('payment-settings');
         Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
         Route::get('/payment-reports', [AdminController::class, 'paymentReports'])->name('payment-reports');
