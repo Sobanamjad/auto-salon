@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaImage, FaFolder, FaEye, 
@@ -8,85 +8,48 @@ import {
 
 interface Album {
     id: number;
-    name: string;
+    title: string;
+    slug: string;
+    description: string | null;
+    cover_image: string | null;
+    album_date: string | null;
     category: string;
-    language: string;
-    thumbnail: string;
-    photo_count: number;
-    views: number;
-    comments_unread: number;
-    comments_total: number;
+    status: string;
+    is_featured: boolean;
     sort_order: number;
-    published: boolean;
+    views: number;
+    photo_count: number;
+    comment_count: number;
+    created_at: string;
+    updated_at: string;
 }
 
-export default function ActivityHighlights() {
+interface PageProps {
+    albums: Album[];
+    title: string;
+}
+
+export default function ActivityHighlights({ albums, title }: PageProps) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
-    // Sample album data (replace with API data)
-    const albums: Album[] = [
-        {
-            id: 7030,
-            name: '第11屆第二次月例餐會',
-            category: '2025年',
-            language: '繁中',
-            thumbnail: 'https://uploads.posu.tw/22/2226/s202607141001346.png',
-            photo_count: 3,
-            views: 7,
-            comments_unread: 0,
-            comments_total: 0,
-            sort_order: 999,
-            published: true
-        },
-        {
-            id: 7029,
-            name: '第11屆 第一次月例餐會',
-            category: '2025年',
-            language: '繁中',
-            thumbnail: 'https://uploads.posu.tw/22/2226/s202607141000465.png',
-            photo_count: 3,
-            views: 2,
-            comments_unread: 0,
-            comments_total: 0,
-            sort_order: 999,
-            published: true
-        },
-        {
-            id: 7028,
-            name: '慶祝母親節',
-            category: '2026年',
-            language: '繁中',
-            thumbnail: 'https://uploads.posu.tw/22/2226/s202607141000138.png',
-            photo_count: 2,
-            views: 4,
-            comments_unread: 0,
-            comments_total: 0,
-            sort_order: 999,
-            published: true
-        },
-        {
-            id: 7027,
-            name: '本會聚餐',
-            category: '2026年',
-            language: '繁中',
-            thumbnail: 'https://uploads.posu.tw/22/2226/s202607140959456.png',
-            photo_count: 2,
-            views: 4,
-            comments_unread: 0,
-            comments_total: 0,
-            sort_order: 999,
-            published: true
+    const handleDelete = (id: number, title: string) => {
+        if (confirm(`確定要刪除: ${title} 嗎？ 包含相簿內相片一併刪除!!`)) {
+            router.delete(`/admin/albums/${id}`, {
+                onSuccess: () => {
+                    window.location.href = '/admin/albums';
+                }
+            });
         }
-    ];
+    };
 
     // Get unique categories for filter
     const categories = [...new Set(albums.map(album => album.category))];
 
     // Filter albums based on search and category
     const filteredAlbums = albums.filter(album => {
-        const matchesSearch = album.name.includes(searchTerm);
+        const matchesSearch = album.title.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === '' || album.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
@@ -102,7 +65,7 @@ export default function ActivityHighlights() {
                 {/* Header */}
                 <div className="border-b border-gray-200 pb-4 mb-6">
                     <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <FaImage className="text-blue-500" /> 活動花絮
+                        <FaImage className="text-blue-500" /> {title}
                     </h2>
                     <p className="text-sm text-gray-500 mt-1">管理活動相簿</p>
                 </div>
@@ -115,7 +78,7 @@ export default function ActivityHighlights() {
                             <div className="relative">
                                 <input
                                     type="text"
-                                    placeholder="相簿名稱..."
+                                    placeholder="相簿標題..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="border rounded-lg px-3 py-2 pl-9 text-sm w-48 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -164,7 +127,7 @@ export default function ActivityHighlights() {
                                         排序
                                     </div>
                                 </th>
-                                <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase w-20">發佈</th>
+                                <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase w-20">狀態</th>
                                 <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase w-24">分類</th>
                                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">相簿名稱</th>
                                 <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase w-24">代表圖</th>
@@ -183,7 +146,7 @@ export default function ActivityHighlights() {
                                         <div className="text-xs text-gray-500">{index + 1}.</div>
                                     </td>
                                     <td className="px-3 py-2">
-                                        <div className="text-center text-xs text-gray-600">{album.language}</div>
+                                        <div className="text-center text-xs text-gray-600">{album.is_featured ? '特色' : '一般'}</div>
                                         <div className="border-t border-dashed border-gray-300 my-1"></div>
                                         <div className="flex items-center justify-center gap-1">
                                             <input
@@ -196,15 +159,30 @@ export default function ActivityHighlights() {
                                             </button>
                                         </div>
                                     </td>
-                                    <td className="px-3 py-2 text-center text-xs">{album.language}</td>
+                                    <td className="px-3 py-2 text-center text-xs">
+                                        <span className={`px-2 py-1 rounded text-xs ${
+                                            album.status === 'published' ? 'bg-green-100 text-green-800' :
+                                            album.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                                            'bg-gray-100 text-gray-800'
+                                        }`}>
+                                            {album.status === 'published' ? '已發布' :
+                                             album.status === 'draft' ? '草稿' : '已封存'}
+                                        </span>
+                                    </td>
                                     <td className="px-3 py-2 text-center text-sm">{album.category}</td>
                                     <td className="px-3 py-2 text-sm">
                                         <Link href={`/admin/albums/${album.id}`} className="text-blue-600 hover:underline">
-                                            {album.name}
+                                            {album.title}
                                         </Link>
                                     </td>
                                     <td className="px-3 py-2 text-center">
-                                        <img src={album.thumbnail} alt={album.name} className="h-12 w-12 object-cover rounded border" />
+                                        {album.cover_image ? (
+                                            <img src={album.cover_image} alt={album.title} className="h-12 w-12 object-cover rounded border" />
+                                        ) : (
+                                            <div className="h-12 w-12 bg-gray-200 rounded flex items-center justify-center text-gray-400">
+                                                <FaImage size={20} />
+                                            </div>
+                                        )}
                                     </td>
                                     <td className="px-3 py-2 text-center">
                                         <span className="text-red-600 font-bold">{album.photo_count}</span>
@@ -221,7 +199,7 @@ export default function ActivityHighlights() {
                                         <span className="text-red-600 font-bold">{album.views}</span>
                                         <button
                                             onClick={() => {
-                                                if (confirm(`確定要清除: ${album.name} 點閱人紀錄嗎？`)) {
+                                                if (confirm(`確定要清除: ${album.title} 點閱人紀錄嗎？`)) {
                                                     // API call to reset views
                                                 }
                                             }}
@@ -243,9 +221,7 @@ export default function ActivityHighlights() {
                                                 href={`/admin/albums/${album.id}/comments/unread`}
                                                 className="text-sm"
                                             >
-                                                未讀：<span className="text-red-500">{album.comments_unread}</span>
-                                                <br />
-                                                總共：<span className="text-gray-600">{album.comments_total}</span>
+                                                總共：<span className="text-gray-600">{album.comment_count}</span>
                                             </Link>
                                         </div>
                                     </td>
@@ -259,11 +235,7 @@ export default function ActivityHighlights() {
                                             </Link>
                                             <div className="border-t border-dashed border-gray-300 w-full"></div>
                                             <button
-                                                onClick={() => {
-                                                    if (confirm(`確定要刪除: ${album.name} 嗎？ 包含相簿內相片一併刪除!!`)) {
-                                                        // API call to delete
-                                                    }
-                                                }}
+                                                onClick={() => handleDelete(album.id, album.title)}
                                                 className="text-red-600 hover:text-red-800 text-sm flex items-center gap-1"
                                             >
                                                 <FaTrash size={14} /> 刪除

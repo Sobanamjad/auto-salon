@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -45,7 +47,89 @@ class AdminController extends Controller
     
     public function albums()
     {
-        return Inertia::render('Admin/Albums', ['title' => '活動花絮']);
+        $albums = Album::orderBy('sort_order', 'asc')
+                       ->orderBy('created_at', 'desc')
+                       ->get();
+
+        return Inertia::render('Admin/Albums', [
+            'title' => '活動花絮',
+            'albums' => $albums
+        ]);
+    }
+
+    public function storeAlbum(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'cover_image' => 'nullable|string|max:255',
+            'album_date' => 'nullable|date',
+            'category' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'is_featured' => 'boolean',
+            'sort_order' => 'integer|min:0',
+        ]);
+
+        Album::create([
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'description' => $validated['description'] ?? null,
+            'cover_image' => $validated['cover_image'] ?? null,
+            'album_date' => $validated['album_date'] ?? null,
+            'category' => $validated['category'],
+            'status' => $validated['status'],
+            'is_featured' => $request->boolean('is_featured', false),
+            'sort_order' => $validated['sort_order'] ?? 999,
+        ]);
+
+        return redirect()->route('admin.albums')->with('success', '相簿新增成功');
+    }
+
+    public function updateAlbum(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'cover_image' => 'nullable|string|max:255',
+            'album_date' => 'nullable|date',
+            'category' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'is_featured' => 'boolean',
+            'sort_order' => 'integer|min:0',
+        ]);
+
+        $album = Album::findOrFail($id);
+        $album->update([
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'description' => $validated['description'] ?? null,
+            'cover_image' => $validated['cover_image'] ?? null,
+            'album_date' => $validated['album_date'] ?? null,
+            'category' => $validated['category'],
+            'status' => $validated['status'],
+            'is_featured' => $request->boolean('is_featured', false),
+            'sort_order' => $validated['sort_order'] ?? 999,
+        ]);
+
+        return redirect()->route('admin.albums')->with('success', '相簿更新成功');
+    }
+
+    public function deleteAlbum($id)
+    {
+        $album = Album::findOrFail($id);
+        $album->delete();
+
+        return redirect()->route('admin.albums')->with('success', '相簿刪除成功');
+    }
+
+    public function editAlbum($id)
+    {
+        $album = Album::findOrFail($id);
+
+        return Inertia::render('Admin/AlbumEdit', [
+            'title' => '編輯相簿',
+            'album' => $album
+        ]);
     }
     
     public function albumComments()

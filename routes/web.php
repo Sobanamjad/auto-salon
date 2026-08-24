@@ -31,9 +31,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             return Inertia::render('Admin/AlbumCreate');
         })->name('albums.create');
         Route::post('/albums', [AdminController::class, 'storeAlbum'])->name('albums.store');
-        Route::get('/albums/{id}/edit', function ($id) {
-            return Inertia::render('Admin/AlbumEdit', ['id' => $id]);
-        })->name('albums.edit');
+        Route::get('/albums/{id}/edit', [AdminController::class, 'editAlbum'])->name('albums.edit');
         Route::put('/albums/{id}', [AdminController::class, 'updateAlbum'])->name('albums.update');
         Route::delete('/albums/{id}', [AdminController::class, 'deleteAlbum'])->name('albums.delete');
         
