@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AlbumController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,14 +27,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
         
         // Album Management
-        Route::get('/albums', [AdminController::class, 'albums'])->name('albums');
-        Route::get('/albums/create', function () {
-            return Inertia::render('Admin/AlbumCreate');
-        })->name('albums.create');
-        Route::post('/albums', [AdminController::class, 'storeAlbum'])->name('albums.store');
-        Route::get('/albums/{id}/edit', [AdminController::class, 'editAlbum'])->name('albums.edit');
-        Route::put('/albums/{id}', [AdminController::class, 'updateAlbum'])->name('albums.update');
-        Route::delete('/albums/{id}', [AdminController::class, 'deleteAlbum'])->name('albums.delete');
+        Route::prefix('albums')->name('albums.')->group(function () {
+            Route::get('/', [AlbumController::class, 'index'])->name('index');
+            Route::get('/create', [AlbumController::class, 'create'])->name('create');
+            Route::post('/', [AlbumController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AlbumController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AlbumController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AlbumController::class, 'destroy'])->name('destroy');
+        });
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

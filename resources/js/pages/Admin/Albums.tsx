@@ -171,7 +171,7 @@ export default function ActivityHighlights({ albums, title }: PageProps) {
                                     </td>
                                     <td className="px-3 py-2 text-center text-sm">{album.category}</td>
                                     <td className="px-3 py-2 text-sm">
-                                        <Link href={`/admin/albums/${album.id}`} className="text-blue-600 hover:underline">
+                                        <Link href={`/admin/albums/${album.id}/edit`} className="text-blue-600 hover:underline">
                                             {album.title}
                                         </Link>
                                     </td>
