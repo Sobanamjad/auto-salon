@@ -171,9 +171,7 @@ export default function Timeline({ csn }: Props) {
                                                                             </div>
                                                                             <div className="header-two">
                                                                                 <h3 className="card-name">
-                                                                                    <a href={item.href} title={item.title}>
-                                                                                        <span className="card-name-text">{item.title}</span>
-                                                                                    </a>
+                                                                                    
                                                                                 </h3>
                                                                             </div>
                                                                         </div>

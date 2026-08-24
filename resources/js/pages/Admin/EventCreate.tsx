@@ -13,7 +13,50 @@ import { TableHeader } from '@tiptap/extension-table-header';
 import { Link as TipTapLink } from '@tiptap/extension-link';
 import { Text } from '@tiptap/extension-text';
 import FontFamily from '@tiptap/extension-font-family';
-import Image from '@tiptap/extension-image'; 
+import Image from '@tiptap/extension-image';
+import Heading from '@tiptap/extension-heading';
+import { Extension } from '@tiptap/core';
+
+// Custom Font Size Extension
+const FontSize = Extension.create({
+    name: 'fontSize',
+    addOptions() {
+        return {
+            types: ['textStyle'],
+        };
+    },
+    addGlobalAttributes() {
+        return [
+            {
+                types: this.options.types,
+                attributes: {
+                    fontSize: {
+                        default: null,
+                        parseHTML: element => element.style.fontSize?.replace(/['"]+/g, ''),
+                        renderHTML: attributes => {
+                            if (!attributes.fontSize) {
+                                return {};
+                            }
+                            return {
+                                style: `font-size: ${attributes.fontSize}`,
+                            };
+                        },
+                    },
+                },
+            },
+        ];
+    },
+    addCommands() {
+        return {
+            setFontSize: fontSize => ({ chain }) => {
+                return chain().setMark('textStyle', { fontSize }).run();
+            },
+            unsetFontSize: () => ({ chain }) => {
+                return chain().setMark('textStyle', { fontSize: null }).removeEmptyTextStyle().run();
+            },
+        };
+    },
+}); 
 
 interface EventFormData {
     title: string;
@@ -65,6 +108,9 @@ export default function EventCreate() {
                     keepAttributes: false,
                 },
             }),
+            Heading.configure({
+                levels: [1, 2, 3, 4, 5, 6],
+            }),
             TextAlign.configure({
                 types: ['heading', 'paragraph'],
             }),
@@ -73,6 +119,7 @@ export default function EventCreate() {
             Underline,
             Text,
             FontFamily,
+            FontSize,
             Image,
             Table.configure({
                 resizable: true,
@@ -441,13 +488,10 @@ export default function EventCreate() {
                     {/* Content Section with TinyMCE */}
                     <div className="bg-gray-50 rounded-lg p-4">
                         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                            <FaTag className="text-blue-500" /> 活動內容
+                            <FaTag className="text-blue-500" /> 內容
                         </h3>
                         
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                活動詳細內容
-                            </label>
                             
                             {/* TipTap Editor */}
                             <div className="border border-gray-300 rounded-lg overflow-hidden">
@@ -477,7 +521,8 @@ export default function EventCreate() {
                                             if (value === 'p') {
                                                 editor?.chain().focus().setParagraph().run();
                                             } else if (value.startsWith('h')) {
-                                                editor?.chain().focus().toggleHeading({ level: parseInt(value[1]) as 1 | 2 | 3 | 4 | 5 | 6 }).run();
+                                                const level = parseInt(value.substring(1)) as 1 | 2 | 3 | 4 | 5 | 6;
+                                                editor?.chain().focus().toggleHeading({ level }).run();
                                             }
                                         }}
                                         className="px-2 py-1 rounded border border-gray-300 text-gray-900 text-sm"
@@ -495,7 +540,7 @@ export default function EventCreate() {
                                     <select
                                         onChange={(e) => {
                                             const size = e.target.value;
-                                            editor?.chain().focus().setMark('textStyle', { fontSize: size }).run();
+                                            editor?.chain().focus().setFontSize(size).run();
                                         }}
                                         className="px-2 py-1 rounded border border-gray-300 text-gray-900 text-sm"
                                     >

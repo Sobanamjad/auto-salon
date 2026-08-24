@@ -74,9 +74,9 @@ export default function SalonTimeline() {
                                                                     </div>
                                                                     <div className="header-two">
                                                                         <h3 className="card-name">
-                                                                            <a href={item.href} title={item.title}>
+                                                                            {/* <a href={item.href} title={item.title}>
                                                                                 <span className="card-name-text">{item.title}</span>
-                                                                            </a>
+                                                                            </a> */}
                                                                         </h3>
                                                                     </div>
                                                                 </div>
