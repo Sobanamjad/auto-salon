@@ -70,8 +70,6 @@ interface EventFormData {
     content: string;
     max_attendees: number;
     location: string;
-    registration_start: string;
-    registration_end: string;
     is_featured: boolean;
     sort_order: number;
 }
@@ -89,8 +87,6 @@ export default function EventCreate() {
         content: '',
         max_attendees: 0,
         location: '',
-        registration_start: '',
-        registration_end: '',
         is_featured: false,
         sort_order: 999
     });

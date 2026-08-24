@@ -19,9 +19,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         
         // Event Management Route 
-       Route::get('/events', function () {
-            return Inertia::render('Admin/EventManagement');
-        })->name('events');
+       Route::get('/events', [AdminController::class, 'events'])->name('events');
         Route::get('/events/create', function () {
             return Inertia::render('Admin/EventCreate');
         })->name('events.create');

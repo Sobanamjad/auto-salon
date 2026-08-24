@@ -1,35 +1,39 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { 
     FaSearch, FaPlus, FaCalendar, FaUser, FaPhone, FaEdit, 
     FaTrash, FaCog, FaTag, FaMagic, FaEye, FaPrint, FaHome, 
     FaPlusCircle, FaComments, FaSignInAlt
 } from 'react-icons/fa';
 
+interface Event {
+    id: number;
+    title: string;
+    status: string;
+    date_start: string;
+    date_end: string;
+    signup_count: number;
+    views: number;
+    category: string;
+    signup_start: string;
+    signup_end: string;
+    is_open: boolean;
+    qa_count: number;
+    qa_status: string;
+    checkin: number;
+    absent: number;
+    attendance_rate: string;
+    income: number;
+    expense: number;
+    total: number;
+}
+
+interface PageProps {
+    events: Event[];
+}
+
 export default function EventManagement() {
-    const events = [
-        {
-            id: 3871,
-            title: '1. 我要申請入會',
-            status: '停止報名',
-            status_color: 'red',
-            date_start: '2027-12-25',
-            date_end: '2099-07-25',
-            signup_count: 0,
-            views: 4,
-            category: '本會活動',
-            signup_start: '2025-07-25',
-            signup_end: '2026-08-06',
-            is_open: false,
-            qa_count: '0/0',
-            qa_status: '關閉中',
-            checkin: 0,
-            absent: 0,
-            attendance_rate: '0%',
-            income: 0,
-            expense: 0,
-            total: 0
-        }
-    ];
+    const { props } = usePage<PageProps>();
+    const events = props.events || [];
 
     return (
         <>
@@ -179,7 +183,11 @@ export default function EventManagement() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-${event.status_color === 'red' ? 'red' : 'green'}-100 text-${event.status_color === 'red' ? 'red' : 'green'}-800`}>
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                        event.status === '停止報名' ? 'bg-red-100 text-red-800' :
+                                        event.status === '開放報名' ? 'bg-green-100 text-green-800' :
+                                        'bg-gray-100 text-gray-800'
+                                    }`}>
                                         {event.status}
                                     </span>
                                     <button className="text-gray-400 hover:text-gray-600" title="管理">
@@ -252,7 +260,7 @@ export default function EventManagement() {
                             <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-500">
                                 <div className="flex items-center gap-1">
                                     <FaComments className="text-gray-400" />
-                                    <a href="#" className="text-blue-600 hover:underline">QA ({event.qa_count})</a>
+                                    <a href="#" className="text-blue-600 hover:underline">QA ({event.qa_count}/0)</a>
                                     <span className="text-red-500">【{event.qa_status}】</span>
                                 </div>
                                 <div>
