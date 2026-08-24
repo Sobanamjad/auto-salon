@@ -39,6 +39,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}', [AlbumController::class, 'update'])->name('update');
             Route::delete('/{id}', [AlbumController::class, 'destroy'])->name('destroy');
         });
+
+        // About Management
+        Route::get('/about', function () {
+            return Inertia::render('Admin/AboutUs');
+        })->name('about');
+        Route::post('/about', [AdminController::class, 'updateAbout'])->name('about.update');
+
+        Route::post('/admin/about', [AdminController::class, 'updateAbout'])->name('admin.about.update');
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -49,9 +57,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // 網頁模組
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
-        Route::get('/about', [AdminController::class, 'about'])->name('about');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
-        // Route::get('/albums', [AdminController::class, 'albums'])->name('albums'); // ❌ REMOVE DUPLICATE
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
         Route::get('/news', [AdminController::class, 'news'])->name('news');
         Route::get('/member-announcements', [AdminController::class, 'memberAnnouncements'])->name('member-announcements');
