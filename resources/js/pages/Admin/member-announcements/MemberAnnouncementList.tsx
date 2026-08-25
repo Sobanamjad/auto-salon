@@ -1,3 +1,4 @@
+// recources/js/pages/Admin/member-announcements/MemberAnnouncementList.tsx
 import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
@@ -44,7 +45,7 @@ export default function MemberAnnouncementList({ announcements = [], title = 'æœ
         <>
             <Head title={title} />
             
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white rounded-xl shadow-sm p-6 text-gray-900">
                 {/* Header */}
                 <div className="border-b border-gray-200 pb-4 mb-6">
                     <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">

@@ -13,7 +13,7 @@ class MemberAnnouncementController extends Controller
     {
         $announcements = MemberAnnouncement::ordered()->get();
 
-        return Inertia::render('admin/member-announcements/MemberAnnouncementList', [
+        return Inertia::render('Admin/member-announcements/MemberAnnouncementList', [
             'title' => '會員公告',
             'announcements' => $announcements
         ]);
@@ -21,7 +21,7 @@ class MemberAnnouncementController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/member-announcements/MemberAnnouncementCreate', [
+        return Inertia::render('Admin/member-announcements/MemberAnnouncementCreate', [
             'title' => '新增會員公告'
         ]);
     }
@@ -53,7 +53,7 @@ class MemberAnnouncementController extends Controller
     {
         $announcement = MemberAnnouncement::findOrFail($id);
 
-        return Inertia::render('admin/member-announcements/MemberAnnouncementEdit', [
+        return Inertia::render('Admin/member-announcements/MemberAnnouncementEdit', [
             'title' => '編輯會員公告',
             'announcement' => $announcement
         ]);
@@ -95,7 +95,7 @@ class MemberAnnouncementController extends Controller
     {
         $announcement = MemberAnnouncement::findOrFail($id);
 
-        return Inertia::render('admin/member-announcements/MemberAnnouncementPreview', [
+        return Inertia::render('Admin/member-announcements/MemberAnnouncementPreview', [
             'title' => '預覽會員公告',
             'announcement' => $announcement
         ]);
