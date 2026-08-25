@@ -5,15 +5,15 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AlbumController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
     Route::middleware('guest')->group(function () {
-        Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');
+        Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     });
     
@@ -50,6 +50,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}', [AboutController::class, 'update'])->name('update');
             Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
         });
+
+
+        // News
+        Route::prefix('news')->name('news.')->group(function () {
+            Route::get('/', [NewsController::class, 'index'])->name('index');
+            Route::get('/create', [NewsController::class, 'create'])->name('create');
+            Route::post('/', [NewsController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [NewsController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [NewsController::class, 'update'])->name('update');
+            Route::delete('/{id}', [NewsController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/preview', [NewsController::class, 'preview'])->name('preview');
+            Route::get('/{id}/sms', [NewsController::class, 'sms'])->name('sms');
+            Route::get('/{id}/toggle-home', [NewsController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/toggle-marquee', [NewsController::class, 'toggleMarquee'])->name('toggle-marquee');
+        });
         
 
 
@@ -67,7 +82,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
-        Route::get('/news', [AdminController::class, 'news'])->name('news');
+
         Route::get('/member-announcements', [AdminController::class, 'memberAnnouncements'])->name('member-announcements');
         Route::get('/club-news', [AdminController::class, 'clubNews'])->name('club-news');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
@@ -104,6 +119,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // Public Routes
+Route::get('/login', function () {
+    return redirect('/admin/login');
+})->name('login');
+
+Route::get('/dashboard', function () {
+    return redirect('/admin/dashboard');
+})->middleware('auth')->name('dashboard');
+
 Route::inertia('/', 'welcome')->name('home');
 
 Route::get('/timeline', function () {
@@ -224,9 +247,5 @@ Route::get('/albums', function () {
         'initialYear' => $year !== null && $year !== '' ? (string) $year : null,
     ]);
 })->name('albums');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
 
 require __DIR__.'/settings.php';

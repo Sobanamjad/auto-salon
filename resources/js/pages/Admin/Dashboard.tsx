@@ -11,7 +11,7 @@ export default function Dashboard() {
         { icon: FaCalendar, label: '活動管理', href: '/admin/events' }, 
         { icon: FaImage, label: '活動花絮', href: '/admin/albums' },
         { icon: FaLeaf, label: '關於本會', href: '/admin/about' },
-        { icon: FaBullhorn, label: '最新消息', href: '/news/public/ad_news.php?right_sn=260727' },
+        { icon: FaBullhorn, label: '最新消息', href: '/admin/news' },
         { icon: FaBullhorn, label: '會員公告', href: '/news/public/ad_news_in.php?right_sn=260728' },
         { icon: FaPencilAlt, label: '專欄園地', href: '/article/public/ad_article.php?right_sn=260730' },
         { icon: FaGift, label: '會員商品', href: '/product/public/ad_pd.php?right_sn=260740' },

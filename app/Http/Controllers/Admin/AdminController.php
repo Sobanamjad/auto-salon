@@ -34,7 +34,7 @@ class AdminController extends Controller
     
     public function about()
     {
-        return Inertia::render('Admin/About', ['title' => '關於本會']);
+        return redirect()->route('admin.about.index');
     }
     
     public function slider()
@@ -54,7 +54,7 @@ class AdminController extends Controller
     
     public function news()
     {
-        return Inertia::render('Admin/News', ['title' => '最新消息']);
+        return redirect()->route('admin.news.index');
     }
     
     public function memberAnnouncements()

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AboutSeeder::class,
             AlbumSeeder::class,
             EventSeeder::class,
+            NewsSeeder::class,
         ]);
     }
 }
