@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AboutRequest;
 use App\Models\About;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class AboutController extends Controller
@@ -37,46 +38,33 @@ class AboutController extends Controller
     /**
      * Store a newly created about item in storage.
      */
-    public function store(Request $request)
+    public function store(AboutRequest $request)
     {
-        $validated = $request->validate([
-            'language' => 'required|in:TS,EN,JP',
-            'status' => 'required|boolean',
-            'show_on_home' => 'required|boolean',
-            'sort_order' => 'required|integer',
-            'category' => 'nullable|string',
-            'subject' => 'required|string',
-            'brief' => 'nullable|string',
-            'content' => 'required|string',
-            'image' => 'nullable|image|max:10240',
-            'video' => 'nullable|string',
-            'note' => 'nullable|string',
-            'issuedate' => 'nullable|date',
-            'enddate' => 'nullable|date',
-        ]);
+        $validated = $request->validated();
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('about', 'public');
-        }
+        // Handle image upload
+        $imagePath = $this->handleImageUpload($request);
 
+        // Create about
         About::create([
             'language' => $validated['language'],
             'status' => $validated['status'],
             'show_on_home' => $validated['show_on_home'],
             'sort_order' => $validated['sort_order'],
-            'category' => $validated['category'],
+            'category' => $validated['category'] ?? null,
             'subject' => $validated['subject'],
-            'brief' => $validated['brief'],
+            'brief' => $validated['brief'] ?? null,
             'content' => $validated['content'],
             'image' => $imagePath,
-            'video' => $validated['video'],
-            'note' => $validated['note'],
-            'issuedate' => $validated['issuedate'],
-            'enddate' => $validated['enddate'],
+            'video' => $validated['video'] ?? null,
+            'note' => $validated['note'] ?? null,
+            'issuedate' => $validated['issuedate'] ?? null,
+            'enddate' => $validated['enddate'] ?? null,
         ]);
 
-        return redirect()->route('admin.about.index')->with('success', '關於本會新增成功');
+        return redirect()
+            ->route('admin.about.index')
+            ->with('success', '關於本會新增成功');
     }
 
     /**
@@ -95,48 +83,34 @@ class AboutController extends Controller
     /**
      * Update the specified about item in storage.
      */
-    public function update(Request $request, $id)
+    public function update(AboutRequest $request, $id)
     {
         $about = About::findOrFail($id);
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'language' => 'required|in:TS,EN,JP',
-            'status' => 'required|boolean',
-            'show_on_home' => 'required|boolean',
-            'sort_order' => 'required|integer',
-            'category' => 'nullable|string',
-            'subject' => 'required|string',
-            'brief' => 'nullable|string',
-            'content' => 'required|string',
-            'image' => 'nullable|image|max:10240',
-            'video' => 'nullable|string',
-            'note' => 'nullable|string',
-            'issuedate' => 'nullable|date',
-            'enddate' => 'nullable|date',
-        ]);
+        // Handle image upload
+        $imagePath = $this->handleImageUpload($request, $about);
 
-        $imagePath = $about->image;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('about', 'public');
-        }
-
+        // Update about
         $about->update([
             'language' => $validated['language'],
             'status' => $validated['status'],
             'show_on_home' => $validated['show_on_home'],
             'sort_order' => $validated['sort_order'],
-            'category' => $validated['category'],
+            'category' => $validated['category'] ?? null,
             'subject' => $validated['subject'],
-            'brief' => $validated['brief'],
+            'brief' => $validated['brief'] ?? null,
             'content' => $validated['content'],
             'image' => $imagePath,
-            'video' => $validated['video'],
-            'note' => $validated['note'],
-            'issuedate' => $validated['issuedate'],
-            'enddate' => $validated['enddate'],
+            'video' => $validated['video'] ?? null,
+            'note' => $validated['note'] ?? null,
+            'issuedate' => $validated['issuedate'] ?? null,
+            'enddate' => $validated['enddate'] ?? null,
         ]);
 
-        return redirect()->route('admin.about.index')->with('success', '關於本會更新成功');
+        return redirect()
+            ->route('admin.about.index')
+            ->with('success', '關於本會更新成功');
     }
 
     /**
@@ -145,8 +119,38 @@ class AboutController extends Controller
     public function destroy($id)
     {
         $about = About::findOrFail($id);
+
+        // Delete image if exists
+        if ($about->image && Storage::disk('public')->exists($about->image)) {
+            Storage::disk('public')->delete($about->image);
+        }
+
         $about->delete();
 
-        return redirect()->route('admin.about.index')->with('success', '關於本會刪除成功');
+        return redirect()
+            ->route('admin.about.index')
+            ->with('success', '關於本會刪除成功');
+    }
+
+    /**
+     * Handle image upload.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\About|null $about
+     * @return string|null
+     */
+    private function handleImageUpload($request, $about = null)
+    {
+        if (!$request->hasFile('image')) {
+            return $about ? $about->image : null;
+        }
+
+        // Delete old image if exists
+        if ($about && $about->image && Storage::disk('public')->exists($about->image)) {
+            Storage::disk('public')->delete($about->image);
+        }
+
+        // Store new image
+        return $request->file('image')->store('about', 'public');
     }
 }

@@ -88,7 +88,7 @@ export default function AboutList({ abouts, title }: PageProps) {
                                     placeholder="主題或內容..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="border rounded-lg px-3 py-2 pl-9 text-sm w-48 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="border rounded-lg px-3 py-2 pl-9 text-sm w-48 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                                 />
                                 <FaSearch className="absolute left-3 top-3 text-gray-400" size={14} />
                             </div>
@@ -103,7 +103,7 @@ export default function AboutList({ abouts, title }: PageProps) {
                             <select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                             >
                                 <option value="">分類選擇</option>
                                 {categories.map((cat) => (
