@@ -68,6 +68,23 @@ class ColumnArticleController extends Controller
     public function update(ColumnArticleRequest $request, $id)
     {
         $article = ColumnArticle::findOrFail($id);
+        
+        // Handle partial updates for sort_order and views
+        $requestData = $request->all();
+        
+        if (array_key_exists('sort_order', $requestData) && count($requestData) === 1) {
+            $article->update(['sort_order' => $request->sort_order]);
+            return redirect()->route('admin.column-articles.index')
+                             ->with('success', '排序更新成功');
+        }
+
+        if (array_key_exists('views', $requestData) && count($requestData) === 1) {
+            $article->update(['views' => $request->views]);
+            return redirect()->route('admin.column-articles.index')
+                             ->with('success', '點閱數清除成功');
+        }
+
+        // Full update with validation
         $validated = $request->validated();
 
         $article->update([

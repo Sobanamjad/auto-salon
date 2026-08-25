@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
@@ -32,6 +32,62 @@ export default function ColumnArticleList({ articles = [], title = '專欄園地
     const [searchDate, setSearchDate] = useState('');
     const [searchCategory, setSearchCategory] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+
+    const handleDelete = (id: number, subject: string) => {
+        if (confirm(`確定要刪除: ${subject} 嗎？`)) {
+            router.delete(`/admin/column-articles/${id}`, {
+                onSuccess: () => {
+                    window.location.href = '/admin/column-articles';
+                },
+                onError: (errors) => {
+                    console.error('Delete error:', errors);
+                    alert('刪除失敗，請重試');
+                }
+            });
+        }
+    };
+
+    const handleSortOrderUpdate = (id: number, newSortOrder: number) => {
+        router.put(`/admin/column-articles/${id}`, {
+            sort_order: newSortOrder
+        }, {
+            onSuccess: () => {
+                window.location.href = '/admin/column-articles';
+            },
+            onError: (errors) => {
+                console.error('Sort order update error:', errors);
+                alert('排序更新失敗，請重試');
+            }
+        });
+    };
+
+    const handleResetViews = (id: number, subject: string) => {
+        if (confirm(`確定要清除: ${subject} 點閱人紀錄嗎？`)) {
+            router.put(`/admin/column-articles/${id}`, {
+                views: 0
+            }, {
+                onSuccess: () => {
+                    window.location.href = '/admin/column-articles';
+                },
+                onError: (errors) => {
+                    console.error('Views reset error:', errors);
+                    alert('點閱數清除失敗，請重試');
+                }
+            });
+        }
+    };
+
+    const handleToggleHome = (id: number) => {
+        router.get(`/admin/column-articles/${id}/toggle-home`, {}, {
+            onSuccess: () => {
+                window.location.href = '/admin/column-articles';
+            },
+            onError: (errors) => {
+                console.error('Toggle home error:', errors);
+                alert('首頁顯示狀態更新失敗，請重試');
+            }
+        });
+    };
 
     const filteredItems = articles.filter(item => {
         const matchSubject = item.subject.toLowerCase().includes(searchSubject.toLowerCase());
@@ -135,11 +191,17 @@ export default function ColumnArticleList({ articles = [], title = '專欄園地
                                             {(currentPage - 1) * itemsPerPage + index + 1}.
                                         </td>
                                         <td className="px-3 py-2 text-center">
-                                            {item.show_on_home ? (
-                                                <FaHome className="text-blue-500 mx-auto" title="顯示在首頁" />
-                                            ) : (
-                                                <span className="text-gray-300 text-xs">-</span>
-                                            )}
+                                            <button
+                                                onClick={() => handleToggleHome(item.id)}
+                                                className="hover:scale-110 transition-transform"
+                                                title={item.show_on_home ? "隱藏在首頁" : "顯示在首頁"}
+                                            >
+                                                {item.show_on_home ? (
+                                                    <FaHome className="text-blue-500 mx-auto" />
+                                                ) : (
+                                                    <span className="text-gray-300 text-xs">-</span>
+                                                )}
+                                            </button>
                                         </td>
                                         <td className="px-3 py-2">
                                             <div className="text-center text-xs text-gray-500">{item.language || '繁中'}</div>
@@ -148,9 +210,17 @@ export default function ColumnArticleList({ articles = [], title = '專欄園地
                                                 <input
                                                     type="number"
                                                     defaultValue={item.sort_order || 999}
+                                                    id={`sort-order-${item.id}`}
                                                     className="w-12 border rounded px-1 py-0.5 text-xs text-center"
                                                 />
-                                                <button className="bg-blue-500 text-white px-2 py-0.5 rounded text-xs hover:bg-blue-600">
+                                                <button 
+                                                    onClick={() => {
+                                                        const input = document.getElementById(`sort-order-${item.id}`) as HTMLInputElement;
+                                                        const newSortOrder = parseInt(input.value) || 999;
+                                                        handleSortOrderUpdate(item.id, newSortOrder);
+                                                    }}
+                                                    className="bg-blue-500 text-white px-2 py-0.5 rounded text-xs hover:bg-blue-600"
+                                                >
                                                     更新
                                                 </button>
                                             </div>
@@ -179,11 +249,7 @@ export default function ColumnArticleList({ articles = [], title = '專欄園地
                                         <td className="px-3 py-2 text-center">
                                             <span className="font-bold">{item.views || 0}</span>
                                             <button
-                                                onClick={() => {
-                                                    if (confirm(`確定要清除: ${item.subject} 點閱人紀錄嗎？`)) {
-                                                        // API call to reset views
-                                                    }
-                                                }}
+                                                onClick={() => handleResetViews(item.id, item.subject)}
                                                 className="text-red-500 hover:text-red-700 text-xs block"
                                             >
                                                 清除
@@ -204,11 +270,7 @@ export default function ColumnArticleList({ articles = [], title = '專欄園地
                                                 </Link>
                                                 <div className="border-t border-dashed border-gray-300 w-full"></div>
                                                 <button
-                                                    onClick={() => {
-                                                        if (confirm(`確定要刪除: ${item.subject} 嗎？`)) {
-                                                            // API call to delete
-                                                        }
-                                                    }}
+                                                    onClick={() => handleDelete(item.id, item.subject)}
                                                     className="text-red-600 hover:text-red-800 flex items-center gap-1"
                                                 >
                                                     <FaTrash size={14} /> 刪除
