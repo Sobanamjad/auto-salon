@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AlbumController;
+use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -9,8 +13,7 @@ use Inertia\Inertia;
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
-        Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-        Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');
+        Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     });
     
@@ -19,24 +22,55 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         
         // Event Management
-        Route::get('/events', [AdminController::class, 'events'])->name('events');
-        Route::get('/events/create', function () {
-            return Inertia::render('Admin/EventCreate');
-        })->name('events.create');
-        Route::post('/events', [AdminController::class, 'storeEvent'])->name('events.store');
+        Route::prefix('events')->name('events.')->group(function () {
+            Route::get('/', [EventController::class, 'index'])->name('index');
+            Route::get('/create', [EventController::class, 'create'])->name('create');
+            Route::post('/', [EventController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [EventController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [EventController::class, 'update'])->name('update');
+            Route::delete('/{id}', [EventController::class, 'destroy'])->name('destroy');
+        });
         
         // Album Management
-        Route::get('/albums', [AdminController::class, 'albums'])->name('albums');
-        Route::get('/albums/create', function () {
-            return Inertia::render('Admin/AlbumCreate');
-        })->name('albums.create');
-        Route::post('/albums', [AdminController::class, 'storeAlbum'])->name('albums.store');
-        Route::get('/albums/{id}/edit', function ($id) {
-            return Inertia::render('Admin/AlbumEdit', ['id' => $id]);
-        })->name('albums.edit');
-        Route::put('/albums/{id}', [AdminController::class, 'updateAlbum'])->name('albums.update');
-        Route::delete('/albums/{id}', [AdminController::class, 'deleteAlbum'])->name('albums.delete');
+        Route::prefix('albums')->name('albums.')->group(function () {
+            Route::get('/', [AlbumController::class, 'index'])->name('index');
+            Route::get('/create', [AlbumController::class, 'create'])->name('create');
+            Route::post('/', [AlbumController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AlbumController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AlbumController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AlbumController::class, 'destroy'])->name('destroy');
+        });
+
+        // About Management
+        Route::prefix('about')->name('about.')->group(function () {
+            Route::get('/', [AboutController::class, 'index'])->name('index');
+            Route::get('/create', [AboutController::class, 'create'])->name('create');
+            Route::post('/', [AboutController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AboutController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AboutController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
+        });
+
+
+        // News
+        Route::prefix('news')->name('news.')->group(function () {
+            Route::get('/', [NewsController::class, 'index'])->name('index');
+            Route::get('/create', [NewsController::class, 'create'])->name('create');
+            Route::post('/', [NewsController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [NewsController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [NewsController::class, 'update'])->name('update');
+            Route::delete('/{id}', [NewsController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/preview', [NewsController::class, 'preview'])->name('preview');
+            Route::get('/{id}/sms', [NewsController::class, 'sms'])->name('sms');
+            Route::get('/{id}/toggle-home', [NewsController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/toggle-marquee', [NewsController::class, 'toggleMarquee'])->name('toggle-marquee');
+        });
         
+
+
+
+
+
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
@@ -46,11 +80,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // 網頁模組
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
-        Route::get('/about', [AdminController::class, 'about'])->name('about');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
-        // Route::get('/albums', [AdminController::class, 'albums'])->name('albums'); // ❌ REMOVE DUPLICATE
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
-        Route::get('/news', [AdminController::class, 'news'])->name('news');
+
         Route::get('/member-announcements', [AdminController::class, 'memberAnnouncements'])->name('member-announcements');
         Route::get('/club-news', [AdminController::class, 'clubNews'])->name('club-news');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
@@ -87,6 +119,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 // Public Routes
+Route::get('/login', function () {
+    return redirect('/admin/login');
+})->name('login');
+
+Route::get('/dashboard', function () {
+    return redirect('/admin/dashboard');
+})->middleware('auth')->name('dashboard');
+
 Route::inertia('/', 'welcome')->name('home');
 
 Route::get('/timeline', function () {
@@ -207,9 +247,5 @@ Route::get('/albums', function () {
         'initialYear' => $year !== null && $year !== '' ? (string) $year : null,
     ]);
 })->name('albums');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
 
 require __DIR__.'/settings.php';

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -35,7 +34,7 @@ class AdminController extends Controller
     
     public function about()
     {
-        return Inertia::render('Admin/About', ['title' => '關於本會']);
+        return redirect()->route('admin.about.index');
     }
     
     public function slider()
@@ -45,7 +44,7 @@ class AdminController extends Controller
     
     public function albums()
     {
-        return Inertia::render('Admin/Albums', ['title' => '活動花絮']);
+        return redirect()->route('admin.albums.index');
     }
     
     public function albumComments()
@@ -55,7 +54,7 @@ class AdminController extends Controller
     
     public function news()
     {
-        return Inertia::render('Admin/News', ['title' => '最新消息']);
+        return redirect()->route('admin.news.index');
     }
     
     public function memberAnnouncements()
@@ -125,51 +124,7 @@ class AdminController extends Controller
     
     public function events()
     {
-        $events = Event::orderBy('sort_order', 'asc')
-                       ->orderBy('date_start', 'desc')
-                       ->get();
-
-        return Inertia::render('Admin/EventManagement', [
-            'title' => '活動管理',
-            'events' => $events
-        ]);
-    }
-
-    public function storeEvent(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-            'date_start' => 'required|date',
-            'date_end' => 'required|date|after_or_equal:date_start',
-            'signup_start' => 'nullable|date',
-            'signup_end' => 'nullable|date|after_or_equal:signup_start',
-            'is_open' => 'boolean',
-            'content' => 'nullable|string',
-            'max_attendees' => 'integer|min:0',
-            'location' => 'nullable|string|max:255',
-            'is_featured' => 'boolean',
-            'sort_order' => 'integer|min:0',
-        ]);
-
-        Event::create([
-            'title' => $validated['title'],
-            'category' => $validated['category'],
-            'status' => $validated['status'],
-            'date_start' => $validated['date_start'],
-            'date_end' => $validated['date_end'],
-            'signup_start' => $validated['signup_start'] ?? null,
-            'signup_end' => $validated['signup_end'] ?? null,
-            'is_open' => $request->boolean('is_open', true),
-            'content' => $validated['content'] ?? null,
-            'max_attendees' => $validated['max_attendees'] ?? 0,
-            'location' => $validated['location'] ?? null,
-            'is_featured' => $request->boolean('is_featured', false),
-            'sort_order' => $validated['sort_order'] ?? 999,
-        ]);
-
-        return redirect()->route('admin.events')->with('success', '活動新增成功');
+        return redirect()->route('admin.events.index');
     }
     
     public function friendEvents()

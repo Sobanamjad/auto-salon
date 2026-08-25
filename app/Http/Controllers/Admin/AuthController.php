@@ -11,6 +11,9 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return redirect('/admin/dashboard');
+        }
         return Inertia::render('Admin/Login');
     }
 

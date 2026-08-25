@@ -10,15 +10,15 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        // ✅ Admin User
+        //  Admin User
         User::create([
             'name' => 'Super Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
-        // ✅ Normal Users
+        //  Normal Users
         User::create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // ✅ Ya multiple users loop mein:
+        //  Ya multiple users loop mein:
         // $users = [
         //     ['name' => 'Mike Johnson', 'email' => 'mike@example.com'],
         //     ['name' => 'Sarah Wilson', 'email' => 'sarah@example.com'],
