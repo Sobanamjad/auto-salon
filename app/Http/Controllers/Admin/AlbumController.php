@@ -20,7 +20,7 @@ class AlbumController extends Controller
                        ->orderBy('created_at', 'desc')
                        ->get();
 
-        return Inertia::render('Admin/Albums', [
+        return Inertia::render('Admin/Album/Albums', [
             'title' => '活動花絮',
             'albums' => $albums
         ]);
@@ -31,7 +31,7 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/AlbumCreate', [
+        return Inertia::render('Admin/Album/AlbumCreate', [
             'title' => '新增相簿'
         ]);
     }
@@ -63,7 +63,7 @@ class AlbumController extends Controller
     {
         $album = Album::findOrFail($id);
 
-        return Inertia::render('Admin/AlbumEdit', [
+        return Inertia::render('Admin/Album/AlbumEdit', [
             'title' => '編輯相簿',
             'album' => $album
         ]);
