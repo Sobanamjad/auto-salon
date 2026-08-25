@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AlbumController;
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
@@ -10,8 +11,8 @@ use Inertia\Inertia;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
     Route::middleware('guest')->group(function () {
-        Route::get('/', [AuthController::class, 'showLogin'])->name('login');
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login.show');
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     });
@@ -41,13 +42,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         // About Management
-        Route::get('/about', function () {
-            return Inertia::render('Admin/AboutUs');
-        })->name('about');
-        Route::post('/about', [AdminController::class, 'updateAbout'])->name('about.update');
-
-        Route::post('/admin/about', [AdminController::class, 'updateAbout'])->name('admin.about.update');
+        Route::prefix('about')->name('about.')->group(function () {
+            Route::get('/', [AboutController::class, 'index'])->name('index');
+            Route::get('/create', [AboutController::class, 'create'])->name('create');
+            Route::post('/', [AboutController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AboutController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AboutController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
+        });
         
+
+
+
+
+
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
