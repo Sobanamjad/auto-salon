@@ -14,7 +14,7 @@ export default function Dashboard() {
         { icon: FaBullhorn, label: '最新消息', href: '/admin/news' },
         { icon: FaBullhorn, label: '會員公告', href: '/admin/member-announcements' },
         { icon: FaPencilAlt, label: '專欄園地', href: '/admin/column-articles' },
-        { icon: FaGift, label: '會員商品', href: '/product/public/ad_pd.php?right_sn=260740' },
+        { icon: FaGift, label: '會員商品', href: '/admin/products' },
         { icon: FaLaptop, label: '理監事(組織)', href: '/work/public/ad_work.php?right_sn=260734' },
         { icon: FaUser, label: '會員資訊', href: '/member/public/ad_member.php?right_sn=260738' },
         { icon: FaComments, label: '留言板', href: '/qa/public/ad_qa1.php?right_sn=260736' },

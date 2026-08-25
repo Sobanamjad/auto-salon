@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             NewsSeeder::class,
             MemberAnnouncementSeeder::class,
+            ColumnArticleSeeder::class;
+            ProductSeeder::class;
         ]);
     }
 }
