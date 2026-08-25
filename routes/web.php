@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\MemberAnnouncementController;
 use App\Http\Controllers\Admin\ColumnArticleController;
+use App\Http\Controllers\Admin\ProductController;
+
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -93,6 +95,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
 
+        // Products (會員商品)
+        Route::prefix('products')->name('products.')->group(function () {
+            Route::get('/', [ProductController::class, 'index'])->name('index');
+            Route::get('/create', [ProductController::class, 'create'])->name('create');
+            Route::post('/', [ProductController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [ProductController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [ProductController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/reset-views', [ProductController::class, 'resetViews'])->name('reset-views');
+            Route::put('/{id}/sort', [ProductController::class, 'updateSort'])->name('update-sort');
+        });
+
+
 
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -117,7 +133,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
         Route::get('/members', [AdminController::class, 'members'])->name('members');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
-        Route::get('/products', [AdminController::class, 'products'])->name('products');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
         Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
         Route::get('/timeline', [AdminController::class, 'timeline'])->name('timeline');
