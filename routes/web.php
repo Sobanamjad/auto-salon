@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\MemberAnnouncementController;
+use App\Http\Controllers\Admin\ColumnArticleController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -77,6 +78,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}', [MemberAnnouncementController::class, 'update'])->name('update');
             Route::delete('/{id}', [MemberAnnouncementController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/preview', [MemberAnnouncementController::class, 'preview'])->name('preview');
+        });
+
+
+        // Column Articles (專欄園地)
+        Route::prefix('column-articles')->name('column-articles.')->group(function () {
+            Route::get('/', [ColumnArticleController::class, 'index'])->name('index');
+            Route::get('/create', [ColumnArticleController::class, 'create'])->name('create');
+            Route::post('/', [ColumnArticleController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ColumnArticleController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [ColumnArticleController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ColumnArticleController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [ColumnArticleController::class, 'toggleHome'])->name('toggle-home');
         });
 
 
