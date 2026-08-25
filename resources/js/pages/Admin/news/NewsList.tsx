@@ -3,26 +3,29 @@ import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
     FaHome, FaBullhorn, FaEnvelope, FaSort,
-    FaChevronLeft, FaChevheelonRight,
+    FaChevronLeft, FaChevronRight,
     FaCalendar, FaTag, FaUser
 } from 'react-icons/fa';
 
 interface NewsItem {
     id: number;
-    title: string;
+    subject: string;
     category: string;
-    language: string;
     views: number;
     show_on_home: boolean;
     show_marquee: boolean;
     sort_order: number;
-    published_at: string;
+    published_date: string;
     end_date: string;
     created_at: string;
     updated_at: string;
 }
 
-export default function NewsList() {
+interface NewsListProps {
+    news: NewsItem[];
+}
+
+export default function NewsList({ news: newsItems }: NewsListProps) {
     const [searchId, setSearchId] = useState('');
     const [searchTitle, setSearchTitle] = useState('');
     const [searchCategory, setSearchCategory] = useState('');
@@ -30,69 +33,9 @@ export default function NewsList() {
     const [dateEnd, setDateEnd] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
-    // Sample data (replace with API data)
-    const newsItems: NewsItem[] = [
-        {
-            id: 135520,
-            title: '2026年7月1日聯誼餐敘',
-            category: '會務活動',
-            language: '繁中',
-            views: 8,
-            show_on_home: true,
-            show_marquee: true,
-            sort_order: 999,
-            published_at: '2026-07-13 17:06',
-            end_date: '2200-12-31',
-            created_at: '2026-07-13',
-            updated_at: '2026-07-13'
-        },
-        {
-            id: 135519,
-            title: '2026年度捐血接力暨聯合捐血活動',
-            category: '最新公告',
-            language: '繁中',
-            views: 7,
-            show_on_home: true,
-            show_marquee: true,
-            sort_order: 999,
-            published_at: '2026-07-13 17:06',
-            end_date: '2200-12-31',
-            created_at: '2026-07-13',
-            updated_at: '2026-07-13'
-        },
-        {
-            id: 135518,
-            title: '會員服務',
-            category: '會務活動',
-            language: '繁中',
-            views: 7,
-            show_on_home: true,
-            show_marquee: true,
-            sort_order: 999,
-            published_at: '2026-07-13 17:06',
-            end_date: '2200-12-31',
-            created_at: '2026-07-13',
-            updated_at: '2026-07-13'
-        },
-        {
-            id: 135517,
-            title: '2025-2027年度糖尿病篩檢社會服務',
-            category: '最新公告',
-            language: '繁中',
-            views: 7,
-            show_on_home: true,
-            show_marquee: true,
-            sort_order: 999,
-            published_at: '2026-07-13 17:06',
-            end_date: '2200-12-31',
-            created_at: '2026-07-13',
-            updated_at: '2026-07-13'
-        }
-    ];
-
     const filteredItems = newsItems.filter(item => {
         const matchId = searchId === '' || item.id.toString().includes(searchId);
-        const matchTitle = searchTitle === '' || item.title.includes(searchTitle);
+        const matchTitle = searchTitle === '' || item.subject.includes(searchTitle);
         const matchCategory = searchCategory === '' || item.category === searchCategory;
         return matchId && matchTitle && matchCategory;
     });
@@ -243,8 +186,6 @@ export default function NewsList() {
                                         {index + 1}.
                                     </td>
                                     <td className="px-3 py-2">
-                                        <div className="text-center text-xs text-gray-600">{item.language}</div>
-                                        <div className="border-t border-dashed border-gray-300 my-1"></div>
                                         <div className="flex items-center justify-center gap-1">
                                             <input
                                                 type="number"
@@ -256,21 +197,23 @@ export default function NewsList() {
                                             </button>
                                         </div>
                                     </td>
-                                    <td className="px-3 py-2 text-center text-xs">{item.language}</td>
+                                    <td className="px-3 py-2 text-center text-xs">
+                                        {item.sort_order}
+                                    </td>
                                     <td className="px-3 py-2 text-center text-sm">{item.category}</td>
                                     <td className="px-3 py-2">
                                         <Link
                                             href={`/admin/news/${item.id}/edit`}
                                             className="text-blue-600 hover:underline text-sm"
                                         >
-                                            {item.title}
+                                            {item.subject}
                                         </Link>
                                     </td>
                                     <td className="px-3 py-2 text-center">
                                         <span className="font-bold">{item.views}</span>
                                         <button
                                             onClick={() => {
-                                                if (confirm(`確定要清除: ${item.title} ？`)) {
+                                                if (confirm(`確定要清除: ${item.subject} ？`)) {
                                                     // API call to reset views
                                                 }
                                             }}
@@ -280,7 +223,7 @@ export default function NewsList() {
                                         </button>
                                     </td>
                                     <td className="px-3 py-2 text-center text-sm">
-                                        {item.published_at}
+                                        {new Date(item.published_date).toLocaleDateString('zh-TW')}
                                         <div className="border-t border-dashed border-gray-300 my-1"></div>
                                         {item.end_date}
                                     </td>
@@ -311,7 +254,7 @@ export default function NewsList() {
                                             <div className="border-t border-dashed border-gray-300 w-full"></div>
                                             <button
                                                 onClick={() => {
-                                                    if (confirm(`確定要刪除: ${item.title} ？`)) {
+                                                    if (confirm(`確定要刪除: ${item.subject} ？`)) {
                                                         // API call to delete
                                                     }
                                                 }}
