@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AlbumController;
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\MemberAnnouncementController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -67,7 +68,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
         
 
-
+        // Member Announcements
+        Route::prefix('member-announcements')->name('member-announcements.')->group(function () {
+            Route::get('/', [MemberAnnouncementController::class, 'index'])->name('index');
+            Route::get('/create', [MemberAnnouncementController::class, 'create'])->name('create');
+            Route::post('/', [MemberAnnouncementController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [MemberAnnouncementController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [MemberAnnouncementController::class, 'update'])->name('update');
+            Route::delete('/{id}', [MemberAnnouncementController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/preview', [MemberAnnouncementController::class, 'preview'])->name('preview');
+        });
 
 
 
@@ -83,7 +93,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
 
-        Route::get('/member-announcements', [AdminController::class, 'memberAnnouncements'])->name('member-announcements');
         Route::get('/club-news', [AdminController::class, 'clubNews'])->name('club-news');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
         Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
