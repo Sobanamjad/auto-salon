@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\DirectorController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\GuestbookController;
+use App\Http\Controllers\Admin\JobController;
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -56,7 +59,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
         });
 
-
         // News
         Route::prefix('news')->name('news.')->group(function () {
             Route::get('/', [NewsController::class, 'index'])->name('index');
@@ -70,7 +72,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-home', [NewsController::class, 'toggleHome'])->name('toggle-home');
             Route::get('/{id}/toggle-marquee', [NewsController::class, 'toggleMarquee'])->name('toggle-marquee');
         });
-        
 
         // Member Announcements
         Route::prefix('member-announcements')->name('member-announcements.')->group(function () {
@@ -83,7 +84,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/preview', [MemberAnnouncementController::class, 'preview'])->name('preview');
         });
 
-
         // Column Articles (專欄園地)
         Route::prefix('column-articles')->name('column-articles.')->group(function () {
             Route::get('/', [ColumnArticleController::class, 'index'])->name('index');
@@ -94,7 +94,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{id}', [ColumnArticleController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/toggle-home', [ColumnArticleController::class, 'toggleHome'])->name('toggle-home');
         });
-
 
         // Products (會員商品)
         Route::prefix('products')->name('products.')->group(function () {
@@ -124,8 +123,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}/sort', [DirectorController::class, 'updateSort'])->name('update-sort');
             Route::get('/{id}/copy', [DirectorController::class, 'copy'])->name('copy');
         });
-
-
+        
         // Members (會員資訊)
         Route::prefix('members')->name('members.')->group(function () {
             Route::get('/', [MemberController::class, 'index'])->name('index');
@@ -136,8 +134,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{id}', [MemberController::class, 'destroy'])->name('destroy');
             Route::put('/{id}/sort', [MemberController::class, 'updateSort'])->name('update-sort');
         });
-
-
+        
         // Guestbook (留言板)
         Route::prefix('guestbook')->name('guestbook.')->group(function () {
             Route::get('/', [GuestbookController::class, 'index'])->name('index');
@@ -150,14 +147,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/reset-views', [GuestbookController::class, 'resetViews'])->name('reset-views');
             Route::put('/{id}/sort', [GuestbookController::class, 'updateSort'])->name('update-sort');
         });
-
-
+            
+        // Jobs (人才招募)
+        Route::prefix('jobs')->name('jobs.')->group(function () {
+            Route::get('/', [JobController::class, 'index'])->name('index');
+            Route::get('/create', [JobController::class, 'create'])->name('create');
+            Route::post('/', [JobController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [JobController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [JobController::class, 'update'])->name('update');
+            Route::delete('/{id}', [JobController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [JobController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/reset-views', [JobController::class, 'resetViews'])->name('reset-views');
+            Route::put('/{id}/sort', [JobController::class, 'updateSort'])->name('update-sort');
+        });
+        
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
         // 管理者
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-        
+            
         // 網頁模組
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
@@ -173,7 +182,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
-        Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
         Route::get('/timeline', [AdminController::class, 'timeline'])->name('timeline');
         
         // 會員收費

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             DirectorSeeder::class,
             MemberSeeder::class,
+            GuestbookSeeder::class,
         ]);
     }
 }
