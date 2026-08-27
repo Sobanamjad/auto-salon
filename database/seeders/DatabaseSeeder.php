@@ -22,8 +22,12 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             NewsSeeder::class,
             MemberAnnouncementSeeder::class,
-            ColumnArticleSeeder::class;
-            ProductSeeder::class;
+            ColumnArticleSeeder::class,
+            ProductSeeder::class,
+            DirectorSeeder::class,
+            MemberSeeder::class,
+            GuestbookSeeder::class,
+            TimelineSeeder::class,
         ]);
     }
 }
