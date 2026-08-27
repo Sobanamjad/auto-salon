@@ -22,9 +22,10 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             NewsSeeder::class,
             MemberAnnouncementSeeder::class,
-            ColumnArticleSeeder::class;
-            ProductSeeder::class;
-            DirectorSeeder::class;
+            ColumnArticleSeeder::class,
+            ProductSeeder::class,
+            DirectorSeeder::class,
+            MemberSeeder::class,
         ]);
     }
 }

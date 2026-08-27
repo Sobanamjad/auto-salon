@@ -19,7 +19,7 @@ export default function Dashboard() {
         { icon: FaPencilAlt, label: '專欄園地', href: '/admin/column-articles' },
         { icon: FaGift, label: '會員商品', href: '/admin/products' },
         { icon: FaLaptop, label: '理監事(組織)', href: '/admin/directors' },
-        { icon: FaUser, label: '會員資訊', href: '/member/public/ad_member.php?right_sn=260738' },
+        { icon: FaUser, label: '會員資訊', href: '/admin/members' },
         { icon: FaComments, label: '留言板', href: '/qa/public/ad_qa1.php?right_sn=260736' },
         { icon: FaSearch, label: '人才招募', href: '/job/public/ad_job.php?right_sn=260743' },
         { icon: FaLink, label: '相關連結', href: '/link/public/ad_link.php?right_sn=260735' },

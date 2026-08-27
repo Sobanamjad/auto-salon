@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\MemberAnnouncementController;
 use App\Http\Controllers\Admin\ColumnArticleController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\DirectorController;
-
+use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -126,6 +126,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
 
+        // Members (會員資訊)
+        Route::prefix('members')->name('members.')->group(function () {
+            Route::get('/', [MemberController::class, 'index'])->name('index');
+            Route::get('/create', [MemberController::class, 'create'])->name('create');
+            Route::post('/', [MemberController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [MemberController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [MemberController::class, 'update'])->name('update');
+            Route::delete('/{id}', [MemberController::class, 'destroy'])->name('destroy');
+            Route::put('/{id}/sort', [MemberController::class, 'updateSort'])->name('update-sort');
+        });
+
+
 
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -147,7 +159,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/links', [AdminController::class, 'links'])->name('links');
         Route::get('/guestbook', [AdminController::class, 'guestbook'])->name('guestbook');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
-        Route::get('/members', [AdminController::class, 'members'])->name('members');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
         Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
