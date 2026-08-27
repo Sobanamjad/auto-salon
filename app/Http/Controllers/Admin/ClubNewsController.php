@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClubNewsRequest;
 use App\Models\ClubNews;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ClubNewsController extends Controller

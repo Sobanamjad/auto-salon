@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\TimelineController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ClubNewsController;
+use App\Http\Controllers\Admin\TopicController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -214,6 +215,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{id}', [ClubNewsController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/toggle-exclude', [ClubNewsController::class, 'toggleExclude'])->name('toggle-exclude');
         });
+
+        // Topics (主題新知)
+        Route::prefix('topics')->name('topics.')->group(function () {
+            Route::get('/', [TopicController::class, 'index'])->name('index');
+            Route::get('/select', [TopicController::class, 'select'])->name('select');
+            Route::post('/select', [TopicController::class, 'storeSelect'])->name('select.store');
+            Route::get('/{id}', [TopicController::class, 'show'])->name('show');
+            Route::delete('/{id}', [TopicController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-active', [TopicController::class, 'toggleActive'])->name('toggle-active');
+        });
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -227,7 +238,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
-        Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
         Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
