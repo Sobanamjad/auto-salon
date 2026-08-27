@@ -23,7 +23,7 @@ export default function Dashboard() {
         { icon: FaComments, label: '留言板', href: '/admin/guestbook' },
         { icon: FaSearch, label: '人才招募', href: '/admin/jobs' },
         { icon: FaLink, label: '相關連結', href: '/admin/links' },
-        { icon: FaArrowsAltV, label: '本會記事', href: '/timeline/public/ad_timeline.php?right_sn=260744' },
+        { icon: FaArrowsAltV, label: '本會記事', href: '/admin/timeline' },
         { icon: FaUserMd, label: '夥伴介紹', href: '/member/people/ad_people.php?right_sn=260739' },
         { icon: FaBullhorn, label: '社團新聞', href: '/news/public/ad_uninews.php?right_sn=260729' },
         { icon: FaCoffee, label: '主題新知', href: '/article/public/ad_article_local.php?right_sn=260731' },

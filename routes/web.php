@@ -15,6 +15,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\GuestbookController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LinkController;
+use App\Http\Controllers\Admin\TimelineController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -175,6 +176,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/reset-views', [JobController::class, 'resetViews'])->name('reset-views');
             Route::put('/{id}/sort', [JobController::class, 'updateSort'])->name('update-sort');
         });
+
+        // Timeline (本會記事)
+        Route::prefix('timeline')->name('timeline.')->group(function () {
+            Route::get('/', [TimelineController::class, 'index'])->name('index');
+            Route::get('/create', [TimelineController::class, 'create'])->name('create');
+            Route::post('/', [TimelineController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [TimelineController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [TimelineController::class, 'update'])->name('update');
+            Route::delete('/{id}', [TimelineController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [TimelineController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/reset-views', [TimelineController::class, 'resetViews'])->name('reset-views');
+            Route::put('/{id}/sort', [TimelineController::class, 'updateSort'])->name('update-sort');
+        });
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -196,7 +210,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
-        Route::get('/timeline', [AdminController::class, 'timeline'])->name('timeline');
         
         // 會員收費
         Route::get('/basic-setting', function () {

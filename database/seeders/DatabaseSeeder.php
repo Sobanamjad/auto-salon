@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             DirectorSeeder::class,
             MemberSeeder::class,
             GuestbookSeeder::class,
+            TimelineSeeder::class,
         ]);
     }
 }
