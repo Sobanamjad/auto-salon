@@ -25,7 +25,7 @@ export default function Dashboard() {
         { icon: FaLink, label: '相關連結', href: '/admin/links' },
         { icon: FaArrowsAltV, label: '本會記事', href: '/admin/timeline' },
         { icon: FaUserMd, label: '夥伴介紹', href: '/admin/partners' },
-        { icon: FaBullhorn, label: '社團新聞', href: '/news/public/ad_uninews.php?right_sn=260729' },
+        { icon: FaBullhorn, label: '社團新聞', href: '/admin/club-news' },
         { icon: FaCoffee, label: '主題新知', href: '/article/public/ad_article_local.php?right_sn=260731' },
         { icon: FaTags, label: '紅白帖', href: '/vote/public/ad_red_white.php?right_sn=260751' },
         { icon: FaEdit, label: '日記簿', href: '/account/money/ad_rd.php?right_sn=260748' },

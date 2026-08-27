@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             GuestbookSeeder::class,
             TimelineSeeder::class,
             PartnerSeeder::class,
+            ClubNewsSeeder::class,
         ]);
     }
 }

@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\TimelineController;
 use App\Http\Controllers\Admin\PartnerController;
-
+use App\Http\Controllers\Admin\ClubNewsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -203,6 +203,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-status', [PartnerController::class, 'toggleStatus'])->name('toggle-status');
             Route::get('/{id}/reset-views', [PartnerController::class, 'resetViews'])->name('reset-views');
             Route::put('/{id}/sort', [PartnerController::class, 'updateSort'])->name('update-sort');
+        });
+
+        // Club News (社團新聞)
+        Route::prefix('club-news')->name('club-news.')->group(function () {
+            Route::get('/', [ClubNewsController::class, 'index'])->name('index');
+            Route::get('/exclude', [ClubNewsController::class, 'exclude'])->name('exclude');
+            Route::post('/exclude', [ClubNewsController::class, 'storeExcluded'])->name('exclude.store');
+            Route::get('/{id}/detail', [ClubNewsController::class, 'detail'])->name('detail');
+            Route::delete('/{id}', [ClubNewsController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-exclude', [ClubNewsController::class, 'toggleExclude'])->name('toggle-exclude');
         });
         
         // Logout
