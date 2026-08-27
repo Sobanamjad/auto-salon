@@ -138,6 +138,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
 
+        // Guestbook (留言板)
+        Route::prefix('guestbook')->name('guestbook.')->group(function () {
+            Route::get('/', [GuestbookController::class, 'index'])->name('index');
+            Route::get('/create', [GuestbookController::class, 'create'])->name('create');
+            Route::post('/', [GuestbookController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [GuestbookController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [GuestbookController::class, 'update'])->name('update');
+            Route::delete('/{id}', [GuestbookController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-status', [GuestbookController::class, 'toggleStatus'])->name('toggle-status');
+            Route::get('/{id}/reset-views', [GuestbookController::class, 'resetViews'])->name('reset-views');
+            Route::put('/{id}/sort', [GuestbookController::class, 'updateSort'])->name('update-sort');
+        });
+
 
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -157,7 +170,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
         Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
         Route::get('/links', [AdminController::class, 'links'])->name('links');
-        Route::get('/guestbook', [AdminController::class, 'guestbook'])->name('guestbook');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
