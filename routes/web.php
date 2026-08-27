@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\GuestbookController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\TimelineController;
+use App\Http\Controllers\Admin\PartnerController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -189,6 +190,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/reset-views', [TimelineController::class, 'resetViews'])->name('reset-views');
             Route::put('/{id}/sort', [TimelineController::class, 'updateSort'])->name('update-sort');
         });
+
+        // Partners (夥伴介紹)
+        Route::prefix('partners')->name('partners.')->group(function () {
+            Route::get('/', [PartnerController::class, 'index'])->name('index');
+            Route::get('/create', [PartnerController::class, 'create'])->name('create');
+            Route::post('/', [PartnerController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [PartnerController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PartnerController::class, 'update'])->name('update');
+            Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [PartnerController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/toggle-status', [PartnerController::class, 'toggleStatus'])->name('toggle-status');
+            Route::get('/{id}/reset-views', [PartnerController::class, 'resetViews'])->name('reset-views');
+            Route::put('/{id}/sort', [PartnerController::class, 'updateSort'])->name('update-sort');
+        });
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -201,14 +216,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
-
         Route::get('/club-news', [AdminController::class, 'clubNews'])->name('club-news');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
         Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
         Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
-        Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
         
         // 會員收費
