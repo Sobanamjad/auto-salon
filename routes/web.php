@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\MemberAnnouncementController;
 use App\Http\Controllers\Admin\ColumnArticleController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\DirectorController;
 
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
@@ -110,6 +111,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 
+        // Directors (理監事/組織)
+        Route::prefix('directors')->name('directors.')->group(function () {
+            Route::get('/', [DirectorController::class, 'index'])->name('index');
+            Route::get('/create', [DirectorController::class, 'create'])->name('create');
+            Route::post('/', [DirectorController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [DirectorController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [DirectorController::class, 'update'])->name('update');
+            Route::delete('/{id}', [DirectorController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [DirectorController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/reset-views', [DirectorController::class, 'resetViews'])->name('reset-views');
+            Route::put('/{id}/sort', [DirectorController::class, 'updateSort'])->name('update-sort');
+        });
+
+
+
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
@@ -127,7 +143,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
         Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
-        Route::get('/directors', [AdminController::class, 'directors'])->name('directors');
         Route::get('/links', [AdminController::class, 'links'])->name('links');
         Route::get('/guestbook', [AdminController::class, 'guestbook'])->name('guestbook');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');

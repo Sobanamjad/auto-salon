@@ -6,6 +6,9 @@ import {
 } from 'react-icons/fa';
 
 export default function Dashboard() {
+    // Direct compute at render time
+    const currentDate = new Date().toISOString().split('T')[0];
+    
     // Navigation items data - Chinese Traditional
     const navItems = [
         { icon: FaCalendar, label: '活動管理', href: '/admin/events' }, 
@@ -15,7 +18,7 @@ export default function Dashboard() {
         { icon: FaBullhorn, label: '會員公告', href: '/admin/member-announcements' },
         { icon: FaPencilAlt, label: '專欄園地', href: '/admin/column-articles' },
         { icon: FaGift, label: '會員商品', href: '/admin/products' },
-        { icon: FaLaptop, label: '理監事(組織)', href: '/work/public/ad_work.php?right_sn=260734' },
+        { icon: FaLaptop, label: '理監事(組織)', href: '/admin/directors' },
         { icon: FaUser, label: '會員資訊', href: '/member/public/ad_member.php?right_sn=260738' },
         { icon: FaComments, label: '留言板', href: '/qa/public/ad_qa1.php?right_sn=260736' },
         { icon: FaSearch, label: '人才招募', href: '/job/public/ad_job.php?right_sn=260743' },
@@ -37,7 +40,7 @@ export default function Dashboard() {
                     {/* Navigation Panel */}
                     <div className="bg-white rounded-xl shadow-sm p-6">
                         <div className="border-b border-gray-200 pb-3 mb-4">
-                            <p className="text-sm text-gray-500 text-center">2026-08-20</p>
+                            <p className="text-sm text-gray-500 text-center">{currentDate}</p>
                             <h3 className="text-xl font-bold text-gray-800 text-center">
                                 歡迎使用系統
                             </h3>

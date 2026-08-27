@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             MemberAnnouncementSeeder::class,
             ColumnArticleSeeder::class;
             ProductSeeder::class;
+            DirectorSeeder::class;
         ]);
     }
 }
