@@ -122,6 +122,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-home', [DirectorController::class, 'toggleHome'])->name('toggle-home');
             Route::get('/{id}/reset-views', [DirectorController::class, 'resetViews'])->name('reset-views');
             Route::put('/{id}/sort', [DirectorController::class, 'updateSort'])->name('update-sort');
+            Route::get('/{id}/copy', [DirectorController::class, 'copy'])->name('copy');
         });
 
 

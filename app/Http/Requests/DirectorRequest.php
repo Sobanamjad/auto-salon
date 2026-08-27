@@ -27,7 +27,7 @@ class DirectorRequest extends FormRequest
             'content' => 'nullable|string',
             'video' => 'nullable|string',
             'note' => 'nullable|string',
-            'has_photo' => 'boolean',
+            'has_photo' => 'nullable|boolean',
         ];
     }
 

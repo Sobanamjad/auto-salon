@@ -69,7 +69,7 @@ export default function DirectorCreate() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Date & Settings */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     <FaCalendar className="inline mr-1" /> 發表日期
@@ -171,6 +171,23 @@ export default function DirectorCreate() {
                                 </select>
                                 {errors.category && (
                                     <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+                                )}
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    語言
+                                </label>
+                                <select
+                                    value={data.language}
+                                    onChange={(e) => setData('language', e.target.value)}
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="TS">繁體中文</option>
+                                    <option value="EN">English</option>
+                                    <option value="JP">日本語</option>
+                                </select>
+                                {errors.language && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.language}</p>
                                 )}
                             </div>
                         </div>

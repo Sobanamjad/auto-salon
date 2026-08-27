@@ -120,4 +120,16 @@ class DirectorController extends Controller
 
         return redirect()->back()->with('success', '排序已更新');
     }
+
+    public function copy($id)
+    {
+        $director = Director::findOrFail($id);
+        $newDirector = $director->replicate();
+        $newDirector->title = $director->title . ' (複製)';
+        $newDirector->name = $director->name . ' (複製)';
+        $newDirector->views = 0;
+        $newDirector->save();
+
+        return redirect()->back()->with('success', '理監事複製成功');
+    }
 }
