@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\GuestbookController;
 use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\LinkController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -108,6 +109,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}/sort', [ProductController::class, 'updateSort'])->name('update-sort');
         });
 
+        // Links (相關連結)
+        Route::prefix('links')->name('links.')->group(function () {
+            Route::get('/', [LinkController::class, 'index'])->name('index');
+            Route::get('/create', [LinkController::class, 'create'])->name('create');
+            Route::post('/', [LinkController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [LinkController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [LinkController::class, 'update'])->name('update');
+            Route::delete('/{id}', [LinkController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-home', [LinkController::class, 'toggleHome'])->name('toggle-home');
+            Route::get('/{id}/toggle-sidebar', [LinkController::class, 'toggleSidebar'])->name('toggle-sidebar');
+            Route::put('/{id}/sort', [LinkController::class, 'updateSort'])->name('update-sort');
+            Route::get('/{id}/copy', [LinkController::class, 'copy'])->name('copy');
+        });
+
 
 
         // Directors (理監事/組織)
@@ -178,7 +193,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
         Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
-        Route::get('/links', [AdminController::class, 'links'])->name('links');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
         Route::get('/partners', [AdminController::class, 'partners'])->name('partners');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');

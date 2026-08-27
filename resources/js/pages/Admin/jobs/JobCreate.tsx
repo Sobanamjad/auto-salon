@@ -3,7 +3,7 @@ import {
     FaArrowLeft, FaSave, FaTimes, FaBriefcase, 
     FaUser, FaPhone, FaMobile, FaEnvelope, 
     FaBuilding, FaMapMarkerAlt, FaCalendar, FaDollarSign,
-    FaSort, FaTag, FaUsers, FaFileAlt, FaGlobe
+    FaSort, FaTag, FaUsers, FaFileAlt, FaGlobe, FaGraduationCap
 } from 'react-icons/fa';
 
 export default function JobCreate() {
