@@ -1,3 +1,4 @@
+// resources/js/pages/Admin/Dashboard.tsx
 import { Head, Link } from '@inertiajs/react';
 import { 
     FaCalendar, FaImage, FaLeaf, FaBullhorn, FaPencilAlt, 

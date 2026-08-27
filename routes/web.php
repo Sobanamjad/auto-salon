@@ -226,7 +226,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
-        Route::get('/club-news', [AdminController::class, 'clubNews'])->name('club-news');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
         Route::get('/topics', [AdminController::class, 'topics'])->name('topics');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
