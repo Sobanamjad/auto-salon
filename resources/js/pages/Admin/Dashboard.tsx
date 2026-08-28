@@ -29,7 +29,7 @@ export default function Dashboard() {
         { icon: FaBullhorn, label: '社團新聞', href: '/admin/club-news' },
         { icon: FaCoffee, label: '主題新知', href: '/admin/topics' },
         { icon: FaTags, label: '紅白帖', href: '/admin/red-white' },
-        { icon: FaEdit, label: '日記簿', href: '/account/money/ad_rd.php?right_sn=260748' },
+        { icon: FaEdit, label: '日記簿', href: '/admin/journal' },
     ];
 
     return (

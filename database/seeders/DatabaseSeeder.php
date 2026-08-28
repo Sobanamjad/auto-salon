@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             PartnerSeeder::class,
             ClubNewsSeeder::class,
             RedWhiteSeeder::class,
+            JournalSeeder::class,
         ]);
     }
 }

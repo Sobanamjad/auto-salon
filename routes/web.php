@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ClubNewsController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\RedWhiteController;
+use App\Http\Controllers\Admin\JournalController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -234,6 +235,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-close', [RedWhiteController::class, 'toggleClose'])->name('toggle-close');
             Route::put('/{id}/sort', [RedWhiteController::class, 'updateSort'])->name('update-sort');
         });
+
+        // Journal (日記簿)
+        Route::prefix('journal')->name('journal.')->group(function () {
+            Route::get('/', [JournalController::class, 'index'])->name('index');
+            Route::get('/create', [JournalController::class, 'create'])->name('create');
+            Route::post('/', [JournalController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [JournalController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [JournalController::class, 'update'])->name('update');
+            Route::delete('/{id}', [JournalController::class, 'destroy'])->name('destroy');
+            Route::get('/report', [JournalController::class, 'report'])->name('report');
+        });
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -261,7 +273,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/payment-reports', [AdminController::class, 'paymentReports'])->name('payment-reports');
         
         // 記帳系統
-        Route::get('/journal', [AdminController::class, 'journal'])->name('journal');
         Route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
         
     });
