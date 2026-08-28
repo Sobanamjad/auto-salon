@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TimelineController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ClubNewsController;
 use App\Http\Controllers\Admin\TopicController;
+use App\Http\Controllers\Admin\RedWhiteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -225,6 +226,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{id}', [TopicController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/toggle-active', [TopicController::class, 'toggleActive'])->name('toggle-active');
         });
+
+        // Red White (紅白帖)
+        Route::prefix('red-white')->name('red-white.')->group(function () {
+            Route::get('/', [RedWhiteController::class, 'index'])->name('index');
+            Route::delete('/{id}', [RedWhiteController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-close', [RedWhiteController::class, 'toggleClose'])->name('toggle-close');
+            Route::put('/{id}/sort', [RedWhiteController::class, 'updateSort'])->name('update-sort');
+        });
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -255,9 +264,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/journal', [AdminController::class, 'journal'])->name('journal');
         Route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
         
-        // 客服系統
-        Route::get('/red-white-categories', [AdminController::class, 'redWhiteCategories'])->name('red-white-categories');
-        Route::get('/red-white', [AdminController::class, 'redWhite'])->name('red-white');
     });
 });
 

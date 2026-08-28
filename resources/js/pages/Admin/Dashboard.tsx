@@ -28,7 +28,7 @@ export default function Dashboard() {
         { icon: FaUserMd, label: '夥伴介紹', href: '/admin/partners' },
         { icon: FaBullhorn, label: '社團新聞', href: '/admin/club-news' },
         { icon: FaCoffee, label: '主題新知', href: '/admin/topics' },
-        { icon: FaTags, label: '紅白帖', href: '/vote/public/ad_red_white.php?right_sn=260751' },
+        { icon: FaTags, label: '紅白帖', href: '/admin/red-white' },
         { icon: FaEdit, label: '日記簿', href: '/account/money/ad_rd.php?right_sn=260748' },
     ];
 

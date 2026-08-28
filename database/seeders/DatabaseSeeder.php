@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             TimelineSeeder::class,
             PartnerSeeder::class,
             ClubNewsSeeder::class,
+            RedWhiteSeeder::class,
         ]);
     }
 }
