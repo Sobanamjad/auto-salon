@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\JournalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\PublicSliderController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -322,6 +323,9 @@ Route::get('/dashboard', function () {
 })->middleware('auth')->name('dashboard');
 
 Route::inertia('/', 'welcome')->name('home');
+
+// Public API for slider data
+Route::get('/api/sliders', [PublicSliderController::class, 'getActiveSliders'])->name('api.sliders');
 
 Route::get('/timeline', function () {
     $csn = request()->query('new_csn');

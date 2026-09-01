@@ -26,6 +26,8 @@ class Slider extends Model
         'description',
     ];
 
+    protected $appends = ['image_url', 'thumbnail', 'language_label'];
+
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
@@ -64,21 +66,29 @@ class Slider extends Model
     }
 
     // Accessor for full image URL
-    public function getImageUrlAttribute(): string
+    public function getImageUrlAttribute(): ?string
     {
         if ($this->image) {
+            // Check if it's an old system image (starts with b)
+            if (preg_match('/^b\d+\.png$/', $this->image)) {
+                return '/asd_files/' . $this->image;
+            }
             return asset('storage/sliders/' . $this->image);
         }
-        return '';
+        return null;
     }
 
     // Accessor for thumbnail
-    public function getThumbnailAttribute(): string
+    public function getThumbnailAttribute(): ?string
     {
         if ($this->image) {
+            // Check if it's an old system image (starts with b)
+            if (preg_match('/^b\d+\.png$/', $this->image)) {
+                return '/asd_files/' . $this->image;
+            }
             return asset('storage/sliders/thumbnails/' . $this->image);
         }
-        return '';
+        return null;
     }
 
     // Get language label
@@ -89,6 +99,6 @@ class Slider extends Model
             'EN' => '英文',
             'JP' => '日文',
         ];
-        return $labels[$this->language] ?? $this->language;
+        return $labels[$this->language] ?? $this->language ?? 'TS';
     }
 }

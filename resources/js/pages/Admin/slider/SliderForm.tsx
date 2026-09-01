@@ -7,7 +7,8 @@ interface Slider {
     id?: number;
     language: string;
     title: string;
-    image: string;
+    image: string | null;
+    image_url: string | null;
     image_alt: string;
     link: string;
     sort_order: number;
@@ -221,7 +222,7 @@ export default function SliderForm({ title = '相片輪播', slider }: Props) {
                                 </div>
                             )}
                             {/* Show existing image when editing */}
-                            {isEdit && slider?.image && !imagePreview && (
+                            {isEdit && slider?.image && !imagePreview && slider.image_url && (
                                 <div className="mt-2">
                                     <img 
                                         src={slider.image_url} 

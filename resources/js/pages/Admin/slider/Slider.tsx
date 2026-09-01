@@ -11,9 +11,9 @@ interface Slider {
     language: string;
     language_label: string;
     title: string;
-    image: string;
-    image_url: string;
-    thumbnail: string;
+    image: string | null;
+    image_url: string | null;
+    thumbnail: string | null;
     image_alt: string;
     link: string;
     sort_order: number;
@@ -146,12 +146,16 @@ export default function Slider({ title = '相片輪播', sliders }: Props) {
                                         </td>
                                         <td className="px-3 py-3">
                                             <div className="flex items-center gap-2">
-                                                {item.image_url && (
+                                                {item.image_url ? (
                                                     <img 
                                                         src={item.image_url} 
                                                         alt={item.image_alt || item.title || 'Slider'}
                                                         className="h-12 w-auto object-cover rounded border"
                                                     />
+                                                ) : (
+                                                    <div className="h-12 w-16 bg-gray-100 rounded border flex items-center justify-center text-gray-400 text-xs">
+                                                        無圖片
+                                                    </div>
                                                 )}
                                                 {item.link && (
                                                     <a 
