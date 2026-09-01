@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\ClubNewsController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\RedWhiteController;
 use App\Http\Controllers\Admin\JournalController;
+use App\Http\Controllers\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -247,6 +248,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{id}', [JournalController::class, 'destroy'])->name('destroy');
             Route::get('/report', [JournalController::class, 'report'])->name('report');
         });
+
+        // Profile (個人資料)
+        Route::prefix('profile')->name('profile.')->group(function () {
+            Route::get('/', [ProfileController::class, 'index'])->name('index');
+            Route::put('/', [ProfileController::class, 'update'])->name('update');
+        });
+
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -255,7 +263,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
             
         // 網頁模組
-        Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
         Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
