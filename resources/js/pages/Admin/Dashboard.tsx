@@ -1,9 +1,9 @@
 // resources/js/pages/Admin/Dashboard.tsx
 import { Head, Link } from '@inertiajs/react';
-import { 
-    FaCalendar, FaImage, FaLeaf, FaBullhorn, FaPencilAlt, 
-    FaGift, FaLaptop, FaUser, FaComments, FaSearch, 
-    FaLink, FaArrowsAltV, FaUserMd, FaCoffee, FaTags, FaEdit 
+import {
+    FaCalendar, FaImage, FaLeaf, FaBullhorn, FaPencilAlt,
+    FaGift, FaLaptop, FaUser, FaComments, FaSearch,
+    FaLink, FaArrowsAltV, FaUserMd, FaCoffee, FaTags, FaEdit, FaBuilding
 } from 'react-icons/fa';
 
 export default function Dashboard() {
@@ -31,6 +31,7 @@ export default function Dashboard() {
         { icon: FaTags, label: '紅白帖', href: '/admin/red-white' },
         { icon: FaEdit, label: '日記簿', href: '/admin/journal' },
         { icon: FaUser, label: '個人資料', href: '/admin/profile' },
+        { icon: FaBuilding, label: '本會資料', href: '/admin/organization' },
 
     ];
 

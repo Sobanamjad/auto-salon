@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\RedWhiteController;
 use App\Http\Controllers\Admin\JournalController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\OrganizationController;
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -255,6 +257,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/', [ProfileController::class, 'update'])->name('update');
         });
 
+        // Organization (組織資料)
+        Route::prefix('organization')->name('organization.')->group(function () {
+            Route::get('/', [OrganizationController::class, 'index'])->name('index');
+            Route::get('/create', [OrganizationController::class, 'create'])->name('create');
+            Route::post('/', [OrganizationController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [OrganizationController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [OrganizationController::class, 'update'])->name('update');
+            Route::delete('/{id}', [OrganizationController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-active', [OrganizationController::class, 'toggleActive'])->name('toggle-active');
+            Route::get('/{id}/change-password', [OrganizationController::class, 'changePassword'])->name('change-password');
+            Route::put('/{id}/change-password', [OrganizationController::class, 'updatePassword'])->name('update-password');
+        });
+
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -263,7 +278,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
             
         // 網頁模組
-        Route::get('/organization', [AdminController::class, 'organization'])->name('organization');
         Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
