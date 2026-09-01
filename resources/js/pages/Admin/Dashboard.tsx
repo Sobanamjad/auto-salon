@@ -32,6 +32,8 @@ export default function Dashboard() {
         { icon: FaEdit, label: '日記簿', href: '/admin/journal' },
         { icon: FaUser, label: '個人資料', href: '/admin/profile' },
         { icon: FaBuilding, label: '本會資料', href: '/admin/organization' },
+        { icon: FaImage, label: '相片輪播', href: '/admin/slider' },
+
 
     ];
 

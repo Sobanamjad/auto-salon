@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             RedWhiteSeeder::class,
             JournalSeeder::class,
             OrganizationSeeder::class,
+            SliderSeeder::class,
         ]);
     }
 }

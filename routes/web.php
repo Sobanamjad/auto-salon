@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\RedWhiteController;
 use App\Http\Controllers\Admin\JournalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\OrganizationController;
+use App\Http\Controllers\Admin\SliderController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -270,6 +271,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}/change-password', [OrganizationController::class, 'updatePassword'])->name('update-password');
         });
 
+        // Slider (相片輪播)
+        Route::prefix('slider')->name('slider.')->group(function () {
+            Route::get('/', [SliderController::class, 'index'])->name('index');
+            Route::get('/create', [SliderController::class, 'create'])->name('create');
+            Route::post('/', [SliderController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [SliderController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [SliderController::class, 'update'])->name('update');
+            Route::delete('/{id}', [SliderController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-active', [SliderController::class, 'toggleActive'])->name('toggle-active');
+            Route::put('/{id}/sort', [SliderController::class, 'updateSort'])->name('update-sort');
+        });
+
         
         // Logout
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -278,7 +291,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
             
         // 網頁模組
-        Route::get('/slider', [AdminController::class, 'slider'])->name('slider');
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
