@@ -58,7 +58,7 @@ export default function AlbumEdit({ album }: { album: Album }) {
         <>
             <Head title="編輯相簿" />
             
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white rounded-xl shadow-sm p-6 text-gray-900">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
                     <div className="flex items-center gap-3">
