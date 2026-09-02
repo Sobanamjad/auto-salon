@@ -329,7 +329,8 @@ Route::get('/api/sliders', [PublicSliderController::class, 'getActiveSliders'])-
 
 Route::get('/timeline', function () {
     $csn = request()->query('new_csn');
-    return inertia('timeline', ['csn' => $csn]);
+    $newSn = request()->query('new_sn');
+    return inertia('timeline', ['csn' => $csn, 'newSn' => $newSn]);
 })->name('timeline');
 
 Route::inertia('/people', 'people')->name('people');

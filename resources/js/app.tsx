@@ -11,6 +11,9 @@ import AdminLayout from '@/pages/Admin/Layouts/AdminLayout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+// Simple check if we're in SSR
+const isSSR = typeof window === 'undefined';
+
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     layout: (name) => {
@@ -47,14 +50,17 @@ createInertiaApp({
     },
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')) as any,
     setup({ el, App, props }) {
-        const root = createRoot(el);
-        
-        root.render(
-            <TooltipProvider delayDuration={0}>
-                <App {...props} />
-                <Toaster />
-            </TooltipProvider>
-        );
+        // Only create root if we're not in SSR
+        if (!isSSR && el) {
+            const root = createRoot(el);
+            
+            root.render(
+                <TooltipProvider delayDuration={0}>
+                    <App {...props} />
+                    <Toaster />
+                </TooltipProvider>
+            );
+        }
     },
     progress: {
         color: '#4B5563',
