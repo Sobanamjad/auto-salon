@@ -142,19 +142,17 @@ export default function Timeline({ csn }: Props) {
                                                         <span className="timeline-year-text">{item.year}</span>
                                                     </div>
                                                     <div className="timeline-box js-scroll">
-                                                        <div className="card card_timeline">
+                                                        <a href={item.href} title={item.title} className="card card_timeline">
                                                             <div className="card_row">
                                                                 <div className="card-one">
                                                                     <div className="card-photo">
-                                                                        <a href={item.href} title={item.title}>
-                                                                            <img
-                                                                                src={item.img}
-                                                                                width={item.imgW}
-                                                                                height={item.imgH}
-                                                                                alt={item.title}
-                                                                                loading="lazy"
-                                                                            />
-                                                                        </a>
+                                                                        <img
+                                                                            src={item.img}
+                                                                            width={item.imgW}
+                                                                            height={item.imgH}
+                                                                            alt={item.title}
+                                                                            loading="lazy"
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                                 <div className="card-two">
@@ -170,8 +168,8 @@ export default function Timeline({ csn }: Props) {
                                                                                 </div>
                                                                             </div>
                                                                             <div className="header-two">
-                                                                                <h3 className="card-name">
-                                                                                    
+                                                                                <h3 className="card-name" style={{ transition: 'color 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#f97316'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
+                                                                                    {item.title}
                                                                                 </h3>
                                                                             </div>
                                                                         </div>
@@ -183,15 +181,15 @@ export default function Timeline({ csn }: Props) {
                                                                     </div>
                                                                     <div className="hidden">
                                                                         <div className="card-btnbar card-btnbar_readmore">
-                                                                            <a href={item.href} title={item.title} className="card-btn card-btn_readmore">
+                                                                            <span className="card-btn card-btn_readmore">
                                                                                 <span className="card-btn-text">繼續閱讀</span>
                                                                                 <span className="iconsvg icon-read-more"></span>
-                                                                            </a>
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             ))}
