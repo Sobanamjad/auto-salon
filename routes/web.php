@@ -433,7 +433,13 @@ Route::get('/news', function () {
 
     $news = $query->orderBy('sort_order', 'desc')
                   ->orderBy('published_date', 'desc')
-                  ->get(['id', 'published_date', 'category', 'subject', 'brief', 'photo']);
+                  ->get(['id', 'published_date', 'category', 'subject', 'brief', 'photo'])
+                  ->map(function ($item) {
+                      if ($item->photo) {
+                          $item->photo = asset('storage/' . $item->photo);
+                      }
+                      return $item;
+                  });
 
     return inertia('news', [
         'csn'   => $csn,
@@ -452,12 +458,14 @@ Route::get('/news_view', function () {
     }
     $news->increment('views');
 
+    $photoPath = $news->photo ? asset('storage/' . $news->photo) : null;
+
     return inertia('news-view', [
         'news' => [
             'id'             => $news->id,
             'published_date' => $news->published_date->format('Y-m-d'),
             'category'       => $news->category,
-            'photo'          => $news->photo,
+            'photo'          => $photoPath,
             'subject'        => $news->subject,
             'brief'          => $news->brief,
             'content'        => $news->content,

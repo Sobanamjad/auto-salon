@@ -113,6 +113,17 @@ export default function NewsView({ news }: Props) {
                                             <div className="info info_view_date">{formattedDate}</div>
                                         </div>
 
+                                        {/* Photo display */}
+                                        {news && news.photo && (
+                                            <div className="detailbox">
+                                                <img
+                                                    src={news.photo}
+                                                    alt={news.subject}
+                                                    style={{ width: '100%', height: 'auto', maxHeight: '600px', objectFit: 'contain' }}
+                                                />
+                                            </div>
+                                        )}
+
                                         {/* Full HTML content from DB */}
                                         <div
                                             className="detailbox editor"

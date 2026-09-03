@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsRequest;
 use App\Models\News;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class NewsController extends Controller
@@ -41,6 +42,11 @@ class NewsController extends Controller
     {
         $validated = $request->validated();
 
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('news_photos', 'public');
+        }
+
         News::create([
             'published_date' => $validated['published_date'],
             'end_date' => $validated['end_date'],
@@ -49,6 +55,7 @@ class NewsController extends Controller
             'show_marquee' => $validated['show_marquee'],
             'sort_order' => $validated['sort_order'],
             'category' => $validated['category'],
+            'photo' => $photoPath,
             'subject' => $validated['subject'],
             'brief' => $validated['brief'] ?? null,
             'content' => $validated['content'],
@@ -85,6 +92,15 @@ class NewsController extends Controller
         $news = News::findOrFail($id);
         $validated = $request->validated();
 
+        $photoPath = $news->photo;
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($news->photo && Storage::disk('public')->exists($news->photo)) {
+                Storage::disk('public')->delete($news->photo);
+            }
+            $photoPath = $request->file('photo')->store('news_photos', 'public');
+        }
+
         $news->update([
             'published_date' => $validated['published_date'],
             'end_date' => $validated['end_date'],
@@ -93,7 +109,7 @@ class NewsController extends Controller
             'show_marquee' => $validated['show_marquee'],
             'sort_order' => $validated['sort_order'],
             'category' => $validated['category'],
-            'photo' => $validated['photo'] ?? null,
+            'photo' => $photoPath,
             'subject' => $validated['subject'],
             'brief' => $validated['brief'] ?? null,
             'content' => $validated['content'],

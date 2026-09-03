@@ -3,15 +3,8 @@ import { useState } from 'react';
 import { 
     FaArrowLeft, FaSave, FaTimes, FaBullhorn, FaImage, 
     FaVideo, FaMapMarkedAlt, FaTag, FaHome, FaSort,
-    FaCalendar, FaFileAlt, FaPlus, FaTrash
+    FaCalendar, FaFileAlt
 } from 'react-icons/fa';
-
-interface Photo {
-    file: File | null;
-    caption: string;
-    sort_order: number;
-    is_main: boolean;
-}
 
 interface NewsFormData {
     published_date: string;
@@ -28,7 +21,7 @@ interface NewsFormData {
     video: string;
     map: string;
     note: string;
-    photos: Photo[];
+    photo: File | null;
 }
 
 interface NewsEditProps {
@@ -41,6 +34,7 @@ interface NewsEditProps {
         show_marquee: boolean;
         sort_order: number;
         category: string;
+        photo: string | null;
         subject: string;
         brief: string | null;
         content: string;
@@ -52,13 +46,6 @@ interface NewsEditProps {
 }
 
 export default function NewsEdit({ news }: NewsEditProps) {
-    const [photos, setPhotos] = useState<Photo[]>([
-        { file: null, caption: '', sort_order: 99, is_main: false },
-        { file: null, caption: '', sort_order: 99, is_main: false },
-        { file: null, caption: '', sort_order: 99, is_main: false },
-        { file: null, caption: '', sort_order: 99, is_main: false }
-    ]);
-
     const { data, setData, put, processing, errors } = useForm<NewsFormData>({
         published_date: news.published_date ? news.published_date.slice(0, 16) : new Date().toISOString().slice(0, 16),
         end_date: news.end_date || '2200-12-31',
@@ -74,12 +61,25 @@ export default function NewsEdit({ news }: NewsEditProps) {
         video: news.video || '',
         map: news.map || '',
         note: news.note || '',
-        photos: photos
+        photo: null
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const formData = new FormData();
+        
+        // Add all form fields
+        Object.keys(data).forEach(key => {
+            if (key === 'photo' && data.photo instanceof File) {
+                formData.append('photo', data.photo);
+            } else if (key !== 'photo') {
+                formData.append(key, String(data[key as keyof NewsFormData]));
+            }
+        });
+
         put(`/admin/news/${news.id}`, {
+            data: formData,
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/news';
             },
@@ -87,25 +87,6 @@ export default function NewsEdit({ news }: NewsEditProps) {
                 console.error('Validation errors:', errors);
             }
         });
-    };
-
-    const handlePhotoChange = (index: number, field: keyof Photo, value: any) => {
-        const newPhotos = [...photos];
-        newPhotos[index] = { ...newPhotos[index], [field]: value };
-        setPhotos(newPhotos);
-        setData('photos', newPhotos);
-    };
-
-    const addPhotoField = () => {
-        setPhotos([...photos, { file: null, caption: '', sort_order: 99, is_main: false }]);
-    };
-
-    const removePhotoField = (index: number) => {
-        if (photos.length > 1) {
-            const newPhotos = photos.filter((_, i) => i !== index);
-            setPhotos(newPhotos);
-            setData('photos', newPhotos);
-        }
     };
 
     return (
@@ -374,78 +355,31 @@ export default function NewsEdit({ news }: NewsEditProps) {
                         <p className="text-xs text-gray-500 mt-1">與該公告有關之文字，限定10個字</p>
                     </div>
 
-                    {/* Photos */}
+                    {/* Photo */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                                <FaImage className="inline mr-1 text-blue-500" /> 相片
-                            </label>
-                            <button
-                                type="button"
-                                onClick={addPhotoField}
-                                className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
-                            >
-                                <FaPlus /> 新增相片
-                            </button>
-                        </div>
-                        
-                        {photos.map((photo, index) => (
-                            <div key={index} className="bg-white p-4 rounded-lg border border-gray-200 mb-3">
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                                    <div>
-                                        <label className="block text-xs text-gray-500 mb-1">相片</label>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0] || null;
-                                                handlePhotoChange(index, 'file', file);
-                                            }}
-                                            className="text-sm text-gray-500 w-full"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs text-gray-500 mb-1">說明</label>
-                                        <input
-                                            type="text"
-                                            value={photo.caption}
-                                            onChange={(e) => handlePhotoChange(index, 'caption', e.target.value)}
-                                            className="w-full border rounded px-2 py-1 text-sm"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs text-gray-500 mb-1">排序</label>
-                                        <input
-                                            type="number"
-                                            value={photo.sort_order}
-                                            onChange={(e) => handlePhotoChange(index, 'sort_order', parseInt(e.target.value) || 99)}
-                                            className="w-full border rounded px-2 py-1 text-sm"
-                                        />
-                                    </div>
-                                    <div className="flex items-end gap-2">
-                                        <label className="flex items-center gap-1 text-sm">
-                                            <input
-                                                type="radio"
-                                                name="pic_mark"
-                                                checked={photo.is_main}
-                                                onChange={() => handlePhotoChange(index, 'is_main', true)}
-                                                className="w-4 h-4"
-                                            />
-                                            主相片
-                                        </label>
-                                        {photos.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removePhotoField(index)}
-                                                className="text-red-500 hover:text-red-700"
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <FaImage className="inline mr-1 text-blue-500" /> 相片
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setData('photo', file);
+                            }}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                        />
+                        {news.photo && (
+                            <div className="mt-2">
+                                <p className="text-xs text-gray-500 mb-1">目前相片:</p>
+                                <img 
+                                    src={`/storage/${news.photo}`} 
+                                    alt="Current photo" 
+                                    className="h-20 w-auto object-cover rounded"
+                                />
                             </div>
-                        ))}
+                        )}
+                        <p className="text-xs text-gray-500 mt-1">支援 JPG, PNG, GIF 格式，最大 10MB</p>
                     </div>
 
                     {/* Video */}
