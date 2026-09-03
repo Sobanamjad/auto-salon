@@ -2,20 +2,20 @@ import { useEffect, useRef } from 'react';
 
 const marqueeItems = [
     {
-        href: '/news_view?new_sn=136461',
+        href: '/news_view?new_sn=1',
+        text: '以團結為名、以服務為行　永康同濟會跨夜送暖花蓮',
+    },
+    {
+        href: '/news_view?new_sn=2',
         text: '國際同濟會臺灣總會澎嘉南區第50、51屆主席交接典禮',
     },
     {
-        href: '/news_view?new_sn=136460',
+        href: '/news_view?new_sn=3',
         text: '永康同濟會會員一同參加嘉義阿里山同濟會的交接活動！',
     },
     {
-        href: '/news_view?new_sn=136457',
+        href: '/news_view?new_sn=4',
         text: '國際同濟會24/07/30 於北台南家扶中心舉行愛心捐鞋聯合社服活動！',
-    },
-    {
-        href: '/news_view?new_sn=136452',
-        text: '永康會與澎嘉南區同濟會共同辦理反毒反暴力的籃球賽',
     },
 ];
 

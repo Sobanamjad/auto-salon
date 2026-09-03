@@ -422,9 +422,22 @@ Route::get('/member', function () {
 
 Route::get('/news', function () {
     $csn = request()->query('new_csn');
+    $csn = ($csn !== null && $csn !== '') ? (string) $csn : null;
+
+    $query = \App\Models\News::where('status', true)
+        ->where('end_date', '>=', now()->toDateString());
+
+    if ($csn) {
+        $query->where('category', $csn);
+    }
+
+    $news = $query->orderBy('sort_order', 'desc')
+                  ->orderBy('published_date', 'desc')
+                  ->get(['id', 'published_date', 'category', 'subject', 'brief', 'photo']);
+
     return inertia('news', [
-        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
-        'searchTitle' => request()->query('sel_title'),
+        'csn'   => $csn,
+        'items' => $news,
     ]);
 })->name('news');
 
@@ -433,7 +446,26 @@ Route::get('/news_view', function () {
     if (!$sn) {
         return redirect('/news');
     }
-    return inertia('news-view', ['sn' => (string) $sn]);
+    $news = \App\Models\News::where('status', true)->find($sn);
+    if (!$news) {
+        return redirect('/news');
+    }
+    $news->increment('views');
+
+    return inertia('news-view', [
+        'news' => [
+            'id'             => $news->id,
+            'published_date' => $news->published_date->format('Y-m-d'),
+            'category'       => $news->category,
+            'subject'        => $news->subject,
+            'brief'          => $news->brief,
+            'content'        => $news->content,
+            'keyword'        => $news->keyword,
+            'video'          => $news->video,
+            'map'            => $news->map,
+            'views'          => $news->views,
+        ],
+    ]);
 })->name('news.view');
 
 Route::get('/announcement', function () {

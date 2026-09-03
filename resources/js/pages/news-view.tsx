@@ -1,31 +1,52 @@
 import { Head } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import { findNewsItem } from '@/data/news-items';
+
+interface NewsItem {
+    id: number;
+    published_date: string;
+    category: string;
+    subject: string;
+    brief: string | null;
+    content: string;
+    keyword: string | null;
+    video: string | null;
+    map: string | null;
+    views: number;
+}
 
 type Props = {
-    sn: string;
+    news: NewsItem;
 };
 
-export default function NewsView({ sn }: Props) {
+export default function NewsView({ news }: Props) {
     useForceLightMode();
 
-    const news = findNewsItem(sn);
+    // Load AddToAny share script once after mount
+    useEffect(() => {
+        if (!document.getElementById('a2a-script')) {
+            const script = document.createElement('script');
+            script.id = 'a2a-script';
+            script.async = true;
+            script.src = 'https://static.addtoany.com/menu/page.js';
+            document.body.appendChild(script);
+        }
+    }, []);
 
-    // Format date helper
-    const formatDate = (dateStr: string) => {
-        const d = new Date(dateStr);
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    };
+    if (!news) return null;
+
+    const d = new Date(news.published_date);
+    const formattedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
     return (
         <>
             <Head>
-                <title>{news ? `${news.title}-永康國際同濟會` : '訊息公佈欄-永康國際同濟會'}</title>
-                <meta name="description" content={news?.excerpt ?? '永康國際同濟會'} />
-                <meta name="keywords" content="永康國際同濟會" />
+                <title>{news.subject}-永康國際同濟會</title>
+                <meta name="description" content={news.brief ?? '永康國際同濟會'} />
+                <meta name="keywords" content={news.keyword ?? '永康國際同濟會'} />
                 <link rel="stylesheet" href="/asd_files/base.css" />
                 <link rel="stylesheet" href="/asd_files/blue.css" />
                 <link rel="stylesheet" href="/asd_files/common.css" />
@@ -37,7 +58,7 @@ export default function NewsView({ sn }: Props) {
             </Head>
 
             <div className="wrapper">
-                {/* ── Exact same banner/header as news listing ── */}
+                {/* Same banner/header as news listing */}
                 <SalonHeader
                     banner={
                         <div className="banner-single">
@@ -58,7 +79,7 @@ export default function NewsView({ sn }: Props) {
                     <div className="main_inner">
                         <section className="secbox_page">
 
-                            {/* ── Exact same maintop/breadcrumb as news listing ── */}
+                            {/* Same maintop/breadcrumb as listing */}
                             <div className="maintop">
                                 <div className="container">
                                     <div className="maintop_inner">
@@ -73,74 +94,75 @@ export default function NewsView({ sn }: Props) {
                                                 <li className="breadcrumb-item">
                                                     <a href="/news" title="永康國際同濟會 - 訊息公佈欄">訊息公佈欄</a>
                                                 </li>
-                                                {news && (
-                                                    <li className="breadcrumb-item active" aria-current="page">
-                                                        {news.title}
-                                                    </li>
-                                                )}
+                                                <li className="breadcrumb-item active" aria-current="page">
+                                                    {news.subject}
+                                                </li>
                                             </ol>
                                         </nav>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* ── Middle content only changes here ── */}
+                            {/* Middle content — detail only */}
                             <div className="container">
                                 <div className="secbox_inner">
+                                    <div className="view-column">
 
-                                    {news ? (
-                                        <div className="view-column">
+                                        {/* Article heading */}
+                                        <div className="heading heading_pageview">
+                                            <h1 className="heading-text">{news.subject}</h1>
+                                            <div className="info info_view_date">{formattedDate}</div>
+                                        </div>
 
-                                            {/* Article heading */}
-                                            <div className="heading heading_pageview">
-                                                <h1 className="heading-text">{news.title}</h1>
-                                                <div className="info info_view_date">
-                                                    {formatDate(news.date)}
-                                                </div>
-                                            </div>
+                                        {/* Full HTML content from DB */}
+                                        <div
+                                            className="detailbox editor"
+                                            dangerouslySetInnerHTML={{ __html: news.content }}
+                                        />
 
-                                            {/* Main HTML content */}
+                                        {/* Video embed */}
+                                        {news.video && (
                                             <div
-                                                className="detailbox editor"
-                                                dangerouslySetInnerHTML={{ __html: news.content }}
+                                                className="videobox"
+                                                dangerouslySetInnerHTML={{ __html: news.video }}
                                             />
+                                        )}
 
-                                            {/* Consult button */}
-                                            <div className="consult consult_view">
-                                                <div className="btnbar btnbar_consult">
-                                                    <a
-                                                        href={`/contact?new_sn=${news.sn}&tmp_table=web_news`}
-                                                        className="btn btn_consult"
-                                                    >
-                                                        <span className="iconsvg icon-question"></span>
-                                                        <span className="btn-text">問題諮詢</span>
-                                                    </a>
+                                        {/* Map embed */}
+                                        {news.map && (
+                                            <div
+                                                className="mapbox"
+                                                dangerouslySetInnerHTML={{ __html: news.map }}
+                                            />
+                                        )}
+
+                                        {/* Consult button */}
+                                        <div className="consult consult_view">
+                                            <div className="btnbar btnbar_consult">
+                                                <a
+                                                    href={`/contact?new_sn=${news.id}&tmp_table=web_news`}
+                                                    className="btn btn_consult"
+                                                >
+                                                    <span className="iconsvg icon-question"></span>
+                                                    <span className="btn-text">問題諮詢</span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        {/* Share bar */}
+                                        <div className="sharelink_bar">
+                                            <div className="sharelink">
+                                                <div className="a2a_kit a2a_kit_size_32 a2a_default_style">
+                                                    <a className="a2a_dd" href="https://www.addtoany.com/share"></a>
+                                                    <a className="a2a_button_facebook"></a>
+                                                    <a className="a2a_button_line"></a>
+                                                    <a className="a2a_button_twitter"></a>
+                                                    <a className="a2a_button_wechat"></a>
                                                 </div>
                                             </div>
-
-                                            {/* Share bar */}
-                                            <div className="sharelink_bar">
-                                                <div className="sharelink">
-                                                    <div className="a2a_kit a2a_kit_size_32 a2a_default_style">
-                                                        <a className="a2a_dd" href="https://www.addtoany.com/share"></a>
-                                                        <a className="a2a_button_facebook"></a>
-                                                        <a className="a2a_button_line"></a>
-                                                        <a className="a2a_button_twitter"></a>
-                                                        <a className="a2a_button_wechat"></a>
-                                                    </div>
-                                                    <script async src="https://static.addtoany.com/menu/page.js"></script>
-                                                </div>
-                                            </div>
-
                                         </div>
-                                    ) : (
-                                        /* News item not found */
-                                        <div style={{ padding: '60px 0', textAlign: 'center', color: '#999' }}>
-                                            <p>找不到此篇文章</p>
-                                            <a href="/news" style={{ color: '#007bff' }}>← 返回訊息公佈欄</a>
-                                        </div>
-                                    )}
 
+                                    </div>
                                 </div>
                             </div>
 

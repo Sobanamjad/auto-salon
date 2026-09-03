@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'show_marquee',
     'sort_order',
     'category',
+    'photo',
     'subject',
     'brief',
     'content',
