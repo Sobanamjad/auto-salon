@@ -373,7 +373,7 @@ export default function NewsEdit({ news }: NewsEditProps) {
                             <div className="mt-2">
                                 <p className="text-xs text-gray-500 mb-1">目前相片:</p>
                                 <img 
-                                    src={`/storage/${news.photo}`} 
+                                    src={news.photo.indexOf('/news_files/') === 0 ? news.photo : `/storage/${news.photo}`} 
                                     alt="Current photo" 
                                     className="h-20 w-auto object-cover rounded"
                                 />

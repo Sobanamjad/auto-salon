@@ -436,7 +436,12 @@ Route::get('/news', function () {
                   ->get(['id', 'published_date', 'category', 'subject', 'brief', 'photo'])
                   ->map(function ($item) {
                       if ($item->photo) {
-                          $item->photo = asset('storage/' . $item->photo);
+                          // Handle both old format (/news_files/...) and new format (news_photos/...)
+                          if (strpos($item->photo, '/news_files/') === 0) {
+                              $item->photo = $item->photo; // Keep as is for existing files
+                          } else {
+                              $item->photo = asset('storage/' . $item->photo);
+                          }
                       }
                       return $item;
                   });
@@ -458,7 +463,15 @@ Route::get('/news_view', function () {
     }
     $news->increment('views');
 
-    $photoPath = $news->photo ? asset('storage/' . $news->photo) : null;
+    $photoPath = null;
+    if ($news->photo) {
+        // Handle both old format (/news_files/...) and new format (news_photos/...)
+        if (strpos($news->photo, '/news_files/') === 0) {
+            $photoPath = $news->photo; // Keep as is for existing files
+        } else {
+            $photoPath = asset('storage/' . $news->photo);
+        }
+    }
 
     return inertia('news-view', [
         'news' => [

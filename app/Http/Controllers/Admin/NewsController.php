@@ -94,8 +94,8 @@ class NewsController extends Controller
 
         $photoPath = $news->photo;
         if ($request->hasFile('photo')) {
-            // Delete old photo if exists
-            if ($news->photo && Storage::disk('public')->exists($news->photo)) {
+            // Delete old photo if exists (only for storage-based photos)
+            if ($news->photo && strpos($news->photo, '/news_files/') !== 0 && Storage::disk('public')->exists($news->photo)) {
                 Storage::disk('public')->delete($news->photo);
             }
             $photoPath = $request->file('photo')->store('news_photos', 'public');
