@@ -34,6 +34,7 @@ createInertiaApp({
             case name === 'works':
             case name === 'member':
             case name === 'news':
+            case name === 'news-view':
             case name === 'announcement':
             case name === 'albums':
             case name === 'Admin/Login':

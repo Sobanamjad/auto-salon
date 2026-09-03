@@ -428,6 +428,14 @@ Route::get('/news', function () {
     ]);
 })->name('news');
 
+Route::get('/news_view', function () {
+    $sn = request()->query('new_sn');
+    if (!$sn) {
+        return redirect('/news');
+    }
+    return inertia('news-view', ['sn' => (string) $sn]);
+})->name('news.view');
+
 Route::get('/announcement', function () {
     $newCsn = request()->query('new_csn');
     $selNncsn = request()->query('sel_nncsn');
