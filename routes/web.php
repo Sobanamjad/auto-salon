@@ -457,6 +457,7 @@ Route::get('/news_view', function () {
             'id'             => $news->id,
             'published_date' => $news->published_date->format('Y-m-d'),
             'category'       => $news->category,
+            'photo'          => $news->photo,
             'subject'        => $news->subject,
             'brief'          => $news->brief,
             'content'        => $news->content,

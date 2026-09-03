@@ -9,6 +9,7 @@ interface NewsItem {
     id: number;
     published_date: string;
     category: string;
+    photo: string | null;
     subject: string;
     brief: string | null;
     content: string;
@@ -19,7 +20,7 @@ interface NewsItem {
 }
 
 type Props = {
-    news: NewsItem;
+    news?: NewsItem | null;
 };
 
 export default function NewsView({ news }: Props) {
@@ -36,17 +37,15 @@ export default function NewsView({ news }: Props) {
         }
     }, []);
 
-    if (!news) return null;
-
-    const d = new Date(news.published_date);
+    const d = news ? new Date(news.published_date) : new Date();
     const formattedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
     return (
         <>
             <Head>
-                <title>{news.subject}-永康國際同濟會</title>
-                <meta name="description" content={news.brief ?? '永康國際同濟會'} />
-                <meta name="keywords" content={news.keyword ?? '永康國際同濟會'} />
+                <title>{news ? `${news.subject}-永康國際同濟會` : '最新消息-永康國際同濟會'}</title>
+                <meta name="description" content={news ? (news.brief || '永康國際同濟會') : '永康國際同濟會'} />
+                <meta name="keywords" content={news ? (news.keyword || '永康國際同濟會') : '永康國際同濟會'} />
                 <link rel="stylesheet" href="/asd_files/base.css" />
                 <link rel="stylesheet" href="/asd_files/blue.css" />
                 <link rel="stylesheet" href="/asd_files/common.css" />
@@ -95,7 +94,7 @@ export default function NewsView({ news }: Props) {
                                                     <a href="/news" title="永康國際同濟會 - 訊息公佈欄">訊息公佈欄</a>
                                                 </li>
                                                 <li className="breadcrumb-item active" aria-current="page">
-                                                    {news.subject}
+                                                    {news ? news.subject : '最新消息'}
                                                 </li>
                                             </ol>
                                         </nav>
@@ -110,18 +109,18 @@ export default function NewsView({ news }: Props) {
 
                                         {/* Article heading */}
                                         <div className="heading heading_pageview">
-                                            <h1 className="heading-text">{news.subject}</h1>
+                                            <h1 className="heading-text">{news ? news.subject : '最新消息'}</h1>
                                             <div className="info info_view_date">{formattedDate}</div>
                                         </div>
 
                                         {/* Full HTML content from DB */}
                                         <div
                                             className="detailbox editor"
-                                            dangerouslySetInnerHTML={{ __html: news.content }}
+                                            dangerouslySetInnerHTML={{ __html: news ? news.content : '' }}
                                         />
 
                                         {/* Video embed */}
-                                        {news.video && (
+                                        {news && news.video && (
                                             <div
                                                 className="videobox"
                                                 dangerouslySetInnerHTML={{ __html: news.video }}
@@ -129,7 +128,7 @@ export default function NewsView({ news }: Props) {
                                         )}
 
                                         {/* Map embed */}
-                                        {news.map && (
+                                        {news && news.map && (
                                             <div
                                                 className="mapbox"
                                                 dangerouslySetInnerHTML={{ __html: news.map }}
@@ -140,7 +139,7 @@ export default function NewsView({ news }: Props) {
                                         <div className="consult consult_view">
                                             <div className="btnbar btnbar_consult">
                                                 <a
-                                                    href={`/contact?new_sn=${news.id}&tmp_table=web_news`}
+                                                    href={`/contact?new_sn=${news ? news.id : ''}&tmp_table=web_news`}
                                                     className="btn btn_consult"
                                                 >
                                                     <span className="iconsvg icon-question"></span>

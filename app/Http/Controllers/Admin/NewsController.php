@@ -93,6 +93,7 @@ class NewsController extends Controller
             'show_marquee' => $validated['show_marquee'],
             'sort_order' => $validated['sort_order'],
             'category' => $validated['category'],
+            'photo' => $validated['photo'] ?? null,
             'subject' => $validated['subject'],
             'brief' => $validated['brief'] ?? null,
             'content' => $validated['content'],

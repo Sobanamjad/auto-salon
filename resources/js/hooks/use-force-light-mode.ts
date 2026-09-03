@@ -12,7 +12,7 @@ function applySalonLightMode(): void {
     html.classList.remove('dark');
     html.style.colorScheme = 'light';
     html.style.backgroundColor = 'transparent';
-    body.style.backgroundColor = 'transparent';
+    body.style.backgroundColor = '#fff';
 }
 
 function restoreThemeAfterSalon(): void {
