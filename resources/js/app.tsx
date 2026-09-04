@@ -37,6 +37,7 @@ createInertiaApp({
             case name === 'news-view':
             case name === 'announcement':
             case name === 'albums':
+            case name === 'album-view':
             case name === 'Admin/Login':
                 return null;
             case name.startsWith('Admin/'):

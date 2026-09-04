@@ -42,49 +42,76 @@ export const albumCategories: AlbumCategory[] = [
 
 export const albumsItems: AlbumItem[] = [
     {
-        id: 7075,
-        title: '2026-07-22 永康國際同濟會第一屆第五次理監事會議',
-        date: '2026-07-22',
+        id: 1,
+        title: '2026年度春季會員大會',
+        date: '2026-03-15',
         category: '2026年',
-        image: '/asd_files/s202607221405366.png',
-        description: '永康國際同濟會第一屆第五次理監事會議紀錄',
-        viewUrl: '/albums_view?id=7075'
+        image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800',
+        description: '2026年度春季會員大會紀錄',
+        viewUrl: '/albums_view?id=1'
     },
     {
-        id: 7079,
-        title: '2025-08-20 臺灣同濟會50年年會',
-        date: '2025-08-20',
-        category: '2025年',
-        image: '/asd_files/s202607221407447.jpg',
-        description: '參與臺灣同濟會50週年慶祝大會',
-        viewUrl: '/albums_view?id=7079'
+        id: 2,
+        title: '登山健行活動',
+        date: '2026-04-20',
+        category: '2026年',
+        image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800',
+        description: '登山健行活動記錄',
+        viewUrl: '/albums_view?id=2'
     },
     {
-        id: 7078,
-        title: '2024-08-20 高雄展覽館50屆全國年會',
-        date: '2024-08-20',
-        category: '2024年',
-        image: '/asd_files/s202607221407071.jpg',
-        description: '高雄展覽館舉辦的第50屆全國年會活動',
-        viewUrl: '/albums_view?id=7078'
+        id: 3,
+        title: '夏季露營活動',
+        date: '2026-07-10',
+        category: '2026年',
+        image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800',
+        description: '夏季露營活動記錄',
+        viewUrl: '/albums_view?id=3'
     },
     {
-        id: 7077,
-        title: '2024-08-20 永康會創會授證典禮',
-        date: '2024-08-20',
-        category: '2024年',
-        image: '/asd_files/s202607221406322.jpg',
-        description: '永康國際同濟會創會授證典禮盛大舉行',
-        viewUrl: '/albums_view?id=7077'
+        id: 4,
+        title: '志工服務活動',
+        date: '2026-05-25',
+        category: '2026年',
+        image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
+        description: '志工服務活動記錄',
+        viewUrl: '/albums_view?id=4'
     },
     {
-        id: 7076,
-        title: '2024-08-13 永康同濟會-第二次會議',
-        date: '2024-08-13',
-        category: '2024年',
-        image: '/asd_files/s202607221406077.jpg',
-        description: '永康同濟會第二次會議活動記錄',
-        viewUrl: '/albums_view?id=7076'
+        id: 5,
+        title: '秋季旅遊活動',
+        date: '2026-10-15',
+        category: '2026年',
+        image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
+        description: '秋季旅遊活動記錄',
+        viewUrl: '/albums_view?id=5'
+    },
+    {
+        id: 6,
+        title: '聖誕節聯歡晚會',
+        date: '2026-12-20',
+        category: '2026年',
+        image: 'https://images.unsplash.com/photo-1512909006721-3d6018887383?w=800',
+        description: '聖誕節聯歡晚會記錄',
+        viewUrl: '/albums_view?id=6'
+    },
+    {
+        id: 7,
+        title: '新年茶會',
+        date: '2027-01-10',
+        category: '2027年',
+        image: 'https://images.unsplash.com/photo-1503376763036-066120622c74?w=800',
+        description: '新年茶會記錄',
+        viewUrl: '/albums_view?id=7'
+    },
+    {
+        id: 8,
+        title: '春季野餐活動',
+        date: '2027-03-25',
+        category: '2027年',
+        image: 'https://images.unsplash.com/photo-1568607688298-68499558d95b?w=800',
+        description: '春季野餐活動記錄',
+        viewUrl: '/albums_view?id=8'
     }
 ];
 

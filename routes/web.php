@@ -509,4 +509,44 @@ Route::get('/albums', function () {
     ]);
 })->name('albums');
 
+Route::get('/albums_view', function () {
+    $id = request()->query('id');
+    if (!$id) {
+        return redirect('/albums');
+    }
+    $album = \App\Models\Album::find($id);
+    if (!$album) {
+        return redirect('/albums');
+    }
+    $album->increment('views');
+
+    $coverImagePath = null;
+    if ($album->cover_image) {
+        if (strpos($album->cover_image, 'http') === 0) {
+            $coverImagePath = $album->cover_image;
+        } elseif (strpos($album->cover_image, '/asd_files/') === 0) {
+            $coverImagePath = $album->cover_image;
+        } else {
+            $coverImagePath = '/storage/' . $album->cover_image;
+        }
+    }
+
+    return inertia('album-view', [
+        'album' => [
+            'id' => $album->id,
+            'title' => $album->title,
+            'slug' => $album->slug,
+            'description' => $album->description,
+            'cover_image' => $coverImagePath,
+            'album_date' => $album->album_date ? $album->album_date->format('Y-m-d') : null,
+            'category' => $album->category,
+            'status' => $album->status,
+            'is_featured' => $album->is_featured,
+            'views' => $album->views,
+            'photo_count' => $album->photo_count,
+            'comment_count' => $album->comment_count,
+        ],
+    ]);
+})->name('albums.view');
+
 require __DIR__.'/settings.php';
