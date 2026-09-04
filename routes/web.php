@@ -324,15 +324,6 @@ Route::get('/dashboard', function () {
 
 Route::inertia('/', 'welcome')->name('home');
 
-// Public API for slider data
-Route::get('/api/sliders', [PublicSliderController::class, 'getActiveSliders'])->name('api.sliders');
-
-// Public API for albums data
-Route::get('/api/albums', [AlbumController::class, 'getPublicAlbums'])->name('api.albums');
-
-// Public API for partners data
-Route::get('/api/partners', [PartnerController::class, 'getPublicPartners'])->name('api.partners');
-
 Route::get('/timeline', function () {
     $csn = request()->query('new_csn');
     $newSn = request()->query('new_sn');
