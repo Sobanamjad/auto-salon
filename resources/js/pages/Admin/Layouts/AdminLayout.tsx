@@ -122,9 +122,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             {/* Sidebar */}
             <aside className={`fixed top-0 left-0 z-40 h-screen transition-transform duration-300 ${
                 sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            } w-52 bg-white border-r border-gray-200 shadow-lg overflow-y-auto`}>
+            } w-52 bg-white border-r border-gray-200 shadow-lg flex flex-col`}>
                 {/* Top Navigation */}
-                <div className="p-3 border-b border-gray-200">
+                <div className="p-3 border-b border-gray-200 flex-shrink-0">
                     <div className="flex items-center justify-between mb-3">
                         <Link href="/admin/dashboard" className="flex items-center space-x-2">
                             <img src="/asd_files/202607211337474254.png" alt="Logo" className="w-6 h-6 object-contain" />
@@ -156,8 +156,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     </div>
                 </div>
 
-                {/* Menu Sections */}
-                <div className="p-2">
+                {/* Menu Sections - Scrollable Area */}
+                <div className="flex-1 overflow-y-auto p-2">
                     <div className="text-xs font-medium text-gray-500 mb-2">社團達人展示</div>
                     <hr className="border-gray-300 mb-2" />
                     
@@ -214,7 +214,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 </div>
 
                 {/* Bottom Contact Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-200 bg-white">
+                <div className="p-3 border-t border-gray-200 bg-white flex-shrink-0">
                     <hr className="border-gray-300 mb-2" />
                     <Link href="//posu.tw" target="_blank" className="text-xs text-gray-700 hover:text-gray-900">
                         博識高科技
