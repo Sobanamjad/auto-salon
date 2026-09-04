@@ -26,6 +26,7 @@ class AlbumRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'cover_image' => 'nullable|string|max:255',
+            'cover_image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'album_date' => 'nullable|date',
             'category' => 'required|string|max:255',
             'status' => 'required|string|max:255|in:published,draft,archived',

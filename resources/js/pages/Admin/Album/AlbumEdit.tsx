@@ -1,10 +1,12 @@
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 import { FaArrowLeft, FaSave, FaTimes, FaImage, FaFolder } from 'react-icons/fa';
 
 interface AlbumFormData {
     title: string;
     description: string;
     cover_image: string;
+    cover_image_file: File | null;
     album_date: string;
     category: string;
     status: string;
@@ -31,10 +33,12 @@ interface Album {
 }
 
 export default function AlbumEdit({ album }: { album: Album }) {
-    const { data, setData, put, processing, errors } = useForm<AlbumFormData>({
+    const [uploadMode, setUploadMode] = useState(false);
+    const { data, setData, post, processing, errors } = useForm<AlbumFormData>({
         title: album.title,
         description: album.description || '',
         cover_image: album.cover_image || '',
+        cover_image_file: null,
         album_date: album.album_date || '',
         category: album.category,
         status: album.status,
@@ -44,11 +48,29 @@ export default function AlbumEdit({ album }: { album: Album }) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/albums/${album.id}`, {
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('description', data.description);
+        formData.append('cover_image', data.cover_image);
+
+        if (data.cover_image_file) {
+            formData.append('cover_image_file', data.cover_image_file);
+        }
+
+        formData.append('album_date', data.album_date);
+        formData.append('category', data.category);
+        formData.append('status', data.status);
+        formData.append('is_featured', data.is_featured ? '1' : '0');
+        formData.append('sort_order', data.sort_order.toString());
+        formData.append('_method', 'PUT');
+
+        post(`/admin/albums/${album.id}`, {
+            data: formData,
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/albums';
             },
-            onError: (errors) => {
+            onError: (errors: any) => {
                 console.error('Validation errors:', errors);
             }
         });
@@ -72,7 +94,7 @@ export default function AlbumEdit({ album }: { album: Album }) {
                             <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
                                 <FaImage className="text-blue-500" /> 編輯相簿
                             </h2>
-                            <p className="text-sm text-gray-500 mt-1">編輯相簿 #{id}</p>
+                            <p className="text-sm text-gray-500 mt-1">編輯相簿 #{album.id}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -221,26 +243,86 @@ export default function AlbumEdit({ album }: { album: Album }) {
                     {/* Cover Image */}
                     <div className="bg-gray-50 rounded-lg p-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            封面相片 URL
+                            封面相片
                         </label>
-                        <input
-                            type="text"
-                            value={data.cover_image}
-                            onChange={(e) => setData('cover_image', e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
-                            placeholder="請輸入圖片URL"
-                        />
-                        {data.cover_image && (
+
+                        {/* Tab buttons */}
+                        <div className="flex gap-2 mb-3">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setUploadMode(false);
+                                    setData('cover_image_file', null);
+                                }}
+                                className={`px-3 py-1 text-sm rounded ${!uploadMode ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                            >
+                                URL
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setUploadMode(true);
+                                    setData('cover_image', '');
+                                }}
+                                className={`px-3 py-1 text-sm rounded ${uploadMode ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                            >
+                                上傳檔案
+                            </button>
+                        </div>
+
+                        {/* URL Input */}
+                        {!uploadMode && (
+                            <div>
+                                <input
+                                    type="text"
+                                    value={data.cover_image}
+                                    onChange={(e) => setData('cover_image', e.target.value)}
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                    placeholder="請輸入圖片URL"
+                                />
+                            </div>
+                        )}
+
+                        {/* File Upload */}
+                        {uploadMode && (
+                            <div>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            setData('cover_image_file', file);
+                                        }
+                                    }}
+                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                />
+                                {data.cover_image_file && (
+                                    <p className="text-sm text-gray-600 mt-1">已選擇: {data.cover_image_file.name}</p>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Preview */}
+                        {(data.cover_image || data.cover_image_file) && (
                             <div className="mt-2">
                                 <p className="text-sm text-gray-600 mb-1">預覽:</p>
-                                <img 
-                                    src={data.cover_image} 
-                                    alt="預覽" 
-                                    className="h-32 w-32 object-cover rounded border"
-                                    onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                    }}
-                                />
+                                {data.cover_image_file ? (
+                                    <img
+                                        src={URL.createObjectURL(data.cover_image_file)}
+                                        alt="預覽"
+                                        className="h-32 w-32 object-cover rounded border"
+                                    />
+                                ) : (
+                                    <img
+                                        src={data.cover_image}
+                                        alt="預覽"
+                                        className="h-32 w-32 object-cover rounded border"
+                                        onError={(e) => {
+                                            e.currentTarget.style.display = 'none';
+                                        }}
+                                    />
+                                )}
                             </div>
                         )}
                     </div>

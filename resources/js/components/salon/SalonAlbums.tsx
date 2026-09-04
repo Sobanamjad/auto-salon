@@ -1,55 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const albumItems = [
-    {
-        href: '/albums_view?id=1',
-        title: '2026年度春季會員大會',
-        img: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=2',
-        title: '登山健行活動',
-        img: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=3',
-        title: '夏季露營活動',
-        img: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=4',
-        title: '志工服務活動',
-        img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=5',
-        title: '秋季旅遊活動',
-        img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=6',
-        title: '聖誕節聯歡晚會',
-        img: 'https://images.unsplash.com/photo-1512909006721-3d6018887383?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=7',
-        title: '新年茶會',
-        img: 'https://images.unsplash.com/photo-1503376763036-066120622c74?w=800',
-        imgW: 800, imgH: 600,
-    },
-    {
-        href: '/albums_view?id=8',
-        title: '春季野餐活動',
-        img: 'https://images.unsplash.com/photo-1568607688298-68499558d95b?w=800',
-        imgW: 800, imgH: 600,
-    },
-];
+interface ApiAlbumItem {
+    id: number;
+    title: string;
+    cover_image: string | null;
+}
+
+interface DisplayAlbumItem {
+    href: string;
+    title: string;
+    img: string;
+    imgW: number;
+    imgH: number;
+}
 
 declare global {
     interface Window {
@@ -60,9 +23,31 @@ declare global {
 
 export default function SalonAlbums() {
     const swiperRef = useRef<HTMLDivElement>(null);
+    const [albumItems, setAlbumItems] = useState<DisplayAlbumItem[]>([]);
 
     useEffect(() => {
-        if (!window.Swiper || !swiperRef.current) return;
+        const fetchAlbums = async () => {
+            try {
+                const response = await fetch('/api/albums');
+                const data = await response.json();
+                const albums = (data.albums || []).slice(0, 8).map((album: ApiAlbumItem) => ({
+                    href: `/albums_view?id=${album.id}`,
+                    title: album.title,
+                    img: album.cover_image || '/asd_files/placeholder.jpg',
+                    imgW: 800,
+                    imgH: 600,
+                }));
+                setAlbumItems(albums);
+            } catch (error) {
+                console.error('Failed to fetch albums:', error);
+            }
+        };
+
+        fetchAlbums();
+    }, []);
+
+    useEffect(() => {
+        if (!window.Swiper || !swiperRef.current || albumItems.length === 0) return;
 
         new window.Swiper(swiperRef.current, {
             slidesPerView: 'auto',
@@ -77,7 +62,7 @@ export default function SalonAlbums() {
                 1280: { slidesPerView: 4 },
             },
         });
-    }, []);
+    }, [albumItems]);
 
     return (
         <section id="secbox_idx_albums" className="secbox secbox_idx js-scroll">

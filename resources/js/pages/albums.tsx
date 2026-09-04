@@ -1,22 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Head, router } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '../components/salon/SalonHeader';
 import SalonMarquee from '../components/salon/SalonMarquee';
 import SalonFooter from '../components/salon/SalonFooter';
-import { albumCategories, albumsItems, getAlbumsByCategory, getAlbumsByYear } from '../data/albums-items';
+import { albumCategories } from '../data/albums-items';
 
 interface AlbumsPageProps {
     initialYear?: string;
 }
 
+interface AlbumItem {
+    id: number;
+    title: string;
+    slug: string;
+    description: string | null;
+    cover_image: string | null;
+    album_date: string | null;
+    category: string;
+    views: number;
+    photo_count: number;
+    comment_count: number;
+}
+
 export default function AlbumsPage({ initialYear }: AlbumsPageProps) {
     useForceLightMode();
+    const [albums, setAlbums] = useState<AlbumItem[]>([]);
+    const [loading, setLoading] = useState(true);
     const selectedCategory = initialYear || 'all';
 
-    const filteredAlbums = initialYear
-        ? getAlbumsByYear(initialYear)
-        : getAlbumsByCategory(selectedCategory);
+    useEffect(() => {
+        const fetchAlbums = async () => {
+            try {
+                const url = initialYear ? `/api/albums?year=${initialYear}` : '/api/albums';
+                const response = await fetch(url);
+                const data = await response.json();
+                setAlbums(data.albums || []);
+            } catch (error) {
+                console.error('Failed to fetch albums:', error);
+                setAlbums([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAlbums();
+    }, [initialYear]);
 
     const handleCategoryClick = (categoryId: string) => {
         if (categoryId === 'all') {
@@ -122,63 +151,69 @@ export default function AlbumsPage({ initialYear }: AlbumsPageProps) {
                                             </h1>
                                         </div>
 
-                                        <ul className="row row-cols-2 row-cols-lg-3 row-cols-xl-4">
-                                            {filteredAlbums.map(album => (
-                                                <li key={album.id}>
-                                                    <div className="card card_albums effect_dec_vt fadeUp js-scroll">
-                                                        <div className="row g-3">
-                                                            <div className="col-12">
-                                                                <div className="card-photo">
-                                                                    <a href={album.viewUrl} title={`${album.title}-永康國際同濟會`}>
-                                                                        <div className="item-fitimg">
-                                                                            <img
-                                                                                src={album.image}
-                                                                                alt={album.title}
-                                                                                width={1024}
-                                                                                height={764}
-                                                                                loading="lazy"
-                                                                                className="fitimg"
-                                                                            />
+                                        {loading ? (
+                                            <div className="text-center py-8">載入中...</div>
+                                        ) : (
+                                            <>
+                                                <ul className="row row-cols-2 row-cols-lg-3 row-cols-xl-4">
+                                                    {albums.map(album => (
+                                                        <li key={album.id}>
+                                                            <div className="card card_albums effect_dec_vt fadeUp js-scroll">
+                                                                <div className="row g-3">
+                                                                    <div className="col-12">
+                                                                        <div className="card-photo">
+                                                                            <a href={`/albums_view?id=${album.id}`} title={`${album.title}-永康國際同濟會`}>
+                                                                                <div className="item-fitimg">
+                                                                                    <img
+                                                                                        src={album.cover_image || '/asd_files/placeholder.jpg'}
+                                                                                        alt={album.title}
+                                                                                        width={1024}
+                                                                                        height={764}
+                                                                                        loading="lazy"
+                                                                                        className="fitimg"
+                                                                                    />
+                                                                                </div>
+                                                                                <div className="card-mask"></div>
+                                                                            </a>
                                                                         </div>
-                                                                        <div className="card-mask"></div>
-                                                                    </a>
+                                                                    </div>
+
+                                                                    <div className="col-12">
+                                                                        <div className="card-body">
+                                                                            <h3 className="card-name">
+                                                                                <a href={`/albums_view?id=${album.id}`} title={`${album.title}-永康國際同濟會`}>
+                                                                                    <span className="card-name-text">{album.title}</span>
+                                                                                </a>
+                                                                            </h3>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="col-12">
+                                                                        <div className="card-btnbar card-btnbar_more">
+                                                                            <a href={`/albums_view?id=${album.id}`} className="card-btn card-btn_more" title={`${album.title}-永康國際同濟會`}>
+                                                                                <span className="card-btn-text">更多</span>
+                                                                                <span className="iconsvg icon-view-more"></span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
 
-                                                            <div className="col-12">
-                                                                <div className="card-body">
-                                                                    <h3 className="card-name">
-                                                                        <a href={album.viewUrl} title={`${album.title}-永康國際同濟會`}>
-                                                                            <span className="card-name-text">{album.title}</span>
-                                                                        </a>
-                                                                    </h3>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="col-12">
-                                                                <div className="card-btnbar card-btnbar_more">
-                                                                    <a href={album.viewUrl} className="card-btn card-btn_more" title={`${album.title}-永康國際同濟會`}>
-                                                                        <span className="card-btn-text">更多</span>
-                                                                        <span className="iconsvg icon-view-more"></span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                        {/* Pagination */}
-                                        <div className="page">
-                                            <a href="/albums" target="_self">首頁</a>&nbsp;
-                                            <span>1</span>&nbsp;
-                                            <a href="/albums">末頁</a>
-                                            <br /><br />
-                                            Total {filteredAlbums.length} - 1 / 1
-                                            <br />
-                                        </div>
+                                                {/* Pagination */}
+                                                <div className="page">
+                                                    <a href="/albums" target="_self">首頁</a>&nbsp;
+                                                    <span>1</span>&nbsp;
+                                                    <a href="/albums">末頁</a>
+                                                    <br /><br />
+                                                    Total {albums.length} - 1 / 1
+                                                    <br />
+                                                </div>
+                                            </>
+                                        )}
 
                                     </div>
                                 </div>
