@@ -34,6 +34,14 @@ export default function ActivityHighlights({ albums, title }: PageProps) {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
+    const getCoverImagePath = (coverImage: string | null) => {
+        if (!coverImage) return null;
+        if (coverImage.startsWith('http')) return coverImage;
+        if (coverImage.startsWith('/asd_files/')) return coverImage;
+        if (coverImage.startsWith('/storage/')) return coverImage;
+        return `/storage/${coverImage}`;
+    };
+
     const handleDelete = (id: number, title: string) => {
         if (confirm(`確定要刪除: ${title} 嗎？ 包含相簿內相片一併刪除!!`)) {
             router.delete(`/admin/albums/${id}`, {
@@ -177,7 +185,7 @@ export default function ActivityHighlights({ albums, title }: PageProps) {
                                     </td>
                                     <td className="px-3 py-2 text-center">
                                         {album.cover_image ? (
-                                            <img src={album.cover_image} alt={album.title} className="h-12 w-12 object-cover rounded border" />
+                                            <img src={getCoverImagePath(album.cover_image)} alt={album.title} className="h-12 w-12 object-cover rounded border" />
                                         ) : (
                                             <div className="h-12 w-12 bg-gray-200 rounded flex items-center justify-center text-gray-400">
                                                 <FaImage size={20} />

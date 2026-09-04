@@ -1,31 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const albumItems = [
-    {
-        href: '/albums_view?new_csn=7075',
-        title: '2026-07-22 永康國際同濟會第一屆第五次理監事會議',
-        img: '/asd_files/s202607221405366.png',
-        imgW: 1024, imgH: 764,
-    },
-    {
-        href: '/albums_view?new_csn=7079',
-        title: '2025-08-20 臺灣同濟會50年年會',
-        img: '/asd_files/s202607221407447.jpg',
-        imgW: 1024, imgH: 682,
-    },
-    {
-        href: '/albums_view?new_csn=7078',
-        title: '2024-08-20 高雄展覽館50屆全國年會',
-        img: '/asd_files/s202607221407071.jpg',
-        imgW: 1024, imgH: 770,
-    },
-    {
-        href: '/albums_view?new_csn=7077',
-        title: '2024-08-20 永康會創會授證典禮',
-        img: '/asd_files/s202607221406322.jpg',
-        imgW: 1024, imgH: 575,
-    },
-];
+interface ApiAlbumItem {
+    id: number;
+    title: string;
+    cover_image: string | null;
+}
+
+interface DisplayAlbumItem {
+    href: string;
+    title: string;
+    img: string;
+    imgW: number;
+    imgH: number;
+}
 
 declare global {
     interface Window {
@@ -36,9 +23,31 @@ declare global {
 
 export default function SalonAlbums() {
     const swiperRef = useRef<HTMLDivElement>(null);
+    const [albumItems, setAlbumItems] = useState<DisplayAlbumItem[]>([]);
 
     useEffect(() => {
-        if (!window.Swiper || !swiperRef.current) return;
+        const fetchAlbums = async () => {
+            try {
+                const response = await fetch('/api/albums');
+                const data = await response.json();
+                const albums = (data.albums || []).slice(0, 8).map((album: ApiAlbumItem) => ({
+                    href: `/albums_view?id=${album.id}`,
+                    title: album.title,
+                    img: album.cover_image || '/asd_files/placeholder.jpg',
+                    imgW: 800,
+                    imgH: 600,
+                }));
+                setAlbumItems(albums);
+            } catch (error) {
+                console.error('Failed to fetch albums:', error);
+            }
+        };
+
+        fetchAlbums();
+    }, []);
+
+    useEffect(() => {
+        if (!window.Swiper || !swiperRef.current || albumItems.length === 0) return;
 
         new window.Swiper(swiperRef.current, {
             slidesPerView: 'auto',
@@ -53,7 +62,7 @@ export default function SalonAlbums() {
                 1280: { slidesPerView: 4 },
             },
         });
-    }, []);
+    }, [albumItems]);
 
     return (
         <section id="secbox_idx_albums" className="secbox secbox_idx js-scroll">

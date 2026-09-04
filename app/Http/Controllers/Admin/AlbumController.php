@@ -41,11 +41,20 @@ class AlbumController extends Controller
      */
     public function store(AlbumRequest $request)
     {
+        $coverImagePath = $request->cover_image;
+
+        // Handle file upload
+        if ($request->hasFile('cover_image_file')) {
+            $file = $request->file('cover_image_file');
+            $path = $file->store('album_covers', 'public');
+            $coverImagePath = $path;
+        }
+
         Album::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
-            'cover_image' => $request->cover_image,
+            'cover_image' => $coverImagePath,
             'album_date' => $request->album_date,
             'category' => $request->category,
             'status' => $request->status,
@@ -75,11 +84,20 @@ class AlbumController extends Controller
     public function update(AlbumRequest $request, $id)
     {
         $album = Album::findOrFail($id);
+        $coverImagePath = $request->cover_image;
+
+        // Handle file upload
+        if ($request->hasFile('cover_image_file')) {
+            $file = $request->file('cover_image_file');
+            $path = $file->store('album_covers', 'public');
+            $coverImagePath = $path;
+        }
+
         $album->update([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
-            'cover_image' => $request->cover_image,
+            'cover_image' => $coverImagePath,
             'album_date' => $request->album_date,
             'category' => $request->category,
             'status' => $request->status,
@@ -99,5 +117,51 @@ class AlbumController extends Controller
         $album->delete();
 
         return redirect()->route('admin.albums.index')->with('success', '相簿刪除成功');
+    }
+
+    /**
+     * Get public albums data for API
+     */
+    public function getPublicAlbums(Request $request)
+    {
+        $year = $request->query('year');
+
+        $query = Album::where('status', 'published')
+                      ->orderBy('sort_order', 'asc')
+                      ->orderBy('album_date', 'desc');
+
+        if ($year) {
+            $query->whereYear('album_date', $year);
+        }
+
+        $albums = $query->get(['id', 'title', 'slug', 'description', 'cover_image', 'album_date', 'category', 'views', 'photo_count', 'comment_count']);
+
+        return response()->json([
+            'albums' => $albums->map(function ($album) {
+                $coverImagePath = null;
+                if ($album->cover_image) {
+                    if (strpos($album->cover_image, 'http') === 0) {
+                        $coverImagePath = $album->cover_image;
+                    } elseif (strpos($album->cover_image, '/asd_files/') === 0) {
+                        $coverImagePath = $album->cover_image;
+                    } else {
+                        $coverImagePath = '/storage/' . $album->cover_image;
+                    }
+                }
+
+                return [
+                    'id' => $album->id,
+                    'title' => $album->title,
+                    'slug' => $album->slug,
+                    'description' => $album->description,
+                    'cover_image' => $coverImagePath,
+                    'album_date' => $album->album_date ? $album->album_date->format('Y-m-d') : null,
+                    'category' => $album->category,
+                    'views' => $album->views,
+                    'photo_count' => $album->photo_count,
+                    'comment_count' => $album->comment_count,
+                ];
+            })
+        ]);
     }
 }
