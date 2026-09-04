@@ -25,6 +25,14 @@ class PartnerRequest extends FormRequest
             'brief' => 'nullable|string',
             'content' => 'nullable|string',
             'note' => 'nullable|string',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'slogan' => 'nullable|string|max:255',
+            'tag' => 'nullable|string|max:255',
+            'external_link' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
+            'booking_link' => 'nullable|string|max:255',
+            'take_number_link' => 'nullable|string|max:255',
+            'current_number_link' => 'nullable|string|max:255',
         ];
     }
 
