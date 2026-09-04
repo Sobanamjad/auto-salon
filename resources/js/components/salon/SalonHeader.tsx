@@ -273,7 +273,7 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
 
                             {/* Desktop nav */}
                             <div className="header-two">
-                                {/* <ul className="menu">
+                                <ul className="menu">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
                                             <div className="menulink">
@@ -283,7 +283,7 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                                             </div>
                                         </li>
                                     ))}
-                                </ul> */}
+                                </ul>
                             </div>
 
                             {/* Header right buttons */}

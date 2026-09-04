@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $show_marquee
  * @property int $sort_order
  * @property string $category
+ * @property string|null $photo
  * @property string $subject
  * @property string $brief
  * @property string $content

@@ -440,7 +440,7 @@ Route::get('/news', function () {
                           if (strpos($item->photo, '/news_files/') === 0) {
                               $item->photo = $item->photo; // Keep as is for existing files
                           } else {
-                              $item->photo = asset('storage/' . $item->photo);
+                              $item->photo = '/storage/' . $item->photo;
                           }
                       }
                       return $item;
@@ -469,7 +469,7 @@ Route::get('/news_view', function () {
         if (strpos($news->photo, '/news_files/') === 0) {
             $photoPath = $news->photo; // Keep as is for existing files
         } else {
-            $photoPath = asset('storage/' . $news->photo);
+            $photoPath = '/storage/' . $news->photo;
         }
     }
 
