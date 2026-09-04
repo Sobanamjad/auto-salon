@@ -28,20 +28,35 @@ class PartnerController extends Controller
 
     public function store(PartnerRequest $request)
     {
-        $validated = $request->validated();
+        $imagePath = null;
+
+        // Handle file upload
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            $path = $file->store('partner_images', 'public');
+            $imagePath = $path;
+        }
 
         Partner::create([
-            'language' => $validated['language'],
-            'status' => $validated['status'],
-            'show_on_home' => $validated['show_on_home'],
-            'sort_order' => $validated['sort_order'],
-            'name' => $validated['name'],
-            'city' => $validated['city'] ?? null,
-            'district' => $validated['district'] ?? null,
-            'village' => $validated['village'] ?? null,
-            'brief' => $validated['brief'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'note' => $validated['note'] ?? null,
+            'language' => $request->language,
+            'status' => $request->boolean('status', false),
+            'show_on_home' => $request->boolean('show_on_home', false),
+            'sort_order' => $request->sort_order ?? 99,
+            'name' => $request->name,
+            'city' => $request->city,
+            'district' => $request->district,
+            'village' => $request->village,
+            'brief' => $request->brief,
+            'content' => $request->content,
+            'note' => $request->note,
+            'image' => $imagePath,
+            'slogan' => $request->slogan,
+            'tag' => $request->tag,
+            'external_link' => $request->external_link,
+            'company_name' => $request->company_name,
+            'booking_link' => $request->booking_link,
+            'take_number_link' => $request->take_number_link,
+            'current_number_link' => $request->current_number_link,
             'views' => 0,
         ]);
 
@@ -62,20 +77,35 @@ class PartnerController extends Controller
     public function update(PartnerRequest $request, $id)
     {
         $partner = Partner::findOrFail($id);
-        $validated = $request->validated();
+        $imagePath = $partner->image;
+
+        // Handle file upload
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            $path = $file->store('partner_images', 'public');
+            $imagePath = $path;
+        }
 
         $partner->update([
-            'language' => $validated['language'],
-            'status' => $validated['status'],
-            'show_on_home' => $validated['show_on_home'],
-            'sort_order' => $validated['sort_order'],
-            'name' => $validated['name'],
-            'city' => $validated['city'] ?? null,
-            'district' => $validated['district'] ?? null,
-            'village' => $validated['village'] ?? null,
-            'brief' => $validated['brief'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'note' => $validated['note'] ?? null,
+            'language' => $request->language,
+            'status' => $request->boolean('status', false),
+            'show_on_home' => $request->boolean('show_on_home', false),
+            'sort_order' => $request->sort_order ?? 99,
+            'name' => $request->name,
+            'city' => $request->city,
+            'district' => $request->district,
+            'village' => $request->village,
+            'brief' => $request->brief,
+            'content' => $request->content,
+            'note' => $request->note,
+            'image' => $imagePath,
+            'slogan' => $request->slogan,
+            'tag' => $request->tag,
+            'external_link' => $request->external_link,
+            'company_name' => $request->company_name,
+            'booking_link' => $request->booking_link,
+            'take_number_link' => $request->take_number_link,
+            'current_number_link' => $request->current_number_link,
         ]);
 
         return redirect()->route('admin.partners.index')
@@ -121,5 +151,33 @@ class PartnerController extends Controller
         $partner->update(['sort_order' => request('sort_order')]);
 
         return redirect()->back()->with('success', '排序已更新');
+    }
+
+    public function getPublicPartners()
+    {
+        $partners = Partner::active()
+                          ->ordered()
+                          ->get([
+                              'id',
+                              'name',
+                              'city',
+                              'district',
+                              'village',
+                              'brief',
+                              'content',
+                              'image',
+                              'slogan',
+                              'tag',
+                              'external_link',
+                              'company_name',
+                              'booking_link',
+                              'take_number_link',
+                              'current_number_link',
+                              'views'
+                          ]);
+
+        return response()->json([
+            'partners' => $partners
+        ]);
     }
 }

@@ -23,6 +23,14 @@ class Partner extends Model
         'content',
         'note',
         'views',
+        'image',
+        'slogan',
+        'tag',
+        'external_link',
+        'company_name',
+        'booking_link',
+        'take_number_link',
+        'current_number_link',
     ];
 
     protected $casts = [

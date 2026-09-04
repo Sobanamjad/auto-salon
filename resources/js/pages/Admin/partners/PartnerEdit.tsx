@@ -1,7 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { 
-    FaArrowLeft, FaSave, FaTimes, FaUserFriends, 
-    FaUser, FaMapMarkerAlt, FaHome, FaSort, 
+import {
+    FaArrowLeft, FaSave, FaTimes, FaUserFriends,
+    FaUser, FaMapMarkerAlt, FaHome, FaSort,
     FaFileAlt, FaCheck
 } from 'react-icons/fa';
 
@@ -18,6 +18,13 @@ interface Partner {
     brief: string;
     content: string;
     note: string;
+    slogan: string;
+    tag: string;
+    external_link: string;
+    company_name: string;
+    booking_link: string;
+    take_number_link: string;
+    current_number_link: string;
     created_at: string;
     updated_at: string;
 }
@@ -40,15 +47,51 @@ export default function PartnerEdit({ partner, title }: Props) {
         brief: partner.brief || '',
         content: partner.content || '',
         note: partner.note || '',
+        image_file: null,
+        slogan: partner.slogan || '',
+        tag: partner.tag || '',
+        external_link: partner.external_link || '',
+        company_name: partner.company_name || '',
+        booking_link: partner.booking_link || '',
+        take_number_link: partner.take_number_link || '',
+        current_number_link: partner.current_number_link || '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        formData.append('language', data.language);
+        formData.append('status', data.status ? '1' : '0');
+        formData.append('show_on_home', data.show_on_home ? '1' : '0');
+        formData.append('sort_order', data.sort_order.toString());
+        formData.append('name', data.name);
+        formData.append('city', data.city);
+        formData.append('district', data.district);
+        formData.append('village', data.village);
+        formData.append('brief', data.brief);
+        formData.append('content', data.content);
+        formData.append('note', data.note);
+
+        if (data.image_file) {
+            formData.append('image_file', data.image_file);
+        }
+
+        formData.append('slogan', data.slogan);
+        formData.append('tag', data.tag);
+        formData.append('external_link', data.external_link);
+        formData.append('company_name', data.company_name);
+        formData.append('booking_link', data.booking_link);
+        formData.append('take_number_link', data.take_number_link);
+        formData.append('current_number_link', data.current_number_link);
+
         put(`/admin/partners/${partner.id}`, {
+            data: formData,
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/partners';
             },
-            onError: (errors) => {
+            onError: (errors: any) => {
                 console.error('Validation errors:', errors);
             }
         });
@@ -248,6 +291,123 @@ export default function PartnerEdit({ partner, title }: Props) {
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
                             placeholder="請輸入簡介..."
                         />
+                    </div>
+
+                    {/* Image */}
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            頭像圖片
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                    setData('image_file', file);
+                                }
+                            }}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                        />
+                        {data.image_file && (
+                            <p className="text-sm text-gray-600 mt-1">已選擇: {data.image_file.name}</p>
+                        )}
+                        {data.image_file && (
+                            <div className="mt-2">
+                                <p className="text-sm text-gray-600 mb-1">預覽:</p>
+                                <img
+                                    src={URL.createObjectURL(data.image_file)}
+                                    alt="預覽"
+                                    className="h-32 w-32 object-cover rounded border"
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Slogan */}
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            標語
+                        </label>
+                        <input
+                            type="text"
+                            value={data.slogan}
+                            onChange={(e) => setData('slogan', e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                            placeholder="請輸入標語"
+                        />
+                    </div>
+
+                    {/* Tag */}
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            標籤
+                        </label>
+                        <input
+                            type="text"
+                            value={data.tag}
+                            onChange={(e) => setData('tag', e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                            placeholder="請輸入標籤"
+                        />
+                    </div>
+
+                    {/* External Link */}
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            外部連結
+                        </label>
+                        <input
+                            type="text"
+                            value={data.external_link}
+                            onChange={(e) => setData('external_link', e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                            placeholder="請輸入外部連結"
+                        />
+                    </div>
+
+                    {/* Company Name */}
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            公司名稱
+                        </label>
+                        <input
+                            type="text"
+                            value={data.company_name}
+                            onChange={(e) => setData('company_name', e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                            placeholder="請輸入公司名稱"
+                        />
+                    </div>
+
+                    {/* Caller Links */}
+                    <div className="bg-gray-50 rounded-lg p-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            預約/取號連結
+                        </label>
+                        <div className="space-y-2">
+                            <input
+                                type="text"
+                                value={data.booking_link}
+                                onChange={(e) => setData('booking_link', e.target.value)}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                placeholder="預約連結"
+                            />
+                            <input
+                                type="text"
+                                value={data.take_number_link}
+                                onChange={(e) => setData('take_number_link', e.target.value)}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                placeholder="網路取號連結"
+                            />
+                            <input
+                                type="text"
+                                value={data.current_number_link}
+                                onChange={(e) => setData('current_number_link', e.target.value)}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                placeholder="目前號碼連結"
+                            />
+                        </div>
                     </div>
 
                     {/* Content */}

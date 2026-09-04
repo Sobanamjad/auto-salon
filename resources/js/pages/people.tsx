@@ -1,63 +1,74 @@
 import { Head } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
+import { useEffect, useState } from 'react';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
 
-const peopleItems = [
-    {
-        href: 'https://0915536967.posu.tw/',
-        img: '/asd_files/202209160957401422.png',
-        imgW: 1024, imgH: 1024,
-        name: '陳金漢',
-        slogan: '用心只為您',
-        text: '專注在開店、系統、網頁、媒體行銷',
-        tag: '資訊供應服務',
-        location: '台南市 中西區',
-        callerLinks: null,
-    },
-    {
-        href: 'https://0911958582.posu.tw/',
-        img: '/asd_files/202210171049500347.png',
-        imgW: 1024, imgH: 1024,
-        name: '許芳榮',
-        slogan: '西藥 / 醫療器材 / 優質保健食品',
-        text: '西藥 / 醫療器材 / 優質保健食品',
-        tag: '保健、營養',
-        location: '台南市 永康區 永康里',
-        callerLinks: null,
-    },
-    {
-        href: 'https://0987600677.posu.tw/',
-        img: '/asd_files/202303071049481286.jpg',
-        imgW: 776, imgH: 1024,
-        name: '王子銘',
-        slogan: '泰勒斯數學教室',
-        text: '泰勒斯數學教室-提升學生計算能力增進答題正確率',
-        tag: '老師教練類',
-        location: '台南市 中西區 赤嵌里',
-        callerLinks: null,
-    },
-    {
-        href: 'https://0982780377.posu.tw/',
-        img: '/asd_files/202410221731556848.png',
-        imgW: 1024, imgH: 768,
-        name: '高莉甄',
-        slogan: '五星好評:網路規劃師/高莉甄',
-        text: '博識高科技為您出謀劃策專業規劃 公司官網/網路開店/雲端名片 程式設計/媒體平台/行銷廣告 20年的服務經驗',
-        tag: '資訊供應服務',
-        company: 'Google五星好評~架網站找高莉甄',
-        location: '台南市 東區 富裕里',
-        callerLinks: {
-            book: 'https://book.52salon.com/20/545',
-            netQueue: 'https://caller.posu.tw/20/267',
-            currentNum: 'https://caller.posu.tw/10/267',
-        },
-    },
-];
+interface Partner {
+    id: number;
+    name: string;
+    city: string | null;
+    district: string | null;
+    village: string | null;
+    brief: string | null;
+    content: string | null;
+    image: string | null;
+    slogan: string | null;
+    tag: string | null;
+    external_link: string | null;
+    company_name: string | null;
+    booking_link: string | null;
+    take_number_link: string | null;
+    current_number_link: string | null;
+    views: number;
+}
 
 export default function People() {
     useForceLightMode();
+    const [partners, setPartners] = useState<Partner[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPartners = async () => {
+            try {
+                const response = await fetch('/api/partners');
+                const data = await response.json();
+                setPartners(data.partners || []);
+            } catch (error) {
+                console.error('Failed to fetch partners:', error);
+                setPartners([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPartners();
+    }, []);
+
+    const formatLocation = (city: string | null, district: string | null, village: string | null) => {
+        const parts = [city, district, village].filter(Boolean);
+        return parts.join(' ');
+    };
+
+    const getCallerLinks = (partner: Partner) => {
+        if (!partner.booking_link && !partner.take_number_link && !partner.current_number_link) {
+            return null;
+        }
+        return {
+            book: partner.booking_link,
+            netQueue: partner.take_number_link,
+            currentNum: partner.current_number_link,
+        };
+    };
+
+    const getImagePath = (image: string | null) => {
+        if (!image) return '/asd_files/placeholder.jpg';
+        if (image.startsWith('http')) return image;
+        if (image.startsWith('/asd_files/')) return image;
+        if (image.startsWith('/storage/')) return image;
+        return `/storage/${image}`;
+    };
     return (
         <>
             <Head>
@@ -129,82 +140,90 @@ export default function People() {
                                     </div>
 
                                     {/* People cards grid */}
-                                    <ul className="row row-cols-2 row-cols-lg-3 row-cols-xl-4">
-                                        {peopleItems.map((person, index) => (
-                                            <li key={index}>
-                                                <div className="card card_people effect_topslash fadeUp js-scroll">
-                                                    <div className="row g-3">
-                                                        <div>
-                                                            <div className="card-photo">
-                                                                <a href={person.href} target="_blank" rel="noopener noreferrer">
-                                                                    <div className="item-fitimg">
-                                                                        <img
-                                                                            src={person.img}
-                                                                            width={person.imgW}
-                                                                            height={person.imgH}
-                                                                            alt={person.name}
-                                                                            loading="lazy"
-                                                                            className="fitimg"
-                                                                        />
+                                    {loading ? (
+                                        <div className="text-center py-8">載入中...</div>
+                                    ) : (
+                                        <ul className="row row-cols-2 row-cols-lg-3 row-cols-xl-4">
+                                            {partners.map((partner) => {
+                                                const callerLinks = getCallerLinks(partner);
+                                                const location = formatLocation(partner.city, partner.district, partner.village);
+                                                return (
+                                                    <li key={partner.id}>
+                                                        <div className="card card_people effect_topslash fadeUp js-scroll">
+                                                            <div className="row g-3">
+                                                                <div>
+                                                                    <div className="card-photo">
+                                                                        <a href={partner.external_link || '#'} target="_blank" rel="noopener noreferrer">
+                                                                            <div className="item-fitimg">
+                                                                                <img
+                                                                                    src={getImagePath(partner.image)}
+                                                                                    width={1024}
+                                                                                    height={1024}
+                                                                                    alt={partner.name}
+                                                                                    loading="lazy"
+                                                                                    className="fitimg"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="card-mask"></div>
+                                                                        </a>
                                                                     </div>
-                                                                    <div className="card-mask"></div>
-                                                                </a>
-                                                            </div>
-                                                            {person.callerLinks && (
-                                                                <ul className="card-callerbar">
-                                                                    <li><a href={person.callerLinks.book} target="_blank" rel="noopener noreferrer">預約</a></li>
-                                                                    <li><a href={person.callerLinks.netQueue} target="_blank" rel="noopener noreferrer">網路取號</a></li>
-                                                                    <li><a href={person.callerLinks.currentNum} target="_blank" rel="noopener noreferrer">目前號碼</a></li>
-                                                                </ul>
-                                                            )}
-                                                        </div>
-                                                        <div>
-                                                            <div className="card-body">
-                                                                <h3 className="card-name">
-                                                                    <a href={person.href} target="_blank" rel="noopener noreferrer">
-                                                                        <span className="card-name-text">{person.name}</span>
-                                                                    </a>
-                                                                </h3>
-                                                                <div className="card-slogan">{person.slogan}</div>
-                                                                <div className="card-text img-hidden text-limit limit-line-2">{person.text}</div>
-                                                                <div className="card-infobar">
-                                                                    <div className="card-info card-info_tag">
-                                                                        <span className="iconsvg icon-tag"></span>
-                                                                        <span className="card-info-text">{person.tag}</span>
-                                                                    </div>
-                                                                    {'company' in person && person.company && (
-                                                                        <div className="card-info card-info_company">
-                                                                            <span className="iconsvg icon-company"></span>
-                                                                            <span className="card-info-text">{person.company}</span>
-                                                                        </div>
+                                                                    {callerLinks && (
+                                                                        <ul className="card-callerbar">
+                                                                            <li><a href={callerLinks.book} target="_blank" rel="noopener noreferrer">預約</a></li>
+                                                                            <li><a href={callerLinks.netQueue} target="_blank" rel="noopener noreferrer">網路取號</a></li>
+                                                                            <li><a href={callerLinks.currentNum} target="_blank" rel="noopener noreferrer">目前號碼</a></li>
+                                                                        </ul>
                                                                     )}
-                                                                    <div className="card-info card-info_location">
-                                                                        <span className="iconsvg icon-address"></span>
-                                                                        <span className="card-info-text">{person.location}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="card-body">
+                                                                        <h3 className="card-name">
+                                                                            <a href={partner.external_link || '#'} target="_blank" rel="noopener noreferrer">
+                                                                                <span className="card-name-text">{partner.name}</span>
+                                                                            </a>
+                                                                        </h3>
+                                                                        <div className="card-slogan">{partner.slogan}</div>
+                                                                        <div className="card-text img-hidden text-limit limit-line-2">{partner.brief}</div>
+                                                                        <div className="card-infobar">
+                                                                            <div className="card-info card-info_tag">
+                                                                                <span className="iconsvg icon-tag"></span>
+                                                                                <span className="card-info-text">{partner.tag}</span>
+                                                                            </div>
+                                                                            {partner.company_name && (
+                                                                                <div className="card-info card-info_company">
+                                                                                    <span className="iconsvg icon-company"></span>
+                                                                                    <span className="card-info-text">{partner.company_name}</span>
+                                                                                </div>
+                                                                            )}
+                                                                            <div className="card-info card-info_location">
+                                                                                <span className="iconsvg icon-address"></span>
+                                                                                <span className="card-info-text">{location}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        {callerLinks && (
+                                                                            <ul className="card-callerbar">
+                                                                                <li><a href={callerLinks.book} target="_blank" rel="noopener noreferrer">預約</a></li>
+                                                                                <li><a href={callerLinks.netQueue} target="_blank" rel="noopener noreferrer">網路取號</a></li>
+                                                                                <li><a href={callerLinks.currentNum} target="_blank" rel="noopener noreferrer">目前號碼</a></li>
+                                                                            </ul>
+                                                                        )}
                                                                     </div>
                                                                 </div>
-                                                                {person.callerLinks && (
-                                                                    <ul className="card-callerbar">
-                                                                        <li><a href={person.callerLinks.book} target="_blank" rel="noopener noreferrer">預約</a></li>
-                                                                        <li><a href={person.callerLinks.netQueue} target="_blank" rel="noopener noreferrer">網路取號</a></li>
-                                                                        <li><a href={person.callerLinks.currentNum} target="_blank" rel="noopener noreferrer">目前號碼</a></li>
-                                                                    </ul>
-                                                                )}
+                                                                <div className="hidden">
+                                                                    <div className="card-btnbar card-btnbar_outlink">
+                                                                        <a href={partner.external_link || '#'} className="card-btn card-btn_outlink" target="_blank" rel="noopener noreferrer">
+                                                                            <span className="card-btn-text">更多</span>
+                                                                            <span className="iconsvg icon-outlink"></span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className="hidden">
-                                                            <div className="card-btnbar card-btnbar_outlink">
-                                                                <a href={person.href} className="card-btn card-btn_outlink" target="_blank" rel="noopener noreferrer">
-                                                                    <span className="card-btn-text">更多</span>
-                                                                    <span className="iconsvg icon-outlink"></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    )}
 
                                 </div>
                             </div>
