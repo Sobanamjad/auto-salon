@@ -171,4 +171,21 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', '排序已更新');
     }
+
+    public function preview($id)
+    {
+        $product = Product::findOrFail($id);
+
+        $categoryLabels = [
+            '7519' => '保養飾品',
+            '7518' => '居家用品',
+            '7517' => '吃吃喝喝',
+        ];
+
+        return Inertia::render('Admin/products/ProductPreview', [
+            'title'         => '商品預覽 - ' . $product->name,
+            'product'       => $product,
+            'categoryLabel' => $categoryLabels[$product->category] ?? $product->category,
+        ]);
+    }
 }

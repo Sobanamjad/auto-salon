@@ -118,6 +118,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-home', [ProductController::class, 'toggleHome'])->name('toggle-home');
             Route::get('/{id}/reset-views', [ProductController::class, 'resetViews'])->name('reset-views');
             Route::put('/{id}/sort', [ProductController::class, 'updateSort'])->name('update-sort');
+            Route::get('/{id}/preview', [ProductController::class, 'preview'])->name('preview');
         });
 
         // Links (相關連結)
