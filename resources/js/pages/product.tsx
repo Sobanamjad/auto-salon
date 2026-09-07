@@ -4,51 +4,74 @@ import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import {
-    DEFAULT_PRODUCT_CSN,
-    getProductCategoryLabel,
-    getProductPageItems,
-    getProductTotal,
-    getProductTotalPages,
-    productCategories,
-    productCategoryHref,
-    productViewHref,
-    type ProductCategory,
-} from '@/data/product-items';
+
+type ProductCategory = {
+    csn: string;
+    label: string;
+};
+
+type ProductItem = {
+    id: number;
+    product_no: string | null;
+    name: string;
+    brief: string | null;
+    content: string | null;
+    img: string | null;
+    img_w: number | null;
+    img_h: number | null;
+    category: string;
+    price: string | null;
+};
 
 type Props = {
-    csn?: string;
-    upSn?: string;
-    thisPage?: number;
+    csn: string;
+    upSn: string;
+    thisPage: number;
     searchTitle?: string | null;
+    products: ProductItem[];
+    totalItems: number;
+    totalPages: number;
+    categories: ProductCategory[];
 };
 
 export default function Product({
-    csn = DEFAULT_PRODUCT_CSN,
-    upSn = '0',
-    thisPage = 1,
+    csn,
+    upSn,
+    thisPage,
     searchTitle = null,
+    products,
+    totalItems,
+    totalPages,
+    categories,
 }: Props) {
     useForceLightMode();
 
-    const activeCsn = (csn as ProductCategory) || DEFAULT_PRODUCT_CSN;
-    const categoryLabel = getProductCategoryLabel(activeCsn);
-    const totalPages = getProductTotalPages(activeCsn, searchTitle);
-    const totalItems = getProductTotal(activeCsn, searchTitle);
-    const currentPage = Math.min(Math.max(thisPage, 1), totalPages);
-    const items = getProductPageItems(activeCsn, currentPage, searchTitle);
+    const currentPage = thisPage;
+    const categoryLabel = categories.find(c => c.csn === csn)?.label ?? categories[0]?.label ?? '';
     const nbsp = '\u00A0';
 
     const pageHref = (page: number) => {
         const params = new URLSearchParams();
-        params.set('new_csn', activeCsn);
+        params.set('new_csn', csn);
         params.set('up_sn', upSn);
         params.set('this_page', String(page));
         if (searchTitle?.trim()) {
             params.set('sel_title', searchTitle.trim());
         }
-
         return `/product?${params.toString()}`;
+    };
+
+    const categoryHref = (categoryCsn: string) => {
+        const params = new URLSearchParams();
+        params.set('new_csn', categoryCsn);
+        params.set('up_sn', upSn);
+        return `/product?${params.toString()}`;
+    };
+
+    // Link to product detail — uses product_no as the legacy sn identifier
+    const productViewHref = (item: ProductItem) => {
+        const sn = item.product_no ?? String(item.id);
+        return `/product_view?new_sn=${sn}&up_sn=${upSn}&lang=TS`;
     };
 
     return (
@@ -121,6 +144,7 @@ export default function Product({
                                     </div>
 
                                     <div className="main-columns-wrap">
+                                        {/* ── Sidebar ── */}
                                         <div className="main-columns-left">
                                             <div className="searchbar">
                                                 <div className="search">
@@ -130,7 +154,7 @@ export default function Product({
                                                         action="/product"
                                                         role="search"
                                                     >
-                                                        <input type="hidden" name="new_csn" value={activeCsn} />
+                                                        <input type="hidden" name="new_csn" value={csn} />
                                                         <input type="hidden" name="up_sn" value={upSn} />
                                                         <input type="hidden" name="this_page" value="1" />
                                                         <input
@@ -156,16 +180,14 @@ export default function Product({
                                             </div>
 
                                             <ul className="jsmtree pdmenu">
-                                                {productCategories.map(category => (
+                                                {categories.map(category => (
                                                     <li
                                                         key={category.csn}
-                                                        className={category.csn === activeCsn ? 'active' : ''}
+                                                        className={category.csn === csn ? 'active' : ''}
                                                     >
                                                         <a
-                                                            href={productCategoryHref(category.csn, upSn)}
-                                                            className={
-                                                                category.csn === activeCsn ? 'is-current' : ''
-                                                            }
+                                                            href={categoryHref(category.csn)}
+                                                            className={category.csn === csn ? 'is-current' : ''}
                                                         >
                                                             {category.label}
                                                         </a>
@@ -174,30 +196,35 @@ export default function Product({
                                             </ul>
                                         </div>
 
+                                        {/* ── Product grid ── */}
                                         <div className="main-columns-right">
                                             <ul className="row row-cols-2 row-cols-lg-3">
-                                                {items.map(product => {
-                                                    const href = productViewHref(product.sn, upSn);
+                                                {products.map(product => {
+                                                    const href = productViewHref(product);
 
                                                     return (
-                                                        <li key={product.sn}>
+                                                        <li key={product.id}>
                                                             <div className="card card_product effect_dec_vt fadeUp js-scroll">
                                                                 <div className="row g-3">
                                                                     <div>
                                                                         <div className="card-photo">
                                                                             <a
                                                                                 href={href}
-                                                                                title={`${product.title} - 前往了解`}
+                                                                                title={`${product.name} - 前往了解`}
                                                                             >
                                                                                 <div className="item-fitimg">
-                                                                                    <img
-                                                                                        src={product.img}
-                                                                                        alt={product.title}
-                                                                                        width={product.imgW}
-                                                                                        height={product.imgH}
-                                                                                        loading="lazy"
-                                                                                        className="fitimg"
-                                                                                    />
+                                                                                    {product.img ? (
+                                                                                        <img
+                                                                                            src={product.img}
+                                                                                            alt={product.name}
+                                                                                            width={product.img_w ?? undefined}
+                                                                                            height={product.img_h ?? undefined}
+                                                                                            loading="lazy"
+                                                                                            className="fitimg"
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <div className="fitimg" aria-hidden="true" />
+                                                                                    )}
                                                                                 </div>
                                                                                 <div className="card-mask"></div>
                                                                             </a>
@@ -208,19 +235,18 @@ export default function Product({
                                                                             <h3 className="card-name">
                                                                                 <a
                                                                                     href={href}
-                                                                                    title={`${product.title} - 前往了解`}
+                                                                                    title={`${product.name} - 前往了解`}
                                                                                 >
                                                                                     <span className="card-name-text">
-                                                                                        {product.title}
+                                                                                        {product.name}
                                                                                     </span>
                                                                                 </a>
                                                                             </h3>
-                                                                            <div
-                                                                                className="card-text img-hidden text-limit limit-line-2"
-                                                                                dangerouslySetInnerHTML={{
-                                                                                    __html: product.descriptionHtml,
-                                                                                }}
-                                                                            />
+                                                                            {product.brief && (
+                                                                                <p className="card-text img-hidden text-limit limit-line-2">
+                                                                                    {product.brief}
+                                                                                </p>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                     <div>
@@ -228,7 +254,7 @@ export default function Product({
                                                                             <a
                                                                                 href={href}
                                                                                 className="card-btn card-btn_more"
-                                                                                title={`${product.title} - 前往了解`}
+                                                                                title={`${product.name} - 前往了解`}
                                                                             >
                                                                                 <span className="card-btn-text">
                                                                                     更多
@@ -244,6 +270,7 @@ export default function Product({
                                                 })}
                                             </ul>
 
+                                            {/* ── Pagination ── */}
                                             <div className="page">
                                                 <Link href={pageHref(1)} preserveScroll={false}>
                                                     首頁

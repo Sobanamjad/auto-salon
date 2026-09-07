@@ -364,13 +364,99 @@ Route::get('/qa', function () {
 })->name('qa');
 
 Route::get('/product', function () {
+    $csn        = (string) request()->query('new_csn', '7519');
+    $upSn       = (string) request()->query('up_sn', '0');
+    $thisPage   = max(1, (int) request()->query('this_page', 1));
+    $searchTitle = request()->query('sel_title');
+
+    $perPage = 12;
+
+    $query = \App\Models\Product::active()
+        ->ordered()
+        ->where('language', 'TS')
+        ->where('category', $csn)
+        ->where('published_date', '<=', now())
+        ->where('end_date', '>=', now());
+
+    if ($searchTitle && trim($searchTitle) !== '') {
+        $query->where('name', 'like', '%' . trim($searchTitle) . '%');
+    }
+
+    $totalItems = $query->count();
+    $totalPages = max(1, (int) ceil($totalItems / $perPage));
+    $currentPage = min($thisPage, $totalPages);
+
+    $products = $query
+        ->skip(($currentPage - 1) * $perPage)
+        ->take($perPage)
+        ->get(['id', 'product_no', 'name', 'brief', 'content', 'img', 'img_w', 'img_h', 'category', 'price']);
+
+    // All available categories (only those that have active products)
+    $categories = [
+        ['csn' => '7519', 'label' => '保養飾品'],
+        ['csn' => '7518', 'label' => '居家用品'],
+        ['csn' => '7517', 'label' => '吃吃喝喝'],
+    ];
+
     return inertia('product', [
-        'csn' => (string) request()->query('new_csn', '7519'),
-        'upSn' => (string) request()->query('up_sn', '0'),
-        'thisPage' => max(1, (int) request()->query('this_page', 1)),
-        'searchTitle' => request()->query('sel_title'),
+        'csn'         => $csn,
+        'upSn'        => $upSn,
+        'thisPage'    => $currentPage,
+        'searchTitle' => $searchTitle,
+        'products'    => $products,
+        'totalItems'  => $totalItems,
+        'totalPages'  => $totalPages,
+        'categories'  => $categories,
     ]);
 })->name('product');
+
+Route::get('/product_view', function () {
+    // new_sn is the product_no (legacy sn) value
+    $sn = request()->query('new_sn');
+    $upSn = (string) request()->query('up_sn', '0');
+
+    if (!$sn) {
+        return redirect('/product');
+    }
+
+    // Look up by product_no first (legacy sn), then fall back to id
+    $product = \App\Models\Product::active()
+        ->where(function ($q) use ($sn) {
+            $q->where('product_no', $sn)->orWhere('id', $sn);
+        })
+        ->first();
+
+    if (!$product) {
+        return redirect('/product');
+    }
+
+    $product->increment('views');
+
+    // Build category back-link params
+    $backCsn = $product->category ?? '7519';
+
+    return inertia('product-view', [
+        'product' => [
+            'id'             => $product->id,
+            'product_no'     => $product->product_no,
+            'name'           => $product->name,
+            'brief'          => $product->brief,
+            'content'        => $product->content,
+            'img'            => $product->img,
+            'img_w'          => $product->img_w,
+            'img_h'          => $product->img_h,
+            'video'          => $product->video,
+            'price'          => $product->price,
+            'currency'       => $product->currency,
+            'stock'          => $product->stock,
+            'category'       => $product->category,
+            'published_date' => $product->published_date?->format('Y-m-d'),
+            'views'          => $product->views,
+        ],
+        'upSn'    => $upSn,
+        'backCsn' => $backCsn,
+    ]);
+})->name('product.view');
 
 Route::get('/article', function () {
     $csn = request()->query('new_csn');
