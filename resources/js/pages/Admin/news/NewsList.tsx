@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
@@ -255,7 +255,7 @@ export default function NewsList({ news: newsItems }: NewsListProps) {
                                             <button
                                                 onClick={() => {
                                                     if (confirm(`確定要刪除: ${item.subject} ？`)) {
-                                                        // API call to delete
+                                                        router.delete(`/admin/news/${item.id}`);
                                                     }
                                                 }}
                                                 className="text-red-600 hover:text-red-800 flex items-center gap-1"
