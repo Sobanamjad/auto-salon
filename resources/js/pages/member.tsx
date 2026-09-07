@@ -27,7 +27,6 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
     const toggleAccordion = (sn: string) => {
         setOpenAccordion(openAccordion === sn ? null : sn);
     };
-
     return (
         <>
             <Head>
@@ -188,13 +187,13 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
                                                                     <div className="card-td company">{member.company}</div>
                                                                     <div className="card-td jobtitle">{member.jobTitle || ''}</div>
                                                                 </div>
-
                                                                 <div className="accordion-icon"></div>
                                                             </button>
 
+                                                            {/* Use max-height to match the CSS transition (not display:none) */}
                                                             <div
                                                                 className="accordion-content"
-                                                                style={{ display: isOpen ? 'block' : 'none' }}
+                                                                style={{ maxHeight: isOpen ? '9999px' : '0' }}
                                                             >
                                                                 <div className="card-body">
                                                                     <div className="card-body-row">
@@ -250,6 +249,14 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
                                                                                         </div>
                                                                                     </li>
                                                                                 ))}
+                                                                                {member.fax && (
+                                                                                    <li>
+                                                                                        <div className="card-info">
+                                                                                            <span className="card-info-title">傳真</span>
+                                                                                            <span className="card-info-text">{member.fax}</span>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                )}
                                                                                 {member.line && (
                                                                                     <li>
                                                                                         <div className="card-info">
@@ -269,7 +276,7 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
                                                                                 {member.address && (
                                                                                     <li>
                                                                                         <div className="card-info">
-                                                                                            <span className="card-info-title">地址</span>
+                                                                                            <span className="card-info-title">通訊地址</span>
                                                                                             <span className="card-info-text">{member.address}</span>
                                                                                         </div>
                                                                                     </li>
@@ -277,6 +284,17 @@ export default function Member({ csn = null, searchTitle = null }: Props) {
                                                                             </ul>
                                                                         </div>
                                                                     </div>
+
+                                                                    {/* 個人介紹 section */}
+                                                                    {member.intro && (
+                                                                        <div className="card-intro">
+                                                                            <div className="card-intro-heading">個人介紹</div>
+                                                                            <div
+                                                                                className="card-intro-text editor"
+                                                                                dangerouslySetInnerHTML={{ __html: member.intro }}
+                                                                            />
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>

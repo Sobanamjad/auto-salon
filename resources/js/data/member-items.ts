@@ -10,9 +10,11 @@ export type MemberItem = {
     photoH: number;
     website?: string;
     phones: string[];
+    fax?: string;
     line?: string;
     email?: string;
     address?: string;
+    intro?: string;       // HTML string for 個人介紹
     categories: MemberCategory[];
 };
 
@@ -34,9 +36,19 @@ export const memberItems: MemberItem[] = [
         photoH: 1024,
         website: 'https://www.posu.tw/',
         phones: ['062667100', '0911222333', '062667101'],
+        fax: '06-3662480',
         line: 'posu80',
         email: 'service@posu.com.tw',
-        address: '台南市永康區中華路425號',
+        address: '台南市仁德區文賢路一段862巷8號',
+        intro: `<p><strong>【個人簡介】</strong></p>
+<p>擁有豐富的資訊系統整合與技術管理經驗，現任職於資訊科技業資訊組長。專注於企業數位轉型、軟體開發生命週期（SDLC/SSDLC）管理、雲端架構維運與資訊安全防禦機制。</p>
+<p>擅長將複雜的技術語言轉化為高效的業務解決方案，跨部門推動資訊系統的升級與優化。著重於建立高穩定度、高擴充性且兼具安全性的IT基礎設施，協助企業在數位浪潮中保持關鍵競爭力。</p>
+<p><strong>【核心專長】</strong></p>
+<p>✦ 企業資訊系統架構與專案管理</p>
+<p>✦ 軟體開發與資安防護（SSDLC / 滲透測試 / 資安防禦）</p>
+<p>✦ 雲端服務與伺服器架構維運管理</p>
+<p>✦ 跨部門溝通與技術團隊帶領</p>
+<p><iframe style="display:table;margin-left:auto;margin-right:auto;" title="YouTube video player" src="https://www.youtube.com/embed/eLuOQ4m4Fcc?si=e1UL5_zS6HbtKdcA" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></p>`,
         categories: ['303'],
     },
     {
