@@ -11,6 +11,7 @@ interface NewsPreviewProps {
         show_marquee: boolean;
         sort_order: number;
         category: string;
+        photo: string | null;
         subject: string;
         brief: string | null;
         content: string;
@@ -134,6 +135,21 @@ export default function NewsPreview({ news }: NewsPreviewProps) {
                             </div>
                         </div>
                     </div>
+
+                    {/* Photo */}
+                    {news.photo && (
+                        <div className="bg-gray-50 rounded-lg p-4">
+                            <label className="block text-sm font-medium text-gray-500 mb-2">
+                                相片
+                            </label>
+                            <img
+                                src={news.photo}
+                                alt={news.subject}
+                                className="max-w-full h-auto rounded-lg"
+                                style={{ maxHeight: '400px' }}
+                            />
+                        </div>
+                    )}
 
                     {/* Subject */}
                     <div>

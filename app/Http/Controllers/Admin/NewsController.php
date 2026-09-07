@@ -17,7 +17,19 @@ class NewsController extends Controller
     {
         $news = News::orderBy('sort_order', 'asc')
                      ->orderBy('published_date', 'desc')
-                     ->get();
+                     ->get()
+                     ->map(function ($item) {
+                         // Format photo URL if it exists
+                         if ($item->photo) {
+                             // Handle both old format (/news_files/...) and new format (news_photos/...)
+                             if (strpos($item->photo, '/news_files/') === 0) {
+                                 $item->photo = $item->photo; // Keep as is for existing files
+                             } else {
+                                 $item->photo = '/storage/' . $item->photo;
+                             }
+                         }
+                         return $item;
+                     });
 
         return Inertia::render('Admin/news/NewsList', [
             'title' => '最新消息',
@@ -77,6 +89,16 @@ class NewsController extends Controller
     public function edit($id)
     {
         $news = News::findOrFail($id);
+
+        // Format photo URL if it exists
+        if ($news->photo) {
+            // Handle both old format (/news_files/...) and new format (news_photos/...)
+            if (strpos($news->photo, '/news_files/') === 0) {
+                $news->photo = $news->photo; // Keep as is for existing files
+            } else {
+                $news->photo = '/storage/' . $news->photo;
+            }
+        }
 
         return Inertia::render('Admin/news/NewsEdit', [
             'title' => '編輯最新消息',
@@ -143,6 +165,16 @@ class NewsController extends Controller
     public function preview($id)
     {
         $news = News::findOrFail($id);
+
+        // Format photo URL if it exists
+        if ($news->photo) {
+            // Handle both old format (/news_files/...) and new format (news_photos/...)
+            if (strpos($news->photo, '/news_files/') === 0) {
+                $news->photo = $news->photo; // Keep as is for existing files
+            } else {
+                $news->photo = '/storage/' . $news->photo;
+            }
+        }
 
         return Inertia::render('Admin/news/NewsPreview', [
             'title' => '預覽最新消息',
