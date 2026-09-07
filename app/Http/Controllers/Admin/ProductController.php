@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -30,25 +31,38 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
+        // Handle image upload
+        $imgPath = null;
+        $imgW    = null;
+        $imgH    = null;
+        if ($request->hasFile('img')) {
+            $file    = $request->file('img');
+            $imgPath = '/storage/' . $file->store('product_photos', 'public');
+            [$imgW, $imgH] = getimagesize($file->getRealPath()) ?: [null, null];
+        }
+
         Product::create([
-            'language' => $validated['language'],
-            'status' => $validated['status'],
-            'show_on_home' => $validated['show_on_home'],
-            'sort_order' => $validated['sort_order'],
+            'language'       => $validated['language'],
+            'status'         => $validated['status'],
+            'show_on_home'   => $validated['show_on_home'],
+            'sort_order'     => $validated['sort_order'],
             'published_date' => $validated['published_date'] ?? now(),
-            'end_date' => $validated['end_date'] ?? '2200-12-31',
-            'category' => $validated['category'] ?? null,
-            'product_no' => $validated['product_no'] ?? null,
-            'name' => $validated['name'],
-            'brief' => $validated['brief'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'video' => $validated['video'] ?? null,
-            'note' => $validated['note'] ?? null,
-            'has_photo' => $validated['has_photo'] ?? false,
-            'price' => $validated['price'] ?? null,
-            'currency' => $validated['currency'] ?? 'NT',
-            'stock' => $validated['stock'] ?? 0,
-            'views' => 0,
+            'end_date'       => $validated['end_date'] ?? '2200-12-31',
+            'category'       => $validated['category'] ?? null,
+            'product_no'     => $validated['product_no'] ?? null,
+            'img'            => $imgPath,
+            'img_w'          => $imgW,
+            'img_h'          => $imgH,
+            'name'           => $validated['name'],
+            'brief'          => $validated['brief'] ?? null,
+            'content'        => $validated['content'] ?? null,
+            'video'          => $validated['video'] ?? null,
+            'note'           => $validated['note'] ?? null,
+            'has_photo'      => $imgPath ? true : ($validated['has_photo'] ?? false),
+            'price'          => $validated['price'] ?? null,
+            'currency'       => $validated['currency'] ?? 'NT',
+            'stock'          => $validated['stock'] ?? 0,
+            'views'          => 0,
         ]);
 
         return redirect()->route('admin.products.index')
@@ -60,34 +74,56 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         return Inertia::render('Admin/products/ProductEdit', [
-            'title' => '編輯商品',
+            'title'   => '編輯商品',
             'product' => $product
         ]);
     }
 
     public function update(ProductRequest $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $product   = Product::findOrFail($id);
         $validated = $request->validated();
 
+        // Handle image upload — keep existing if no new file
+        $imgPath = $product->img;
+        $imgW    = $product->img_w;
+        $imgH    = $product->img_h;
+
+        if ($request->hasFile('img')) {
+            // Delete old image from storage (only storage-based paths)
+            if ($product->img && str_starts_with($product->img, '/storage/')) {
+                $storagePath = str_replace('/storage/', '', $product->img);
+                if (Storage::disk('public')->exists($storagePath)) {
+                    Storage::disk('public')->delete($storagePath);
+                }
+            }
+
+            $file    = $request->file('img');
+            $imgPath = '/storage/' . $file->store('product_photos', 'public');
+            [$imgW, $imgH] = getimagesize($file->getRealPath()) ?: [null, null];
+        }
+
         $product->update([
-            'language' => $validated['language'],
-            'status' => $validated['status'],
-            'show_on_home' => $validated['show_on_home'],
-            'sort_order' => $validated['sort_order'],
+            'language'       => $validated['language'],
+            'status'         => $validated['status'],
+            'show_on_home'   => $validated['show_on_home'],
+            'sort_order'     => $validated['sort_order'],
             'published_date' => $validated['published_date'] ?? now(),
-            'end_date' => $validated['end_date'] ?? '2200-12-31',
-            'category' => $validated['category'] ?? null,
-            'product_no' => $validated['product_no'] ?? null,
-            'name' => $validated['name'],
-            'brief' => $validated['brief'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'video' => $validated['video'] ?? null,
-            'note' => $validated['note'] ?? null,
-            'has_photo' => $validated['has_photo'] ?? false,
-            'price' => $validated['price'] ?? null,
-            'currency' => $validated['currency'] ?? 'NT',
-            'stock' => $validated['stock'] ?? 0,
+            'end_date'       => $validated['end_date'] ?? '2200-12-31',
+            'category'       => $validated['category'] ?? null,
+            'product_no'     => $validated['product_no'] ?? null,
+            'img'            => $imgPath,
+            'img_w'          => $imgW,
+            'img_h'          => $imgH,
+            'name'           => $validated['name'],
+            'brief'          => $validated['brief'] ?? null,
+            'content'        => $validated['content'] ?? null,
+            'video'          => $validated['video'] ?? null,
+            'note'           => $validated['note'] ?? null,
+            'has_photo'      => $imgPath ? true : ($validated['has_photo'] ?? false),
+            'price'          => $validated['price'] ?? null,
+            'currency'       => $validated['currency'] ?? 'NT',
+            'stock'          => $validated['stock'] ?? 0,
         ]);
 
         return redirect()->route('admin.products.index')
@@ -97,6 +133,15 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+
+        // Delete image from storage if it's a storage-based path
+        if ($product->img && str_starts_with($product->img, '/storage/')) {
+            $storagePath = str_replace('/storage/', '', $product->img);
+            if (Storage::disk('public')->exists($storagePath)) {
+                Storage::disk('public')->delete($storagePath);
+            }
+        }
+
         $product->delete();
 
         return redirect()->route('admin.products.index')
