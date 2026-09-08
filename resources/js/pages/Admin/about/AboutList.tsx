@@ -1,7 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaInfoCircle, FaEye, 
+    FaSearch, FaPlus, FaInfoCircle, 
     FaEdit, FaTrash, FaSort, FaFilter,
     FaChevronLeft, FaChevronRight, FaHome
 } from 'react-icons/fa';

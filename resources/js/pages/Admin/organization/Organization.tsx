@@ -1,9 +1,8 @@
 // resources/js/pages/Admin/organization/Organization.tsx
 import { Head, Link, router } from '@inertiajs/react';
 import { 
-    FaBuilding, FaEdit, FaTrash, FaEye, FaEyeSlash,
-    FaGlobe, FaMapMarkerAlt, FaHdd, FaDatabase, 
-    FaLanguage, FaKey, FaUser, FaPhone, FaEnvelope
+    FaBuilding, FaEdit, FaTrash,
+    FaGlobe, FaMapMarkerAlt, FaKey
 } from 'react-icons/fa';
 
 interface Organization {

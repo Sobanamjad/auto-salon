@@ -1,5 +1,5 @@
 // resources/js/pages/Admin/journal/JournalForm.tsx
-import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { FaArrowLeft, FaSave, FaTimes, FaFileAlt } from 'react-icons/fa';
 
 interface JournalItem {

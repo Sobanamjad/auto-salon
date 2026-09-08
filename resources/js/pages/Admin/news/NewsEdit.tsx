@@ -1,9 +1,8 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
 import { 
     FaArrowLeft, FaSave, FaTimes, FaBullhorn, FaImage, 
     FaVideo, FaMapMarkedAlt, FaTag, FaHome, FaSort,
-    FaCalendar, FaFileAlt
+    FaCalendar
 } from 'react-icons/fa';
 
 interface NewsFormData {

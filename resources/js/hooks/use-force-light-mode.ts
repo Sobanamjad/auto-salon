@@ -36,6 +36,7 @@ function restoreThemeAfterSalon(): void {
  * sections black, breaking the layout.
  */
 export function useForceLightMode(dependencies: unknown[] = []) {
+     
     useEffect(() => {
         salonPageCount += 1;
         applySalonLightMode();

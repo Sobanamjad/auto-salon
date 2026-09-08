@@ -2,11 +2,9 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaUsers, 
-    FaSort, FaChevronLeft, FaChevronRight, 
-    FaPhone, FaMobile, FaEnvelope, FaUser, FaUserTie,
-    FaBuilding, FaGraduationCap, FaTag, FaFileAlt,
-    FaIdCard, FaQrcode, FaBarcode, FaCalendar,
-    FaDollarSign, FaUserCog
+    FaChevronLeft, FaChevronRight, 
+    FaTag, FaFileAlt,
+    FaQrcode, FaBarcode
 } from 'react-icons/fa';
 
 interface Member {
@@ -78,12 +76,6 @@ export default function Members({ members = [], title = '會員資訊' }: Props)
 
     const handleSortUpdate = (id: number, sortOrder: number) => {
         router.put(`/admin/members/${id}/sort`, { sort_order: sortOrder });
-    };
-
-    const handleCopy = (id: number, name: string) => {
-        if (confirm(`確定要複製: ${name} 嗎？`)) {
-            router.get(`/admin/members/${id}/copy`);
-        }
     };
 
     return (

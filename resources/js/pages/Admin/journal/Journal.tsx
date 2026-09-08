@@ -2,9 +2,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaTrash, FaNewspaper, FaEdit, FaFileAlt,
-    FaChevronLeft, FaChevronRight, FaCalendar, FaUser, 
-    FaMoneyBill, FaTag, FaStickyNote, FaEye
+    FaTrash, FaNewspaper, FaEdit, FaFileAlt,
+    FaChevronLeft, FaChevronRight, FaUser, 
+    FaTag
 } from 'react-icons/fa';
 
 interface JournalItem {
@@ -35,10 +35,9 @@ interface Props {
     };
     totalBalance: number;
     title?: string;
-    accountSubjects: { id: string; name: string }[];
 }
 
-export default function Journal({ data, totalBalance, title = '會計日記簿', accountSubjects }: Props) {
+export default function Journal({ data, totalBalance, title = '會計日記簿' }: Props) {
     const [searchDateStart, setSearchDateStart] = useState('');
     const [searchDateEnd, setSearchDateEnd] = useState('');
     const [searchCustomer, setSearchCustomer] = useState('');

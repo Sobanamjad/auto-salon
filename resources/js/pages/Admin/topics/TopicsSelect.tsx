@@ -61,7 +61,7 @@ export default function TopicsSelect({
             onSuccess: () => {
                 alert('主題選擇已更新！');
             },
-            onError: (errors) => {
+            onError: () => {
                 alert('更新失敗，請重試');
             }
         });

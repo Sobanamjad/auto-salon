@@ -1,8 +1,8 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaImage, FaSort, FaHome, FaChevronLeft, 
+    FaSearch, FaPlus, FaEdit, FaTrash, 
+    FaHome, FaChevronLeft, 
     FaChevronRight, FaBox, FaGift
 } from 'react-icons/fa';
 
@@ -32,7 +32,6 @@ interface Props {
 
 export default function ProductList({ products = [], title = '會員商品' }: Props) {
     const [searchName, setSearchName] = useState('');
-    const [searchDate, setSearchDate] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
     const filteredItems = products.filter(item => {

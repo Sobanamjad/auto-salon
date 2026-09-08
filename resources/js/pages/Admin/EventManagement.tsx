@@ -1,7 +1,7 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { 
-    FaSearch, FaPlus, FaCalendar, FaUser, FaPhone, FaEdit, 
-    FaTrash, FaCog, FaTag, FaMagic, FaEye, FaPrint, FaHome, 
+    FaSearch, FaCalendar, FaEdit, 
+    FaTrash, FaCog, FaTag, FaMagic, FaPrint, FaHome, 
     FaPlusCircle, FaComments, FaSignInAlt
 } from 'react-icons/fa';
 

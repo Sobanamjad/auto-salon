@@ -1,10 +1,10 @@
 // BasicSettings.tsx
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaHome, FaCog, FaBell, FaCalendarAlt, FaPlug, 
-    FaGlobe, FaImage, FaLock, FaMobile, FaLine, FaFacebook, 
-    FaGoogle, FaRobot, FaEnvelope, FaSms
+    FaGlobe, FaImage, FaLine, FaFacebook, 
+    FaGoogle, FaRobot
 } from 'react-icons/fa';
 
 export default function BasicSettings() {

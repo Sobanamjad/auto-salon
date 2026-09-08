@@ -1,10 +1,10 @@
 // resources/js/pages/Admin/red-white/RedWhite.tsx
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaTrash, FaNewspaper, FaCheck, FaTimes,
-    FaChevronLeft, FaChevronRight, FaSort, FaUser, FaCalendar,
-    FaTag, FaMoneyBill, FaStickyNote
+    FaTrash, FaNewspaper, FaCheck, FaTimes,
+    FaChevronLeft, FaChevronRight, FaUser, FaCalendar,
+    FaTag
 } from 'react-icons/fa';
 
 interface RedWhiteItem {

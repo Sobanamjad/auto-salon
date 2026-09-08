@@ -2,13 +2,9 @@ import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { 
     HomeIcon, 
-    UsersIcon, 
-    SettingsIcon, 
     LogOutIcon,
     MenuIcon,
     XIcon,
-    FileTextIcon,
-    CalendarIcon,
     ExternalLinkIcon,
     ChevronDownIcon,
     ChevronRightIcon

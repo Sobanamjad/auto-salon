@@ -1,9 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaImage, FaSort, FaHome, FaChevronLeft, 
-    FaChevronRight, FaPencilAlt, FaCalendar
+    FaSearch, FaPlus, FaEdit, FaTrash, 
+    FaImage, FaHome, FaChevronLeft, 
+    FaChevronRight, FaPencilAlt
 } from 'react-icons/fa';
 
 interface Article {
@@ -29,7 +29,6 @@ interface Props {
 
 export default function ColumnArticleList({ articles = [], title = '專欄園地' }: Props) {
     const [searchSubject, setSearchSubject] = useState('');
-    const [searchDate, setSearchDate] = useState('');
     const [searchCategory, setSearchCategory] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 

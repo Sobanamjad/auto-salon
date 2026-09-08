@@ -1,8 +1,8 @@
 // resources/js/pages/Admin/organization/OrganizationForm.tsx
 import { Head, useForm, Link } from '@inertiajs/react';
 import { 
-    FaBuilding, FaSave, FaTimes, FaGlobe, FaMapMarkerAlt,
-    FaUser, FaPhone, FaEnvelope, FaFileAlt, FaLanguage
+    FaBuilding, FaSave, FaTimes,
+    FaUser, FaFileAlt, FaLanguage
 } from 'react-icons/fa';
 
 interface Organization {

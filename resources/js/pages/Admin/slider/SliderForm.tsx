@@ -1,7 +1,7 @@
 // resources/js/pages/Admin/slider/SliderForm.tsx
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FaArrowLeft, FaSave, FaTimes, FaImage, FaUpload } from 'react-icons/fa';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 interface Slider {
     id?: number;
@@ -28,6 +28,7 @@ export default function SliderForm({ title = '相片輪播', slider }: Props) {
     const isEdit = !!slider;
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const previewUrlRef = useRef<string | null>(null);
 
     const { data, setData, post, put, processing, errors } = useForm<{
         language: string;
@@ -89,18 +90,6 @@ export default function SliderForm({ title = '相片輪播', slider }: Props) {
         { value: 'EN', label: '英文' },
         { value: 'JP', label: '日文' },
     ];
-
-    // Create preview URL when file is selected
-    useEffect(() => {
-        if (data.image instanceof File) {
-            const url = URL.createObjectURL(data.image);
-            setImagePreview(url);
-
-            return () => URL.revokeObjectURL(url);
-        } else {
-            setImagePreview(null);
-        }
-    }, [data.image]);
 
     return (
         <>
@@ -192,6 +181,14 @@ export default function SliderForm({ title = '相片輪播', slider }: Props) {
                                 accept="image/*"
                                 onChange={(e) => {
                                     if (e.target.files && e.target.files[0]) {
+                                        // Revoke the previous object URL to avoid memory leaks
+                                        if (previewUrlRef.current) {
+                                            URL.revokeObjectURL(previewUrlRef.current);
+                                        }
+
+                                        const url = URL.createObjectURL(e.target.files[0]);
+                                        previewUrlRef.current = url;
+                                        setImagePreview(url);
                                         setData('image', e.target.files[0]);
                                     }
                                 }}

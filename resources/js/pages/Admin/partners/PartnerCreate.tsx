@@ -2,7 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import {
     FaArrowLeft, FaSave, FaTimes, FaUserFriends,
     FaUser, FaMapMarkerAlt, FaHome, FaSort,
-    FaFileAlt, FaCheck
+    FaFileAlt
 } from 'react-icons/fa';
 
 export default function PartnerCreate() {

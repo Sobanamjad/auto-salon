@@ -2,10 +2,10 @@
 import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSave, FaTimes, FaUser, FaEnvelope, FaPhone, 
+    FaSave, FaUser, FaEnvelope, 
     FaMapMarkerAlt, FaLink, FaBuilding, FaUniversity,
     FaLine, FaWeixin, FaSkype, FaFacebook, FaInstagram,
-    FaTwitter, FaGlobe, FaClock, FaTag, FaFileAlt,
+    FaTwitter, FaGlobe, FaClock, FaTag,
     FaInfoCircle, FaKey, FaEye, FaEyeSlash
 } from 'react-icons/fa';
 
@@ -52,10 +52,9 @@ interface User {
 interface Props {
     title?: string;
     user: User;
-    isEdit?: boolean;
 }
 
-export default function Profile({ title = '個人帳號資料', user, isEdit = true }: Props) {
+export default function Profile({ title = '個人帳號資料', user }: Props) {
     const [showPassword, setShowPassword] = useState(false);
     const { data, setData, put, processing, errors } = useForm({
         // Account Settings

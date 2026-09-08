@@ -2,9 +2,9 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaCopy, 
-    FaImage, FaSort, FaHome, FaChevronLeft, 
+    FaImage, FaHome, FaChevronLeft, 
     FaChevronRight, FaLink as FaLinkIcon, 
-    FaTag, FaFileAlt, FaClock, FaGlobe
+    FaGlobe
 } from 'react-icons/fa';
 
 interface Link {

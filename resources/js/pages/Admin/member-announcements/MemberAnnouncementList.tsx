@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaImage, FaPaperclip, FaSort, FaUser,
+    FaImage, FaPaperclip, FaUser,
     FaChevronLeft, FaChevronRight, FaBullhorn
 } from 'react-icons/fa';
 

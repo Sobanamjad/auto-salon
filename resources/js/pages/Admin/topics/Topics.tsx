@@ -3,7 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaEye, FaTrash, FaNewspaper, 
-    FaMapMarkerAlt, FaTag, FaChevronLeft, FaChevronRight,
+    FaChevronLeft, FaChevronRight,
     FaBullhorn, FaFilter, FaList
 } from 'react-icons/fa';
 
@@ -33,7 +33,6 @@ interface Props {
 export default function Topics({ topics, title = '專業主題新知', categories }: Props) {
     const [searchTitle, setSearchTitle] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [currentPage, setCurrentPage] = useState(topics.current_page || 1);
 
     const handleDelete = (id: number, title: string) => {
         if (confirm(`確定要刪除: ${title} 嗎？`)) {
