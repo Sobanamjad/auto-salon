@@ -497,10 +497,43 @@ Route::get('/works', function () {
 })->name('works');
 
 Route::get('/member', function () {
-    $csn = request()->query('new_csn');
+    $csn         = request()->query('new_csn');
+    $csn         = ($csn !== null && $csn !== '') ? (string) $csn : null;
+    $searchTitle = request()->query('sel_title');
+
+    $query = \App\Models\Member::active()->ordered();
+
+    if ($csn) {
+        $query->where('category', $csn);
+    }
+
+    if ($searchTitle && trim($searchTitle) !== '') {
+        $s = trim($searchTitle);
+        $query->where(function ($q) use ($s) {
+            $q->where('name', 'like', "%{$s}%")
+              ->orWhere('company', 'like', "%{$s}%");
+        });
+    }
+
+    $members = $query->get([
+        'id', 'name', 'gender', 'position', 'company',
+        'phone', 'mobile', 'phone2', 'phone3',
+        'email', 'website', 'fax', 'line_id', 'address',
+        'photo', 'photo_w', 'photo_h', 'intro', 'category',
+    ]);
+
+    $categories = [
+        ['csn' => null,  'label' => '全部'],
+        ['csn' => '307', 'label' => '水電工程'],
+        ['csn' => '303', 'label' => '資訊科技'],
+        ['csn' => '302', 'label' => '製造業'],
+    ];
+
     return inertia('member', [
-        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
-        'searchTitle' => request()->query('sel_title'),
+        'csn'         => $csn,
+        'searchTitle' => $searchTitle,
+        'members'     => $members,
+        'categories'  => $categories,
     ]);
 })->name('member');
 
