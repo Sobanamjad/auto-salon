@@ -18,6 +18,9 @@ export default function LinkCreate() {
         content: '',
         note: '',
         has_photo: false,
+        img: '',
+        img_w: 1024,
+        img_h: 1024,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -164,9 +167,8 @@ export default function LinkCreate() {
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
                                 >
                                     <option value="">選擇分類</option>
-                                    <option value="本會相關">本會相關</option>
-                                    <option value="友會">友會</option>
-                                    <option value="政府單位">政府單位</option>
+                                    <option value="899">本會相關</option>
+                                    <option value="900">政府單位</option>
                                 </select>
                             </div>
                         </div>
@@ -234,7 +236,7 @@ export default function LinkCreate() {
 
                     {/* Photo */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
+                        <label className="flex items-center gap-2 cursor-pointer mb-3">
                             <input
                                 type="checkbox"
                                 checked={data.has_photo}
@@ -244,6 +246,47 @@ export default function LinkCreate() {
                             <FaImage className="text-gray-500" />
                             <span className="text-sm text-gray-700">有相片</span>
                         </label>
+                        
+                        {data.has_photo && (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        圖片路徑
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={data.img}
+                                        onChange={(e) => setData('img', e.target.value)}
+                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                        placeholder="/asd_files/image.png"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        圖片寬度
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={data.img_w}
+                                        onChange={(e) => setData('img_w', parseInt(e.target.value) || 1024)}
+                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                        placeholder="1024"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        圖片高度
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={data.img_h}
+                                        onChange={(e) => setData('img_h', parseInt(e.target.value) || 1024)}
+                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                        placeholder="1024"
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Note */}

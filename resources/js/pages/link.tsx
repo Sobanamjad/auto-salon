@@ -3,22 +3,34 @@ import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import {
-    filterLinkItems,
-    getLinkCategoryLabel,
-    linkCategories,
-} from '@/data/link-items';
+
+type LinkItem = {
+    id: number;
+    title: string;
+    url: string;
+    category: string | null;
+    img: string | null;
+    img_w: number | null;
+    img_h: number | null;
+};
+
+type Category = {
+    csn: string | null;
+    label: string;
+};
 
 type Props = {
     csn?: string | null;
+    links: LinkItem[];
+    categories: Category[];
 };
 
-export default function Link({ csn = null }: Props) {
+export default function Link({ csn = null, links, categories }: Props) {
     useForceLightMode();
 
     const activeCsn = csn ?? null;
-    const activeLabel = getLinkCategoryLabel(activeCsn);
-    const items = filterLinkItems(activeCsn);
+    const activeCategory = categories.find(c => c.csn === activeCsn);
+    const activeLabel = activeCategory?.label ?? '全部';
 
     return (
         <>
@@ -83,7 +95,7 @@ export default function Link({ csn = null }: Props) {
                                 <div className="secbox_inner">
                                     <div className="category_box">
                                         <ul className="category_list">
-                                            {linkCategories.map(category => (
+                                            {categories.map(category => (
                                                 <li
                                                     key={category.label}
                                                     className={
@@ -110,24 +122,24 @@ export default function Link({ csn = null }: Props) {
                                     </div>
 
                                     <ul className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                        {items.map(link => (
-                                            <li key={link.title}>
+                                        {links.map(link => (
+                                            <li key={link.id}>
                                                 <div className="card card_link effect_topslash fadeUp js-scroll">
                                                     <div className="row g-3">
                                                         <div>
                                                             <div className="card-photo">
                                                                 <a
-                                                                    href={link.href}
+                                                                    href={link.url}
                                                                     title={link.title}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
                                                                 >
                                                                     <div className="item-fitimg">
                                                                         <img
-                                                                            src={link.img}
+                                                                            src={link.img || '/asd_files/placeholder.png'}
                                                                             alt={link.title}
-                                                                            width={link.imgW}
-                                                                            height={link.imgH}
+                                                                            width={link.img_w || 1024}
+                                                                            height={link.img_h || 1024}
                                                                             loading="lazy"
                                                                             className="fitimg"
                                                                         />
@@ -140,7 +152,7 @@ export default function Link({ csn = null }: Props) {
                                                             <div className="card-body">
                                                                 <h3 className="card-name">
                                                                     <a
-                                                                        href={link.href}
+                                                                        href={link.url}
                                                                         title={link.title}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
@@ -155,7 +167,7 @@ export default function Link({ csn = null }: Props) {
                                                         <div className="hidden">
                                                             <div className="card-btnbar card-btnbar_outlink">
                                                                 <a
-                                                                    href={link.href}
+                                                                    href={link.url}
                                                                     className="card-btn card-btn_outlink"
                                                                     title={link.title}
                                                                     target="_blank"
@@ -176,7 +188,7 @@ export default function Link({ csn = null }: Props) {
                                         <span>1</span>
                                         <br />
                                         <br />
-                                        Total {items.length} - 1 / 1
+                                        Total {links.length} - 1 / 1
                                         <br />
                                     </div>
                                 </div>

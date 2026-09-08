@@ -42,6 +42,9 @@ class LinkController extends Controller
             'content' => $validated['content'] ?? null,
             'note' => $validated['note'] ?? null,
             'has_photo' => $validated['has_photo'] ?? false,
+            'img' => $validated['img'] ?? null,
+            'img_w' => $validated['img_w'] ?? null,
+            'img_h' => $validated['img_h'] ?? null,
         ]);
 
         return redirect()->route('admin.links.index')
@@ -75,6 +78,9 @@ class LinkController extends Controller
             'content' => $validated['content'] ?? null,
             'note' => $validated['note'] ?? null,
             'has_photo' => $validated['has_photo'] ?? false,
+            'img' => $validated['img'] ?? null,
+            'img_w' => $validated['img_w'] ?? null,
+            'img_h' => $validated['img_h'] ?? null,
         ]);
 
         return redirect()->route('admin.links.index')
