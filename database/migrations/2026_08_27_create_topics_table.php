@@ -1,4 +1,3 @@
-// database/migrations/2026_08_27_create_topics_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;

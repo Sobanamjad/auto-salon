@@ -1,4 +1,3 @@
-// database/migrations/2026_09_01_create_sliders_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;

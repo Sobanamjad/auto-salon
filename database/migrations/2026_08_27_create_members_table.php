@@ -12,9 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('member_no')->unique()->nullable();
             $table->string('name');
-            $table->string('gender')->nullable(); // 先生/小姐
+            $table->string('gender')->nullable();
             $table->string('phone')->nullable();
             $table->string('mobile')->nullable();
+            $table->string('phone2')->nullable();
+            $table->string('phone3')->nullable();
             $table->string('email')->nullable();
             $table->string('username')->unique()->nullable();
             $table->string('password')->nullable();
@@ -22,15 +24,23 @@ return new class extends Migration
             $table->string('position')->nullable();
             $table->string('school')->nullable();
             $table->string('department')->nullable();
-            $table->string('category')->nullable(); // 水電工程, 資訊科技, 房屋交易
+            $table->string('category')->nullable();
             $table->string('category2')->nullable();
-            $table->string('member_type')->nullable(); // 正式會員, 準會員, 永久會員
-            $table->string('position_in_association')->nullable(); // 本屆職稱
-            $table->string('affiliated_unit')->nullable(); // 所屬單位
+            $table->string('member_type')->nullable();
+            $table->string('position_in_association')->nullable();
+            $table->string('affiliated_unit')->nullable();
             $table->date('period_start')->nullable();
             $table->date('period_end')->nullable();
             $table->decimal('fee', 10, 2)->nullable();
             $table->text('note')->nullable();
+            $table->string('photo')->nullable();
+            $table->integer('photo_w')->nullable();
+            $table->integer('photo_h')->nullable();
+            $table->string('website')->nullable();
+            $table->string('fax')->nullable();
+            $table->string('line_id')->nullable();
+            $table->string('address')->nullable();
+            $table->longText('intro')->nullable();
             $table->integer('sort_order')->default(99);
             $table->boolean('status')->default(true);
             $table->integer('views')->default(0);

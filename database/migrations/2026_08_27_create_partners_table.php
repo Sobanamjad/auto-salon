@@ -22,6 +22,14 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->text('note')->nullable();
             $table->integer('views')->default(0);
+            $table->string('image')->nullable();
+            $table->string('slogan')->nullable();
+            $table->string('tag')->nullable();
+            $table->string('external_link')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('booking_link')->nullable();
+            $table->string('take_number_link')->nullable();
+            $table->string('current_number_link')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
