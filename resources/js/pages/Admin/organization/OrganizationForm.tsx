@@ -48,6 +48,7 @@ export default function OrganizationForm({ title = '組織表單', organization 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (organization?.id) {
             put(`/admin/organization/${organization.id}`);
         } else {

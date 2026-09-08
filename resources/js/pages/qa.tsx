@@ -20,6 +20,7 @@ type Props = {
 
 function initFaqAccordion(): () => void {
     const container = document.querySelector('#accordion-faq');
+
     if (!container) {
         return () => {};
     }
@@ -29,6 +30,7 @@ function initFaqAccordion(): () => void {
     container.querySelectorAll<HTMLButtonElement>('.accordion-button').forEach(button => {
         const handler = () => {
             const content = button.nextElementSibling as HTMLElement | null;
+
             if (!content) {
                 return;
             }
@@ -67,6 +69,7 @@ export default function Qa({ csn = null, thisPage = 1 }: Props) {
     const pageHref = (page: number) => {
         const params = new URLSearchParams();
         params.set('this_page', String(page));
+
         if (activeCsn) {
             params.set('new_csn', activeCsn);
         }

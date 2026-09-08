@@ -122,6 +122,7 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
             }
         };
         document.addEventListener('mousedown', handleOutsideClick);
+
         return () => document.removeEventListener('mousedown', handleOutsideClick);
     }, [sidebarOpen]);
 
@@ -177,7 +178,9 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                             href="#"
                             className="funcbox funcbox_menu menu_switchon fadedown js-scroll is-active"
                             title="選單"
-                            onClick={(e) => { e.preventDefault(); setSidebarOpen(true); }}
+                            onClick={(e) => {
+ e.preventDefault(); setSidebarOpen(true); 
+}}
                         >
                             <div className="funcbox-inner">
                                 <span className="iconsvg icon-hamburger"></span>
@@ -221,7 +224,9 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                                         href={item.href}
                                         title={item.text}
                                         className={item.href === '/' ? 'is-current' : ''}
-                                        onClick={item.children ? (e) => { e.preventDefault(); toggleSubmenu(index); } : undefined}
+                                        onClick={item.children ? (e) => {
+ e.preventDefault(); toggleSubmenu(index); 
+} : undefined}
                                     >
                                         <span className="menu-text">{item.text}</span>
                                         {item.children && (
@@ -302,7 +307,9 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                                             href="#"
                                             className="funcbox funcbox_menu menu_switchon fadedown js-scroll is-active"
                                             title="選單"
-                                            onClick={(e) => { e.preventDefault(); setSidebarOpen(true); }}
+                                            onClick={(e) => {
+ e.preventDefault(); setSidebarOpen(true); 
+}}
                                         >
                                             <div className="funcbox-inner">
                                                 <span className="iconsvg icon-hamburger"></span>

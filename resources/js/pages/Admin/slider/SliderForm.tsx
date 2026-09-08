@@ -95,6 +95,7 @@ export default function SliderForm({ title = '相片輪播', slider }: Props) {
         if (data.image instanceof File) {
             const url = URL.createObjectURL(data.image);
             setImagePreview(url);
+
             return () => URL.revokeObjectURL(url);
         } else {
             setImagePreview(null);

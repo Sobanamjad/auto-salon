@@ -54,6 +54,7 @@ export default function Organization({ title = '組織資料', organizations }: 
             'EN': '英文',
             'JP': '日文',
         };
+
         return labels[lang] || lang;
     };
 

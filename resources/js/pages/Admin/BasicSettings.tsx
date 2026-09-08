@@ -35,6 +35,7 @@ export default function BasicSettings() {
                 <div className="flex flex-wrap gap-2 border-b border-gray-200 mb-6">
                     {tabs.map((tab) => {
                         const Icon = tab.icon;
+
                         return (
                             <button
                                 key={tab.id}

@@ -92,9 +92,11 @@ export function getMemberCategoryLabel(csn: string | null | undefined): string {
 
 export function filterMemberItems(csn: string | null | undefined, searchTitle?: string | null): MemberItem[] {
     let items = memberItems;
+
     if (csn) {
         items = items.filter(item => item.categories.includes(csn as MemberCategory));
     }
+
     if (searchTitle?.trim()) {
         const query = searchTitle.trim().toLowerCase();
         items = items.filter(item =>
@@ -102,5 +104,6 @@ export function filterMemberItems(csn: string | null | undefined, searchTitle?: 
             item.company.toLowerCase().includes(query)
         );
     }
+
     return items;
 }

@@ -39,6 +39,7 @@ export default function Directors({ directors = [], title = '理監事(組織)' 
         const matchTitle = item.title.toLowerCase().includes(searchTitle.toLowerCase()) ||
                            item.name.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 

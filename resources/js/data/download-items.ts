@@ -58,6 +58,7 @@ export function normalizeDownloadCsn(csn: string | null | undefined): string | n
     }
 
     const normalized = String(csn);
+
     return downloadCategories.some(c => c.csn === normalized) ? normalized : null;
 }
 

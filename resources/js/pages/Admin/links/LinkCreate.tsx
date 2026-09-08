@@ -2,7 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { 
     FaArrowLeft, FaSave, FaTimes, FaLink, 
     FaImage, FaHome, FaSort, FaTag, FaFileAlt,
-    FaGlobe, FaCheck, FaUpload
+    FaGlobe, FaUpload
 } from 'react-icons/fa';
 import { useState } from 'react';
 
@@ -29,7 +29,10 @@ export default function LinkCreate() {
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file) return;
+
+        if (!file) {
+return;
+}
 
         setUploading(true);
         setUploadProgress(0);
@@ -50,6 +53,7 @@ export default function LinkCreate() {
             xhr.addEventListener('load', () => {
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
+
                     if (response.success) {
                         setData('img', response.path);
                         setData('img_w', response.width);
@@ -57,6 +61,7 @@ export default function LinkCreate() {
                         setData('has_photo', true);
                     }
                 }
+
                 setUploading(false);
                 setUploadProgress(0);
             });

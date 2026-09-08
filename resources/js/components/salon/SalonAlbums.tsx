@@ -16,7 +16,7 @@ interface DisplayAlbumItem {
 
 declare global {
     interface Window {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         Swiper: any;
     }
 }
@@ -47,7 +47,9 @@ export default function SalonAlbums() {
     }, []);
 
     useEffect(() => {
-        if (!window.Swiper || !swiperRef.current || albumItems.length === 0) return;
+        if (!window.Swiper || !swiperRef.current || albumItems.length === 0) {
+return;
+}
 
         new window.Swiper(swiperRef.current, {
             slidesPerView: 'auto',

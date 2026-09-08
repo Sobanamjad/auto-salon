@@ -58,6 +58,7 @@ export function normalizeArticleCsn(csn: string | null | undefined): string | nu
     }
 
     const normalized = String(csn);
+
     return articleCategories.some(c => c.csn === normalized) ? normalized : null;
 }
 

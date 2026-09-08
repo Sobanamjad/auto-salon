@@ -39,6 +39,7 @@ export default function Timeline({ timelines = [], title = '本會記事' }: Pro
     const filteredItems = timelines.filter(item => {
         const matchTitle = item.title.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 

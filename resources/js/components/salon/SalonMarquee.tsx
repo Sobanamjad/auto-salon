@@ -26,7 +26,10 @@ export default function SalonMarquee() {
 
     useEffect(() => {
         const list = listRef.current;
-        if (!list) return;
+
+        if (!list) {
+return;
+}
 
         const items = list.querySelectorAll<HTMLElement>('.marquee-item');
         const itemHeight = 48;
@@ -38,7 +41,9 @@ export default function SalonMarquee() {
         }, 2500);
 
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+clearInterval(intervalRef.current);
+}
         };
     }, []);
 

@@ -56,6 +56,7 @@ const applyTheme = (appearance: Appearance): void => {
         html.classList.remove('dark');
         html.style.colorScheme = 'light';
         document.body.style.backgroundColor = 'transparent';
+
         return;
     }
 

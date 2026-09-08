@@ -37,6 +37,7 @@ const FontSize = Extension.create({
                             if (!attributes.fontSize) {
                                 return {};
                             }
+
                             return {
                                 style: `font-size: ${attributes.fontSize}`,
                             };
@@ -514,6 +515,7 @@ export default function EventCreate() {
                                     <select
                                         onChange={(e) => {
                                             const value = e.target.value;
+
                                             if (value === 'p') {
                                                 editor?.chain().focus().setParagraph().run();
                                             } else if (value.startsWith('h')) {
@@ -699,6 +701,7 @@ export default function EventCreate() {
                                     <button
                                         onClick={() => {
                                             const url = window.prompt('Enter URL:');
+
                                             if (url) {
                                                 editor?.chain().focus().setLink({ href: url }).run();
                                             }
@@ -713,6 +716,7 @@ export default function EventCreate() {
                                     <button
                                         onClick={() => {
                                             const url = window.prompt('Enter Image URL:');
+
                                             if (url) {
                                                 editor?.chain().focus().setImage({ src: url }).run();
                                             }

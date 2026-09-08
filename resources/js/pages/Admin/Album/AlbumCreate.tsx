@@ -34,9 +34,11 @@ export default function AlbumCreate() {
         formData.append('title', data.title);
         formData.append('description', data.description);
         formData.append('cover_image', data.cover_image);
+
         if (data.cover_image_file) {
             formData.append('cover_image_file', data.cover_image_file);
         }
+
         formData.append('album_date', data.album_date);
         formData.append('category', data.category);
         formData.append('status', data.status);
@@ -270,6 +272,7 @@ export default function AlbumCreate() {
                                     accept="image/*"
                                     onChange={(e) => {
                                         const file = e.target.files?.[0];
+
                                         if (file) {
                                             setData('cover_image_file', file);
                                         }

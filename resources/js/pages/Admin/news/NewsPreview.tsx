@@ -27,8 +27,12 @@ interface NewsPreviewProps {
 
 export default function NewsPreview({ news }: NewsPreviewProps) {
     const formatDate = (dateString: string) => {
-        if (!dateString) return '';
+        if (!dateString) {
+return '';
+}
+
         const date = new Date(dateString);
+
         return date.toLocaleString('zh-TW', {
             year: 'numeric',
             month: '2-digit',

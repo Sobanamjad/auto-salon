@@ -92,6 +92,7 @@ export default function ColumnArticleList({ articles = [], title = '專欄園地
     const filteredItems = articles.filter(item => {
         const matchSubject = item.subject.toLowerCase().includes(searchSubject.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchSubject && matchCategory;
     });
 

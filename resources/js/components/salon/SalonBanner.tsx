@@ -9,7 +9,7 @@ interface Slide {
 
 declare global {
     interface Window {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         Swiper: any;
     }
 }
@@ -40,6 +40,7 @@ export default function SalonBanner() {
                         { src: '/asd_files/b2026072117103560.png', alt: '永康國際同濟會', width: 1920, height: 700 },
                     ]);
                 }
+
                 setLoading(false);
             })
             .catch(error => {
@@ -55,7 +56,9 @@ export default function SalonBanner() {
     }, []);
 
     useEffect(() => {
-        if (!window.Swiper || !swiperRef.current || loading) return;
+        if (!window.Swiper || !swiperRef.current || loading) {
+return;
+}
 
         new window.Swiper(swiperRef.current, {
             loop: true,

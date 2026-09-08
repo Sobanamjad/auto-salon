@@ -294,6 +294,7 @@ export default function AboutCreate() {
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
+
                                     if (file) {
                                         setData('image', file);
                                     }

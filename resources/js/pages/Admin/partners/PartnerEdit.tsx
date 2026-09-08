@@ -303,6 +303,7 @@ export default function PartnerEdit({ partner, title }: Props) {
                             accept="image/*"
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
+
                                 if (file) {
                                     setData('image_file', file);
                                 }

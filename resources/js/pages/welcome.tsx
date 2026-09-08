@@ -29,6 +29,7 @@ type Props = {
 
 export default function Welcome({ links }: Props) {
     useForceLightMode();
+
     return (
         <>
             <Head>

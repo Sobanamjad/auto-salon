@@ -35,6 +35,7 @@ export default function Download({ csn = null, thisPage = 1 }: Props) {
     const pageHref = (page: number) => {
         const params = new URLSearchParams();
         params.set('this_page', String(page));
+
         if (activeCsn) {
             params.set('new_csn', activeCsn);
         }

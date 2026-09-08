@@ -14,6 +14,7 @@ export default function SalonFooter() {
     useEffect(() => {
         const handler = () => setShowTop(window.scrollY > 300);
         window.addEventListener('scroll', handler);
+
         return () => window.removeEventListener('scroll', handler);
     }, []);
 

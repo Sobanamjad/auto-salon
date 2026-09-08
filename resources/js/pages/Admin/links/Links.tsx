@@ -38,6 +38,7 @@ export default function Links({ links = [], title = '相關連結' }: Props) {
     const filteredItems = links.filter(item => {
         const matchTitle = item.title.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 

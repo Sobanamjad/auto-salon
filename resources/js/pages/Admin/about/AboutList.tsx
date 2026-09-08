@@ -49,6 +49,7 @@ export default function AboutList({ abouts, title }: PageProps) {
         const matchesSearch = about.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
                              about.content.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === '' || about.category === selectedCategory;
+
         return matchesSearch && matchesCategory;
     });
 

@@ -50,6 +50,7 @@ export default function Members({ members = [], title = '會員資訊' }: Props)
     // Filter members based on search
     const filteredItems = members.filter(item => {
         const search = searchTerm.toLowerCase();
+
         if (searchField === 'name') {
             return item.name.toLowerCase().includes(search);
         } else if (searchField === 'member_no') {
@@ -60,6 +61,7 @@ export default function Members({ members = [], title = '會員資訊' }: Props)
             return item.phone?.toLowerCase().includes(search) || 
                    item.mobile?.toLowerCase().includes(search) || '';
         }
+
         return true;
     });
 

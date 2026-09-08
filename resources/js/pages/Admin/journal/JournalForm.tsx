@@ -47,6 +47,7 @@ export default function JournalForm({ title = '會計日記簿', journal, accoun
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit && journal?.id) {
             put(`/admin/journal/${journal.id}`);
         } else {

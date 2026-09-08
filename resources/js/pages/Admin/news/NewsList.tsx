@@ -37,6 +37,7 @@ export default function NewsList({ news: newsItems }: NewsListProps) {
         const matchId = searchId === '' || item.id.toString().includes(searchId);
         const matchTitle = searchTitle === '' || item.subject.includes(searchTitle);
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchId && matchTitle && matchCategory;
     });
 

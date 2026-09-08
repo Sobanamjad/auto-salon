@@ -58,6 +58,7 @@ export default function Slider({ title = '相片輪播', sliders }: Props) {
             'EN': 'bg-blue-100 text-blue-700',
             'JP': 'bg-green-100 text-green-700',
         };
+
         return colors[lang] || 'bg-gray-100 text-gray-700';
     };
 

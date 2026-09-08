@@ -27,6 +27,7 @@ export default function News({ csn = null, items }: Props) {
 
     const formatDate = (dateStr: string) => {
         const d = new Date(dateStr);
+
         return {
             year:  d.getFullYear(),
             month: String(d.getMonth() + 1).padStart(2, '0'),
@@ -125,6 +126,7 @@ export default function News({ csn = null, items }: Props) {
                                         {items.map(news => {
                                             const date = formatDate(news.published_date);
                                             const href = `/news_view?new_sn=${news.id}&lang=TS`;
+
                                             return (
                                                 <li key={news.id}>
                                                     <div className="card card_news js-scroll">

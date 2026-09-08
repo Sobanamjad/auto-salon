@@ -51,6 +51,7 @@ export default function Jobs({ jobs = [], title = '人才招募' }: Props) {
         const matchTitle = item.job_title.toLowerCase().includes(searchTitle.toLowerCase()) ||
                            item.company.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.job_category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 
