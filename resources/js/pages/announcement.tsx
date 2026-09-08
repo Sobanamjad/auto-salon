@@ -95,9 +95,11 @@ export default function Announcement({ new_csn = null, sel_nncsn = null, searchT
                                         <ul className="category_list">
                                             {announcementCategories.map(category => {
                                                 let href = '/announcement';
+
                                                 if (category.csn) {
                                                     href += `?${category.param}=${category.csn}`;
                                                 }
+
                                                 const isActive = (category.csn ?? null) === activeCsn;
                                                 
                                                 return (

@@ -1,10 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaImage, FaSort, FaHome, FaChevronLeft, 
-    FaChevronRight, FaClock, FaTag, FaCalendar,
-    FaFileAlt
+    FaSearch, FaPlus, FaEdit, FaTrash, 
+    FaImage, FaHome, FaChevronLeft, 
+    FaChevronRight, FaClock
 } from 'react-icons/fa';
 
 interface Timeline {
@@ -39,6 +38,7 @@ export default function Timeline({ timelines = [], title = '本會記事' }: Pro
     const filteredItems = timelines.filter(item => {
         const matchTitle = item.title.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 

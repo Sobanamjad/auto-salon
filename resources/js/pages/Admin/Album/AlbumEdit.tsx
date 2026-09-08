@@ -291,6 +291,7 @@ export default function AlbumEdit({ album }: { album: Album }) {
                                     accept="image/*"
                                     onChange={(e) => {
                                         const file = e.target.files?.[0];
+
                                         if (file) {
                                             setData('cover_image_file', file);
                                         }

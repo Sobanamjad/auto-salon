@@ -17,6 +17,7 @@ type Props = {
 
 function getPageItems(page: number) {
     const start = (page - 1) * UNINEWS_PER_PAGE;
+
     return uniNewsItems.slice(start, start + UNINEWS_PER_PAGE);
 }
 
@@ -102,6 +103,7 @@ export default function UniNews({ thisPage = 1 }: Props) {
                                     <ul className="row row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                         {pageItems.map(item => {
                                             const href = `/uninews_view?new_sn=${item.sn}&lang=TS`;
+
                                             return (
                                                 <li key={item.sn}>
                                                     <div className="card card_post fadeUp js-scroll">

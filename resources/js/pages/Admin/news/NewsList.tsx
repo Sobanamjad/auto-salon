@@ -1,10 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaHome, FaBullhorn, FaEnvelope, FaSort,
-    FaChevronLeft, FaChevronRight,
-    FaCalendar, FaTag, FaUser
+    FaPlus, FaEdit, FaTrash, FaEye, 
+    FaHome, FaBullhorn, FaEnvelope,
+    FaChevronLeft, FaChevronRight
 } from 'react-icons/fa';
 
 interface NewsItem {
@@ -37,6 +36,7 @@ export default function NewsList({ news: newsItems }: NewsListProps) {
         const matchId = searchId === '' || item.id.toString().includes(searchId);
         const matchTitle = searchTitle === '' || item.subject.includes(searchTitle);
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchId && matchTitle && matchCategory;
     });
 

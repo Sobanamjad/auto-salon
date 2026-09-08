@@ -1,8 +1,8 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaImage, FaFolder, FaEye, 
-    FaEdit, FaTrash, FaComment, FaSort, FaFilter,
+    FaSearch, FaPlus, FaImage, 
+    FaEdit, FaTrash, FaFilter,
     FaChevronLeft, FaChevronRight, FaHome
 } from 'react-icons/fa';
 
@@ -35,10 +35,22 @@ export default function ActivityHighlights({ albums, title }: PageProps) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const getCoverImagePath = (coverImage: string | null) => {
-        if (!coverImage) return null;
-        if (coverImage.startsWith('http')) return coverImage;
-        if (coverImage.startsWith('/asd_files/')) return coverImage;
-        if (coverImage.startsWith('/storage/')) return coverImage;
+        if (!coverImage) {
+return null;
+}
+
+        if (coverImage.startsWith('http')) {
+return coverImage;
+}
+
+        if (coverImage.startsWith('/asd_files/')) {
+return coverImage;
+}
+
+        if (coverImage.startsWith('/storage/')) {
+return coverImage;
+}
+
         return `/storage/${coverImage}`;
     };
 
@@ -59,6 +71,7 @@ export default function ActivityHighlights({ albums, title }: PageProps) {
     const filteredAlbums = albums.filter(album => {
         const matchesSearch = album.title.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === '' || album.category === selectedCategory;
+
         return matchesSearch && matchesCategory;
     });
 

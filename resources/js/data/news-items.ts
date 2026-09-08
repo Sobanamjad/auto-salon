@@ -101,17 +101,23 @@ export function newsViewHref(sn: string): string {
 
 export function filterNewsItems(csn: string | null | undefined, searchTitle?: string | null): NewsItem[] {
     let items = newsItems;
+
     if (csn) {
         items = items.filter(item => item.categories.includes(csn as NewsCategory));
     }
+
     if (searchTitle?.trim()) {
         const query = searchTitle.trim().toLowerCase();
         items = items.filter(item => item.title.toLowerCase().includes(query));
     }
+
     return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function findNewsItem(sn: string | null | undefined): NewsItem | null {
-    if (!sn) return null;
+    if (!sn) {
+return null;
+}
+
     return newsItems.find(item => item.sn === sn) ?? null;
 }

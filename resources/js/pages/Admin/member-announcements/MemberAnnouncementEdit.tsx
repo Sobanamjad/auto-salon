@@ -1,5 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { FaArrowLeft, FaSave, FaTimes, FaBullhorn, FaImage, FaPaperclip, FaUser, FaCalendar, FaSort } from 'react-icons/fa';
+import { FaArrowLeft, FaSave, FaTimes, FaBullhorn, FaImage, FaPaperclip, FaCalendar, FaSort } from 'react-icons/fa';
 
 interface Announcement {
     id: number;

@@ -14,8 +14,22 @@ import SalonAlbums from '@/components/salon/SalonAlbums';
 import SalonLinks from '@/components/salon/SalonLinks';
 import SalonFooter from '@/components/salon/SalonFooter';
 
-export default function Welcome() {
+type LinkItem = {
+    id: number;
+    title: string;
+    url: string;
+    img: string | null;
+    img_w: number | null;
+    img_h: number | null;
+};
+
+type Props = {
+    links: LinkItem[];
+};
+
+export default function Welcome({ links }: Props) {
     useForceLightMode();
+
     return (
         <>
             <Head>
@@ -55,7 +69,7 @@ export default function Welcome() {
                             <SalonPeople />
                             <SalonLife />
                             <SalonAlbums />
-                            <SalonLinks />
+                            <SalonLinks links={links} />
                         </div>
                     </div>
                 </main>

@@ -133,6 +133,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-sidebar', [LinkController::class, 'toggleSidebar'])->name('toggle-sidebar');
             Route::put('/{id}/sort', [LinkController::class, 'updateSort'])->name('update-sort');
             Route::get('/{id}/copy', [LinkController::class, 'copy'])->name('copy');
+            Route::post('/upload-image', [LinkController::class, 'uploadImage'])->name('upload-image');
         });
 
 
@@ -323,7 +324,17 @@ Route::get('/dashboard', function () {
     return redirect('/admin/dashboard');
 })->middleware('auth')->name('dashboard');
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/', function () {
+    // Get links for homepage section (show_on_home only)
+    $links = \App\Models\Link::active()
+        ->showOnHome()
+        ->ordered()
+        ->get(['id', 'title', 'url', 'img', 'img_w', 'img_h']);
+
+    return inertia('welcome', [
+        'links' => $links,
+    ]);
+})->name('home');
 
 Route::get('/timeline', function () {
     $csn = request()->query('new_csn');

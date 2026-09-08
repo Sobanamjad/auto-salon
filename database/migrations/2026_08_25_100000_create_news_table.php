@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
@@ -20,6 +17,7 @@ return new class extends Migration
             $table->boolean('show_marquee')->default(false);
             $table->integer('sort_order')->default(999);
             $table->string('category')->default('3595');
+            $table->string('photo')->nullable();
             $table->string('subject');
             $table->text('brief')->nullable();
             $table->text('content');
@@ -33,9 +31,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('news');

@@ -2,8 +2,9 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { 
     FaArrowLeft, FaSave, FaTimes, FaLink, 
     FaImage, FaHome, FaSort, FaTag, FaFileAlt,
-    FaGlobe, FaCheck
+    FaGlobe, FaUpload
 } from 'react-icons/fa';
+import { useState } from 'react';
 
 export default function LinkCreate() {
     const { data, setData, post, processing, errors } = useForm({
@@ -22,6 +23,64 @@ export default function LinkCreate() {
         img_w: 1024,
         img_h: 1024,
     });
+
+    const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+
+        if (!file) {
+return;
+}
+
+        setUploading(true);
+        setUploadProgress(0);
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const xhr = new XMLHttpRequest();
+            
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const progress = Math.round((e.loaded / e.total) * 100);
+                    setUploadProgress(progress);
+                }
+            });
+
+            xhr.addEventListener('load', () => {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+
+                    if (response.success) {
+                        setData('img', response.path);
+                        setData('img_w', response.width);
+                        setData('img_h', response.height);
+                        setData('has_photo', true);
+                    }
+                }
+
+                setUploading(false);
+                setUploadProgress(0);
+            });
+
+            xhr.addEventListener('error', () => {
+                console.error('Upload failed');
+                setUploading(false);
+                setUploadProgress(0);
+            });
+
+            xhr.open('POST', '/admin/links/upload-image');
+            xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+            xhr.send(formData);
+        } catch (error) {
+            console.error('Upload error:', error);
+            setUploading(false);
+            setUploadProgress(0);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -248,43 +307,88 @@ export default function LinkCreate() {
                         </label>
                         
                         {data.has_photo && (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+                            <div className="space-y-4 mt-3">
+                                {/* File Upload */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        圖片路徑
+                                        <FaUpload className="inline mr-1" /> 上傳圖片
                                     </label>
                                     <input
-                                        type="text"
-                                        value={data.img}
-                                        onChange={(e) => setData('img', e.target.value)}
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
-                                        placeholder="/asd_files/image.png"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageUpload}
+                                        disabled={uploading}
+                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                                     />
+                                    {uploading && (
+                                        <div className="mt-2">
+                                            <div className="w-full bg-gray-200 rounded-full h-2">
+                                                <div 
+                                                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                                                    style={{ width: `${uploadProgress}%` }}
+                                                ></div>
+                                            </div>
+                                            <p className="text-xs text-gray-500 mt-1">上傳中... {uploadProgress}%</p>
+                                        </div>
+                                    )}
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        圖片寬度
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={data.img_w}
-                                        onChange={(e) => setData('img_w', parseInt(e.target.value) || 1024)}
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
-                                        placeholder="1024"
-                                    />
+
+                                {/* Manual Image Path */}
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            圖片路徑
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={data.img}
+                                            onChange={(e) => setData('img', e.target.value)}
+                                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                            placeholder="/storage/images/links/image.png"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            圖片寬度
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={data.img_w}
+                                            onChange={(e) => setData('img_w', parseInt(e.target.value) || 1024)}
+                                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                            placeholder="1024"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            圖片高度
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={data.img_h}
+                                            onChange={(e) => setData('img_h', parseInt(e.target.value) || 1024)}
+                                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                                            placeholder="1024"
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        圖片高度
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={data.img_h}
-                                        onChange={(e) => setData('img_h', parseInt(e.target.value) || 1024)}
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
-                                        placeholder="1024"
-                                    />
-                                </div>
+
+                                {/* Image Preview */}
+                                {data.img && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            圖片預覽
+                                        </label>
+                                        <img
+                                            src={data.img}
+                                            alt="Preview"
+                                            className="max-w-xs h-auto border border-gray-300 rounded-lg"
+                                            onError={(e) => {
+                                                e.currentTarget.style.display = 'none';
+                                            }}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

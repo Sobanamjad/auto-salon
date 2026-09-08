@@ -45,11 +45,13 @@ export default function TopicsSelect({
         
         if (selectedIds.length === 0) {
             alert('請至少選擇一項');
+
             return;
         }
 
         if (selectedIds.length > 30) {
             alert('最多只能選擇30項');
+
             return;
         }
 
@@ -59,7 +61,7 @@ export default function TopicsSelect({
             onSuccess: () => {
                 alert('主題選擇已更新！');
             },
-            onError: (errors) => {
+            onError: () => {
                 alert('更新失敗，請重試');
             }
         });
@@ -67,6 +69,7 @@ export default function TopicsSelect({
 
     // Split categories into rows of 5
     const rows = [];
+
     for (let i = 0; i < categories.length; i += 5) {
         rows.push(categories.slice(i, i + 5));
     }

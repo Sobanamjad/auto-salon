@@ -1,10 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaImage, FaSort, FaChevronLeft, FaChevronRight, 
-    FaComments, FaUser, FaEnvelope, FaPhone, FaMobile,
-    FaBuilding, FaGlobe, FaCalendar, FaCheck, FaTimes
+    FaSearch, FaPlus, FaEdit, FaTrash, 
+    FaImage, FaChevronLeft, FaChevronRight, 
+    FaComments, FaUser, FaCheck, FaTimes
 } from 'react-icons/fa';
 
 interface Guestbook {

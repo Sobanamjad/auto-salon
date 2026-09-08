@@ -63,11 +63,14 @@ export const announcementItems: AnnouncementItem[] = [
 export function getAnnouncementCategoryLabel(csn: string | null | undefined, param: string | null | undefined): string {
     if (param === 'sel_nncsn') {
         const cat = announcementCategories.find(c => c.csn === csn && c.param === 'sel_nncsn');
+
         return cat?.label ?? '全部';
     } else if (param === 'new_csn') {
         const cat = announcementCategories.find(c => c.csn === csn && c.param === 'new_csn');
+
         return cat?.label ?? '全部';
     }
+
     return '全部';
 }
 

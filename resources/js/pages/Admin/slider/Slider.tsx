@@ -2,8 +2,8 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaImage, FaEdit, FaTrash, FaPlus, FaEye, FaEyeSlash,
-    FaSort, FaLink, FaLanguage, FaVideo, FaChevronLeft, FaChevronRight
+    FaImage, FaEdit, FaTrash, FaPlus, 
+    FaSort, FaLink, FaVideo, FaChevronLeft, FaChevronRight
 } from 'react-icons/fa';
 
 interface Slider {
@@ -58,6 +58,7 @@ export default function Slider({ title = '相片輪播', sliders }: Props) {
             'EN': 'bg-blue-100 text-blue-700',
             'JP': 'bg-green-100 text-green-700',
         };
+
         return colors[lang] || 'bg-gray-100 text-gray-700';
     };
 

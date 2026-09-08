@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
-import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import { useEffect, useState } from 'react';
+import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
@@ -48,6 +48,7 @@ export default function People() {
 
     const formatLocation = (city: string | null, district: string | null, village: string | null) => {
         const parts = [city, district, village].filter(Boolean);
+
         return parts.join(' ');
     };
 
@@ -55,6 +56,7 @@ export default function People() {
         if (!partner.booking_link && !partner.take_number_link && !partner.current_number_link) {
             return null;
         }
+
         return {
             book: partner.booking_link,
             netQueue: partner.take_number_link,
@@ -63,12 +65,25 @@ export default function People() {
     };
 
     const getImagePath = (image: string | null) => {
-        if (!image) return '/asd_files/placeholder.jpg';
-        if (image.startsWith('http')) return image;
-        if (image.startsWith('/asd_files/')) return image;
-        if (image.startsWith('/storage/')) return image;
+        if (!image) {
+return '/asd_files/placeholder.jpg';
+}
+
+        if (image.startsWith('http')) {
+return image;
+}
+
+        if (image.startsWith('/asd_files/')) {
+return image;
+}
+
+        if (image.startsWith('/storage/')) {
+return image;
+}
+
         return `/storage/${image}`;
     };
+
     return (
         <>
             <Head>
@@ -147,6 +162,7 @@ export default function People() {
                                             {partners.map((partner) => {
                                                 const callerLinks = getCallerLinks(partner);
                                                 const location = formatLocation(partner.city, partner.district, partner.village);
+
                                                 return (
                                                     <li key={partner.id}>
                                                         <div className="card card_people effect_topslash fadeUp js-scroll">

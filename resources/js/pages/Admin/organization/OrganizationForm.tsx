@@ -1,8 +1,8 @@
 // resources/js/pages/Admin/organization/OrganizationForm.tsx
 import { Head, useForm, Link } from '@inertiajs/react';
 import { 
-    FaBuilding, FaSave, FaTimes, FaGlobe, FaMapMarkerAlt,
-    FaUser, FaPhone, FaEnvelope, FaFileAlt, FaLanguage
+    FaBuilding, FaSave, FaTimes,
+    FaUser, FaFileAlt, FaLanguage
 } from 'react-icons/fa';
 
 interface Organization {
@@ -48,6 +48,7 @@ export default function OrganizationForm({ title = '組織表單', organization 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (organization?.id) {
             put(`/admin/organization/${organization.id}`);
         } else {

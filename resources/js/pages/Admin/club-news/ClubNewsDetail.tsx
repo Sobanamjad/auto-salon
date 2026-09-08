@@ -1,7 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { 
     FaArrowLeft, FaEye, FaMapMarkerAlt, FaTag, 
-    FaCalendar, FaUser, FaNewspaper, FaExternalLinkAlt
+    FaCalendar, FaNewspaper
 } from 'react-icons/fa';
 
 interface ClubNews {

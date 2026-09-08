@@ -2,9 +2,9 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaCopy, 
-    FaImage, FaSort, FaHome, FaChevronLeft, 
+    FaImage, FaHome, FaChevronLeft, 
     FaChevronRight, FaLink as FaLinkIcon, 
-    FaTag, FaFileAlt, FaClock, FaGlobe
+    FaGlobe
 } from 'react-icons/fa';
 
 interface Link {
@@ -38,6 +38,7 @@ export default function Links({ links = [], title = '相關連結' }: Props) {
     const filteredItems = links.filter(item => {
         const matchTitle = item.title.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 

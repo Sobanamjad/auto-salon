@@ -2,13 +2,9 @@ import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { 
     HomeIcon, 
-    UsersIcon, 
-    SettingsIcon, 
     LogOutIcon,
     MenuIcon,
     XIcon,
-    FileTextIcon,
-    CalendarIcon,
     ExternalLinkIcon,
     ChevronDownIcon,
     ChevronRightIcon
@@ -107,7 +103,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     ];
 
     const isActive = (href: string) => {
-        if (href === '/admin') return url === href;
+        if (href === '/admin') {
+return url === href;
+}
+
         return url.startsWith(href);
     };
 

@@ -323,6 +323,7 @@ export default function AboutEdit({ about }: { about: About }) {
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
+
                                     if (file) {
                                         setData('image', file);
                                     }

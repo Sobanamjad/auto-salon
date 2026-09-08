@@ -2,7 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { 
     FaArrowLeft, FaSave, FaTimes, FaUsers, 
     FaImage, FaVideo, FaHome, FaSort, FaCalendar, 
-    FaTag, FaUser, FaUserTie, FaBriefcase
+    FaTag, FaUser, FaUserTie
 } from 'react-icons/fa';
 
 interface Director {

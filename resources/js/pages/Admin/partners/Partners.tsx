@@ -2,9 +2,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaPlus, FaEdit, FaTrash, FaUserFriends, 
-    FaSort, FaChevronLeft, FaChevronRight, 
-    FaHome, FaMapMarkerAlt, FaUser, FaFileAlt,
-    FaCheck, FaTimes
+    FaChevronLeft, FaChevronRight, 
+    FaHome, FaCheck, FaTimes
 } from 'react-icons/fa';
 
 interface Partner {
@@ -54,12 +53,6 @@ export default function Partners({ partners = [], title = '夥伴介紹' }: Prop
 
     const handleToggleStatus = (id: number) => {
         router.get(`/admin/partners/${id}/toggle-status`);
-    };
-
-    const handleResetViews = (id: number, name: string) => {
-        if (confirm(`確定要清除: ${name} 點閱人紀錄嗎？`)) {
-            router.get(`/admin/partners/${id}/reset-views`);
-        }
     };
 
     const handleSortUpdate = (id: number, sortOrder: number) => {

@@ -18,6 +18,9 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('category')->nullable();
             $table->string('product_no')->nullable();
+            $table->string('img')->nullable();
+            $table->integer('img_w')->nullable();
+            $table->integer('img_h')->nullable();
             $table->string('name');
             $table->text('brief')->nullable();
             $table->longText('content')->nullable();

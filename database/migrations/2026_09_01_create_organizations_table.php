@@ -1,4 +1,3 @@
-// database/migrations/2026_09_01_create_organizations_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->string('contact_phone')->nullable(); // 聯絡電話
             $table->string('contact_email')->nullable(); // 聯絡信箱
             $table->text('description')->nullable(); // 公司簡介
+            $table->string('password')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

@@ -15,12 +15,15 @@ return new class extends Migration
             $table->boolean('show_on_home')->default(false);
             $table->boolean('show_on_sidebar')->default(true);
             $table->integer('sort_order')->default(999);
-            $table->string('category')->nullable(); // 本會相關, 友會, 政府單位
+            $table->string('category')->nullable();
             $table->string('title');
             $table->string('url')->nullable();
             $table->longText('content')->nullable();
             $table->text('note')->nullable();
             $table->boolean('has_photo')->default(false);
+            $table->string('img')->nullable();
+            $table->integer('img_w')->nullable();
+            $table->integer('img_h')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

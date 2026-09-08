@@ -1,11 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaSort, FaChevronLeft, FaChevronRight, 
-    FaBriefcase, FaUser, FaPhone, FaMobile, FaEnvelope,
-    FaBuilding, FaMapMarkerAlt, FaDollarSign, FaUsers,
-    FaCalendar, FaTag, FaFileAlt
+    FaSearch, FaPlus, FaEdit, FaTrash, 
+    FaChevronLeft, FaChevronRight, 
+    FaBriefcase, FaMapMarkerAlt, FaTag
 } from 'react-icons/fa';
 
 interface Job {
@@ -51,6 +49,7 @@ export default function Jobs({ jobs = [], title = '人才招募' }: Props) {
         const matchTitle = item.job_title.toLowerCase().includes(searchTitle.toLowerCase()) ||
                            item.company.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.job_category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 
@@ -58,18 +57,14 @@ export default function Jobs({ jobs = [], title = '人才招募' }: Props) {
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
     const currentItems = filteredItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    const handleDelete = (id: number, jobTitle: string) => {
+    const handleDelete = (id: number) => {
         if (confirm(`確定要刪除編號: ${id} 嗎？`)) {
             router.delete(`/admin/jobs/${id}`);
         }
     };
 
-    const handleToggleHome = (id: number) => {
-        router.get(`/admin/jobs/${id}/toggle-home`);
-    };
-
-    const handleResetViews = (id: number, jobTitle: string) => {
-        if (confirm(`確定要清除: ${jobTitle} 點閱人紀錄嗎？`)) {
+    const handleResetViews = (id: number) => {
+        if (confirm(`確定要清除點閱人紀錄嗎？`)) {
             router.get(`/admin/jobs/${id}/reset-views`);
         }
     };
@@ -236,7 +231,7 @@ export default function Jobs({ jobs = [], title = '人才招募' }: Props) {
                                         <td className="px-2 py-2 text-center">
                                             <span className="font-bold">{item.views || 0}</span>
                                             <button
-                                                onClick={() => handleResetViews(item.id, item.job_title)}
+                                                onClick={() => handleResetViews(item.id)}
                                                 className="text-red-500 hover:text-red-700 text-xs block"
                                             >
                                                 清除
@@ -252,7 +247,7 @@ export default function Jobs({ jobs = [], title = '人才招募' }: Props) {
                                                 </Link>
                                                 <div className="border-t border-dashed border-gray-300 w-full"></div>
                                                 <button
-                                                    onClick={() => handleDelete(item.id, item.job_title)}
+                                                    onClick={() => handleDelete(item.id)}
                                                     className="text-red-600 hover:text-red-800 flex items-center gap-0.5"
                                                 >
                                                     <FaTrash size={12} /> 刪除

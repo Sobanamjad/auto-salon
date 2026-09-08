@@ -1,10 +1,10 @@
 // resources/js/pages/Admin/red-white/RedWhite.tsx
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaTrash, FaNewspaper, FaCheck, FaTimes,
-    FaChevronLeft, FaChevronRight, FaSort, FaUser, FaCalendar,
-    FaTag, FaMoneyBill, FaStickyNote
+    FaTrash, FaNewspaper, FaCheck, FaTimes,
+    FaChevronLeft, FaChevronRight, FaUser, FaCalendar,
+    FaTag
 } from 'react-icons/fa';
 
 interface RedWhiteItem {
@@ -72,6 +72,7 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
             '喪事': 'bg-gray-100 text-gray-800',
             '會員開幕': 'bg-green-100 text-green-800',
         };
+
         return colors[category] || 'bg-blue-100 text-blue-800';
     };
 
@@ -81,6 +82,7 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
             '喪事': '🕊️',
             '會員開幕': '🏪',
         };
+
         return icons[category] || '📋';
     };
 

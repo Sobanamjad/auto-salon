@@ -60,6 +60,7 @@ export default function ProductCreate() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
         setData('img', file);
+
         if (file) {
             setPreview(URL.createObjectURL(file));
         } else {

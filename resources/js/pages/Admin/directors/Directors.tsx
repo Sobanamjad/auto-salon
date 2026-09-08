@@ -1,8 +1,8 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaEdit, FaTrash, FaEye, 
-    FaImage, FaSort, FaHome, FaChevronLeft, 
+    FaSearch, FaPlus, FaEdit, FaTrash, 
+    FaImage, FaHome, FaChevronLeft, 
     FaChevronRight, FaUsers, FaCopy, FaShare
 } from 'react-icons/fa';
 
@@ -39,6 +39,7 @@ export default function Directors({ directors = [], title = '理監事(組織)' 
         const matchTitle = item.title.toLowerCase().includes(searchTitle.toLowerCase()) ||
                            item.name.toLowerCase().includes(searchTitle.toLowerCase());
         const matchCategory = searchCategory === '' || item.category === searchCategory;
+
         return matchTitle && matchCategory;
     });
 

@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
     FaSearch, FaEye, FaTrash, FaNewspaper, 
-    FaMapMarkerAlt, FaTag, FaChevronLeft, FaChevronRight,
+    FaChevronLeft, FaChevronRight,
     FaBullhorn, FaExclamationCircle
 } from 'react-icons/fa';
 

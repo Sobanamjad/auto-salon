@@ -42,9 +42,13 @@ export default function Timeline({ csn, newSn }: Props) {
 
     const filtered = csn
         ? timelineItems.filter(item => {
-            if (csn === '538') return item.date.year === '2025';
+            if (csn === '538') {
+return item.date.year === '2025';
+}
 
-            if (csn === '539') return item.date.year === '2024';
+            if (csn === '539') {
+return item.date.year === '2024';
+}
 
             return true;
         })

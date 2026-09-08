@@ -55,9 +55,11 @@ export default function Product({
         params.set('new_csn', csn);
         params.set('up_sn', upSn);
         params.set('this_page', String(page));
+
         if (searchTitle?.trim()) {
             params.set('sel_title', searchTitle.trim());
         }
+
         return `/product?${params.toString()}`;
     };
 
@@ -65,12 +67,14 @@ export default function Product({
         const params = new URLSearchParams();
         params.set('new_csn', categoryCsn);
         params.set('up_sn', upSn);
+
         return `/product?${params.toString()}`;
     };
 
     // Link to product detail — uses product_no as the legacy sn identifier
     const productViewHref = (item: ProductItem) => {
         const sn = item.product_no ?? String(item.id);
+
         return `/product_view?new_sn=${sn}&up_sn=${upSn}&lang=TS`;
     };
 

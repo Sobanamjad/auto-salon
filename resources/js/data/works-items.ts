@@ -51,12 +51,15 @@ export function getWorksCategoryLabel(csn: string | null | undefined): string {
 
 export function filterWorksItems(csn: string | null | undefined, searchTitle?: string | null): WorksItem[] {
     let items = worksItems;
+
     if (csn) {
         items = items.filter(item => item.categories.includes(csn as WorksCategory));
     }
+
     if (searchTitle?.trim()) {
         const query = searchTitle.trim().toLowerCase();
         items = items.filter(item => item.title.toLowerCase().includes(query));
     }
+
     return items;
 }

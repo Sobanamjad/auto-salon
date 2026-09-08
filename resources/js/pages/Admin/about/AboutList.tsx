@@ -1,7 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import { 
-    FaSearch, FaPlus, FaInfoCircle, FaEye, 
+    FaSearch, FaPlus, FaInfoCircle, 
     FaEdit, FaTrash, FaSort, FaFilter,
     FaChevronLeft, FaChevronRight, FaHome
 } from 'react-icons/fa';
@@ -49,6 +49,7 @@ export default function AboutList({ abouts, title }: PageProps) {
         const matchesSearch = about.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
                              about.content.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === '' || about.category === selectedCategory;
+
         return matchesSearch && matchesCategory;
     });
 

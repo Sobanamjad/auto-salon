@@ -2,7 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import {
     FaArrowLeft, FaSave, FaTimes, FaUserFriends,
     FaUser, FaMapMarkerAlt, FaHome, FaSort,
-    FaFileAlt, FaCheck
+    FaFileAlt
 } from 'react-icons/fa';
 
 interface Partner {
@@ -303,6 +303,7 @@ export default function PartnerEdit({ partner, title }: Props) {
                             accept="image/*"
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
+
                                 if (file) {
                                     setData('image_file', file);
                                 }
