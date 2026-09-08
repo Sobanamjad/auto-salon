@@ -1,6 +1,17 @@
-import { linkItems } from '@/data/link-items';
+type LinkItem = {
+    id: number;
+    title: string;
+    url: string;
+    img: string | null;
+    img_w: number | null;
+    img_h: number | null;
+};
 
-export default function SalonLinks() {
+type Props = {
+    links: LinkItem[];
+};
+
+export default function SalonLinks({ links }: Props) {
     return (
         <section id="secbox_idx_link" className="secbox secbox_idx js-scroll">
             <div className="secbox_bg">
@@ -19,19 +30,19 @@ export default function SalonLinks() {
 
                         <div className="secbox_main">
                             <ul className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                                {linkItems.map(link => (
-                                    <li key={link.title}>
+                                {links.map(link => (
+                                    <li key={link.id}>
                                         <div className="card card_link effect_topslash fadeUp js-scroll">
                                             <div className="row g-3">
                                                 <div>
                                                     <div className="card-photo">
-                                                        <a href={link.href} title={link.title} target="_blank" rel="noopener noreferrer">
+                                                        <a href={link.url} title={link.title} target="_blank" rel="noopener noreferrer">
                                                             <div className="item-fitimg">
                                                                 <img
-                                                                    src={link.img}
+                                                                    src={link.img || '/asd_files/placeholder.png'}
                                                                     alt={link.title}
-                                                                    width={link.imgW}
-                                                                    height={link.imgH}
+                                                                    width={link.img_w || 1024}
+                                                                    height={link.img_h || 1024}
                                                                     loading="lazy"
                                                                     className="fitimg"
                                                                 />
@@ -42,7 +53,7 @@ export default function SalonLinks() {
                                                 <div>
                                                     <div className="card-body">
                                                         <h3 className="card-name">
-                                                            <a href={link.href} title={link.title} target="_blank" rel="noopener noreferrer">
+                                                            <a href={link.url} title={link.title} target="_blank" rel="noopener noreferrer">
                                                                 <span className="card-name-text">{link.title}</span>
                                                             </a>
                                                         </h3>
@@ -50,7 +61,7 @@ export default function SalonLinks() {
                                                 </div>
                                                 <div className="hidden">
                                                     <div className="card-btnbar card-btnbar_outlink">
-                                                        <a href={link.href} className="card-btn card-btn_outlink" title={link.title} target="_blank" rel="noopener noreferrer">
+                                                        <a href={link.url} className="card-btn card-btn_outlink" title={link.title} target="_blank" rel="noopener noreferrer">
                                                             <span className="card-btn-text">更多</span>
                                                             <span className="iconsvg icon-outlink"></span>
                                                         </a>

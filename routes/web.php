@@ -324,7 +324,17 @@ Route::get('/dashboard', function () {
     return redirect('/admin/dashboard');
 })->middleware('auth')->name('dashboard');
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/', function () {
+    // Get links for homepage section (show_on_home only)
+    $links = \App\Models\Link::active()
+        ->showOnHome()
+        ->ordered()
+        ->get(['id', 'title', 'url', 'img', 'img_w', 'img_h']);
+
+    return inertia('welcome', [
+        'links' => $links,
+    ]);
+})->name('home');
 
 Route::get('/timeline', function () {
     $csn = request()->query('new_csn');
