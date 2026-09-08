@@ -25,6 +25,9 @@ class LinkRequest extends FormRequest
             'content' => 'nullable|string',
             'note' => 'nullable|string',
             'has_photo' => 'boolean',
+            'img' => 'nullable|string|max:255',
+            'img_w' => 'nullable|integer|min:0',
+            'img_h' => 'nullable|integer|min:0',
         ];
     }
 

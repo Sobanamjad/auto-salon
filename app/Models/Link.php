@@ -22,6 +22,9 @@ class Link extends Model
         'content',
         'note',
         'has_photo',
+        'img',
+        'img_w',
+        'img_h',
     ];
 
     protected $casts = [

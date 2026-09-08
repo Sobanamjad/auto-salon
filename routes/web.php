@@ -352,8 +352,43 @@ Route::get('/job', function () {
 })->name('job');
 
 Route::get('/link', function () {
+    $csn = request()->query('new_csn');
+    $csn = ($csn !== null && $csn !== '') ? (string) $csn : null;
+
+    $query = \App\Models\Link::active()->ordered();
+
+    if ($csn) {
+        $query->where('category', $csn);
+    }
+
+    $links = $query->get([
+        'id', 'title', 'url', 'category', 'img', 'img_w', 'img_h'
+    ]);
+
+    // Get unique categories from database
+    $categories = \App\Models\Link::active()
+        ->whereNotNull('category')
+        ->distinct()
+        ->pluck('category')
+        ->map(function ($category) {
+            if ($category === '900') {
+                return ['csn' => '900', 'label' => '政府單位'];
+            } elseif ($category === '899') {
+                return ['csn' => '899', 'label' => '本會相關'];
+            }
+            return ['csn' => $category, 'label' => $category];
+        })
+        ->sortBy('csn')
+        ->values()
+        ->toArray();
+
+    // Add "全部" option at the beginning
+    array_unshift($categories, ['csn' => null, 'label' => '全部']);
+
     return inertia('link', [
-        'csn' => request()->query('new_csn'),
+        'csn' => $csn,
+        'links' => $links,
+        'categories' => $categories,
     ]);
 })->name('link');
 
