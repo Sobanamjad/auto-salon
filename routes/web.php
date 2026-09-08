@@ -133,6 +133,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/toggle-sidebar', [LinkController::class, 'toggleSidebar'])->name('toggle-sidebar');
             Route::put('/{id}/sort', [LinkController::class, 'updateSort'])->name('update-sort');
             Route::get('/{id}/copy', [LinkController::class, 'copy'])->name('copy');
+            Route::post('/upload-image', [LinkController::class, 'uploadImage'])->name('upload-image');
         });
 
 

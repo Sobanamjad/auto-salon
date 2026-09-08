@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LinkRequest;
 use App\Models\Link;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LinkController extends Controller
@@ -129,5 +130,32 @@ class LinkController extends Controller
 
         return redirect()->route('admin.links.index')
                          ->with('success', '連結複製成功');
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            // Store in public/images/links directory
+            $path = $image->storeAs('images/links', $filename, 'public');
+            
+            // Get image dimensions
+            list($width, $height) = getimagesize($image->getPathname());
+            
+            return response()->json([
+                'success' => true,
+                'path' => '/storage/' . $path,
+                'width' => $width,
+                'height' => $height,
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No image uploaded'], 400);
     }
 }
