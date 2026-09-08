@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             JournalSeeder::class,
             OrganizationSeeder::class,
             SliderSeeder::class,
+            LinkSeeder::class,
         ]);
     }
 }
