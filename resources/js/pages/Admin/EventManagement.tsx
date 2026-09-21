@@ -2,7 +2,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { 
     FaSearch, FaCalendar, FaEdit, 
     FaTrash, FaCog, FaTag, FaMagic, FaPrint, FaHome, 
-    FaPlusCircle, FaComments, FaSignInAlt
+    FaPlusCircle, FaComments, FaSignInAlt, FaEye
 } from 'react-icons/fa';
 
 interface Event {
