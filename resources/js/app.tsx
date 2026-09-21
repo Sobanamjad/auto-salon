@@ -25,6 +25,7 @@ createInertiaApp({
             case name === 'life':
             case name === 'contact':
             case name === 'uninews':
+            case name === 'uninews-view':
             case name === 'job':
             case name === 'link':
             case name === 'qa':

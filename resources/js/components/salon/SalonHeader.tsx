@@ -217,7 +217,7 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                 <div className="sidebar-body custom-scrollbar">
                     <div className="sidebar-section">
                         <h3 className="sidebar-section-heading">選單</h3>
-                        <ul className="sidebar_menu">
+                        <ul className="sidebar_menu jsmtree">
                             {menuItems.map((item, index) => (
                                 <li key={index}>
                                     <a
@@ -230,11 +230,11 @@ export default function SalonHeader({ banner }: { banner?: ReactNode }) {
                                     >
                                         <span className="menu-text">{item.text}</span>
                                         {item.children && (
-                                            <div className={`menu-subbtn${openSubmenus[index] ? ' is-open' : ''}`}></div>
+                                            <div className={`jsmtree-subbtn${openSubmenus[index] ? ' is-open' : ''}`}></div>
                                         )}
                                     </a>
                                     {item.children && (
-                                        <ul className={openSubmenus[index] ? 'is-visible' : ''}>
+                                        <ul style={{ display: openSubmenus[index] ? 'block' : 'none' }}>
                                             {item.children.map((child, ci) => (
                                                 <li key={ci}>
                                                     <a href={child.href}>{child.text}</a>

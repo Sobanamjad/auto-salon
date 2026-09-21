@@ -4,28 +4,17 @@ import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import {
-    UNINEWS_PER_PAGE,
-    UNINEWS_TOTAL,
-    UNINEWS_TOTAL_PAGES,
-    uniNewsItems,
-} from '@/data/uninews-items';
 
 type Props = {
     thisPage?: number;
+    news?: any[];
+    totalItems?: number;
+    totalPages?: number;
 };
 
-function getPageItems(page: number) {
-    const start = (page - 1) * UNINEWS_PER_PAGE;
-
-    return uniNewsItems.slice(start, start + UNINEWS_PER_PAGE);
-}
-
-export default function UniNews({ thisPage = 1 }: Props) {
+export default function UniNews({ thisPage = 1, news = [], totalItems = 0, totalPages = 1 }: Props) {
     useForceLightMode([thisPage]);
-
-    const currentPage = Math.min(Math.max(thisPage, 1), UNINEWS_TOTAL_PAGES);
-    const pageItems = getPageItems(currentPage);
+    const currentPage = Math.min(Math.max(thisPage, 1), totalPages);
     const nbsp = '\u00A0';
 
     const pageHref = (page: number) => `/uninews?this_page=${page}`;
@@ -101,11 +90,11 @@ export default function UniNews({ thisPage = 1 }: Props) {
                                     </div>
 
                                     <ul className="row row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-                                        {pageItems.map(item => {
+                                        {news.map(item => {
                                             const href = `/uninews_view?new_sn=${item.sn}&lang=TS`;
 
                                             return (
-                                                <li key={item.sn}>
+                                                <li key={item.id}>
                                                     <div className="card card_post fadeUp js-scroll">
                                                         <div className="row g-3 align-center">
                                                             <div className="col-4 col-lg-12">
@@ -115,8 +104,8 @@ export default function UniNews({ thisPage = 1 }: Props) {
                                                                             <img
                                                                                 src={item.img}
                                                                                 alt={item.title}
-                                                                                width={item.imgW}
-                                                                                height={item.imgH}
+                                                                                width={item.img_w}
+                                                                                height={item.img_h}
                                                                                 loading="lazy"
                                                                                 className="fitimg"
                                                                             />
@@ -187,7 +176,7 @@ export default function UniNews({ thisPage = 1 }: Props) {
                                             首頁
                                         </Link>
                                         {nbsp}
-                                        {Array.from({ length: UNINEWS_TOTAL_PAGES }, (_, i) => i + 1).map(page => (
+                                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                                             <Fragment key={page}>
                                                 {page === currentPage ? (
                                                     <span>{page}</span>
@@ -199,12 +188,12 @@ export default function UniNews({ thisPage = 1 }: Props) {
                                                 {nbsp}
                                             </Fragment>
                                         ))}
-                                        <Link href={pageHref(UNINEWS_TOTAL_PAGES)} preserveScroll={false}>
+                                        <Link href={pageHref(totalPages)} preserveScroll={false}>
                                             末頁
                                         </Link>
                                         <br />
                                         <br />
-                                        Total {UNINEWS_TOTAL} - {currentPage} / {UNINEWS_TOTAL_PAGES}{' '}
+                                        Total {totalItems} - {currentPage} / {totalPages}{' '}
                                         <br />
                                     </div>
                                 </div>

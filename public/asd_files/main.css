@@ -1981,68 +1981,6 @@
 
 
 
-/*----------------------------------------------------------------------
-	523_#case formbox [共同設定]
--------------------------------- */
-.formbox_case_login,
-.formbox_petition_login,
-.formbox_petition{
-	background:#fff;
-	border:1px solid #eee;
-	border-radius: 0.5rem;
-	padding:var(--spacing-lg);
-	margin:var(--spacing-xl) auto;
-	overflow: hidden;
-	box-shadow: 0 4px 6px rgb(0 0 0 / 5%);
-}
-
-
-/*----------------------------------------------------------------------
-	523_#case_login [陳情案件-登入]
--------------------------------- */
-.formbox_case_login{
-	max-width:500px;
-}
-@media (min-width:576px){
-	.formbox_case_login .form-label{ width:100px; }
-}
-
-
-/*----------------------------------------------------------------------
-	523_#case_petition_a [我要陳情-登入]
--------------------------------- */
-.formbox_petition_login{
-	max-width:500px;
-}
-@media (min-width:576px){
-	.formbox_petition_login .form-label{ width:80px; }
-}
-
-
-/*----------------------------------------------------------------------
-	523_#case_petition_b [我要陳情]
--------------------------------- */
-.formbox_petition{
-	max-width:1000px;
-}
-@media (min-width:992px){
-	.formlist_petition{
-		grid-template-columns: repeat(2, 1fr); 
-	}
-	.formlist_petition .formline.subject,
-	.formlist_petition .formline.cate,
-	.formlist_petition .formline.gender,
-	.formlist_petition .formline.message,
-	.formlist_petition .formline.file,
-	.formlist_petition .formline.verifycode,
-	.formlist_petition .formline.submit{
-		grid-column: auto/span 2;
-	}
-}
-
-
-
-
 
 /*----------------------------------------------------------------------
 	523_#case_petition_c [完成陳情]
@@ -2673,31 +2611,6 @@
 }
 .infolist_contact_company .info a:hover{
 	color:var(--color-accent);
-}
-
-
-
-
-
-/*----------------------------------------------------------------------
-	D2_#contact [填表諮詢] [in idx & contact]
--------------------------------- */
-.formlist_inquire .form-icon{
-	display:none;
-}
-/*.formlist_inquire .form-title{
-	color:var(--color-one);
-}*/
-@media (min-width:992px){
-	.formlist_inquire{
-		grid-template-columns: repeat(2, 1fr); 
-	}
-	.formlist_inquire .formline.subject,
-	.formlist_inquire .formline.message,
-	.formlist_inquire .formline.verifycode,
-	.formlist_inquire .formline.submit{
-		grid-column: auto/span 2;
-	}
 }
 
 

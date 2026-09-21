@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job', 'link', 'qa', 'product', 'article', 'download', 'works', 'member', 'news', 'announcement', 'albums'])])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark', 'salon-page' => in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'uninews-view', 'job', 'link', 'qa', 'product', 'product-view', 'article', 'download', 'works', 'member', 'news', 'news-view', 'announcement', 'albums', 'album-view'])])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
         <script>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
-                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'job', 'link', 'qa', 'product', 'article', 'download', 'works', 'member', 'news', 'announcement', 'albums']) ? 'true' : 'false' }};
+                const isSalonPage = {{ in_array($page['component'], ['welcome', 'about', 'timeline', 'people', 'life', 'contact', 'uninews', 'uninews-view', 'job', 'link', 'qa', 'product', 'product-view', 'article', 'download', 'works', 'member', 'news', 'news-view', 'announcement', 'albums', 'album-view']) ? 'true' : 'false' }};
 
                 if (appearance === 'system') {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -56,17 +56,17 @@
 
         @fonts
 
-        {{-- ✅ Ziggy Routes - IMPORTANT --}}
+        {{--  Ziggy Routes - IMPORTANT --}}
         @routes
 
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         
-        {{-- ✅ Inertia Head - CORRECTED --}}
+        {{--  Inertia Head - CORRECTED --}}
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
-        {{-- ✅ Inertia App - CORRECTED --}}
+        {{--  Inertia App - CORRECTED --}}
         @inertia
     </body>
 </html>

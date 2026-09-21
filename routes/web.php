@@ -219,6 +219,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Club News (社團新聞)
         Route::prefix('club-news')->name('club-news.')->group(function () {
             Route::get('/', [ClubNewsController::class, 'index'])->name('index');
+            Route::get('/create', [ClubNewsController::class, 'create'])->name('create');
+            Route::post('/', [ClubNewsController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ClubNewsController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [ClubNewsController::class, 'update'])->name('update');
             Route::get('/exclude', [ClubNewsController::class, 'exclude'])->name('exclude');
             Route::post('/exclude', [ClubNewsController::class, 'storeExcluded'])->name('exclude.store');
             Route::get('/{id}/detail', [ClubNewsController::class, 'detail'])->name('detail');
@@ -352,8 +356,79 @@ Route::inertia('/life', 'life')->name('life');
 
 Route::get('/uninews', function () {
     $page = (int) request()->query('this_page', 1);
-    return inertia('uninews', ['thisPage' => max(1, $page)]);
+    $perPage = 24;
+
+    $query = \App\Models\ClubNews::active()->ordered();
+    $totalItems = $query->count();
+    $totalPages = max(1, (int) ceil($totalItems / $perPage));
+    $currentPage = min(max(1, $page), $totalPages);
+
+    $news = $query
+        ->skip(($currentPage - 1) * $perPage)
+        ->take($perPage)
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'sn' => $item->sn,
+                'title' => $item->title,
+                'img' => $item->img,
+                'imgW' => $item->img_w,
+                'imgH' => $item->img_h,
+                'date' => $item->date ?? null,
+                'location' => $item->location,
+                'excerpt' => $item->excerpt,
+            ];
+        });
+
+    return inertia('uninews', [
+        'thisPage' => $currentPage,
+        'news' => $news,
+        'totalItems' => $totalItems,
+        'totalPages' => $totalPages,
+    ]);
 })->name('uninews');
+
+Route::get('/uninews_view', function () {
+    $newSn = request()->query('new_sn');
+    $lang = request()->query('lang', 'TS');
+
+    if (!$newSn) {
+        return redirect('/uninews');
+    }
+
+    $news = \App\Models\ClubNews::where('sn', $newSn)->first();
+
+    if (!$news) {
+        return inertia('uninews-view', [
+            'new_sn' => $newSn,
+            'lang' => $lang,
+            'news' => null
+        ]);
+    }
+
+    // Increment views
+    $news->increment('views');
+
+    $newsData = [
+        'id' => $news->id,
+        'sn' => $news->sn,
+        'title' => $news->title,
+        'img' => $news->img,
+        'imgW' => $news->img_w,
+        'imgH' => $news->img_h,
+        'date' => $news->date ?? null,
+        'location' => $news->location,
+        'excerpt' => $news->excerpt,
+        'content' => $news->content,
+    ];
+
+    return inertia('uninews-view', [
+        'new_sn' => $newSn,
+        'lang' => $lang,
+        'news' => $newsData
+    ]);
+})->name('uninews.view');
 
 Route::get('/job', function () {
     return inertia('job', [
