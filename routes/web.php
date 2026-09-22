@@ -588,12 +588,83 @@ Route::get('/product_view', function () {
 })->name('product.view');
 
 Route::get('/article', function () {
-    $csn = request()->query('new_csn');
+    $csn      = request()->query('new_csn');
+    $csn      = ($csn !== null && $csn !== '') ? (string) $csn : null;
+    $page     = max(1, (int) request()->query('this_page', 1));
+    $perPage  = 12;
+
+    // Map csn codes to DB category strings
+    $categoryMap = [
+        '3119' => '會友專欄',
+        '3120' => '會友動態',
+    ];
+
+    $query = \App\Models\ColumnArticle::active()
+        ->ordered()
+        ->where('end_date', '>=', now()->toDateString());
+
+    if ($csn && isset($categoryMap[$csn])) {
+        $query->where('category', $categoryMap[$csn]);
+    }
+
+    $totalItems = $query->count();
+    $totalPages = max(1, (int) ceil($totalItems / $perPage));
+    $currentPage = min($page, $totalPages);
+
+    $articles = $query
+        ->skip(($currentPage - 1) * $perPage)
+        ->take($perPage)
+        ->get(['id', 'subject', 'brief', 'category', 'has_photo', 'published_date'])
+        ->map(fn($a) => [
+            'id'       => $a->id,
+            'subject'  => $a->subject,
+            'brief'    => $a->brief,
+            'category' => $a->category,
+            'has_photo'=> $a->has_photo,
+            'date'     => $a->published_date?->format('Y-m-d'),
+        ]);
+
     return inertia('article', [
-        'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
-        'thisPage' => max(1, (int) request()->query('this_page', 1)),
+        'csn'        => $csn,
+        'thisPage'   => $currentPage,
+        'totalPages' => $totalPages,
+        'totalItems' => $totalItems,
+        'articles'   => $articles,
     ]);
 })->name('article');
+
+Route::get('/article_view', function () {
+    $id   = request()->query('new_sn');
+    $lang = request()->query('lang', 'TS');
+
+    if (!$id) {
+        return redirect('/article');
+    }
+
+    $article = \App\Models\ColumnArticle::active()->find($id);
+
+    if (!$article) {
+        return inertia('article-view', ['article' => null]);
+    }
+
+    $article->increment('views');
+
+    return inertia('article-view', [
+        'article' => [
+            'id'        => $article->id,
+            'subject'   => $article->subject,
+            'brief'     => $article->brief,
+            'content'   => $article->content,
+            'category'  => $article->category,
+            'keyword'   => $article->keyword,
+            'video'     => $article->video,
+            'map'       => $article->map,
+            'has_photo' => $article->has_photo,
+            'date'      => $article->published_date?->format('Y-m-d'),
+            'views'     => $article->views,
+        ],
+    ]);
+})->name('article.view');
 
 Route::get('/download', function () {
     $csn = request()->query('new_csn');
@@ -654,6 +725,41 @@ Route::get('/works', function () {
         'directors' => $directors,
     ]);
 })->name('works');
+
+Route::get('/works_view', function () {
+    $id   = request()->query('new_sn');
+    $lang = request()->query('lang', 'TS');
+
+    if (!$id) {
+        return redirect('/works');
+    }
+
+    $director = \App\Models\Director::active()->find($id);
+
+    if (!$director) {
+        return inertia('works-view', ['director' => null]);
+    }
+
+    $director->increment('views');
+
+    return inertia('works-view', [
+        'director' => [
+            'id'       => $director->id,
+            'sn'       => $director->sn,
+            'title'    => $director->title,
+            'name'     => $director->name,
+            'category' => $director->category,
+            'brief'    => $director->brief,
+            'content'  => $director->content,
+            'video'    => $director->video,
+            'has_photo'=> $director->has_photo,
+            'img'      => $director->img,
+            'imgW'     => $director->img_w,
+            'imgH'     => $director->img_h,
+            'views'    => $director->views,
+        ],
+    ]);
+})->name('works.view');
 
 Route::get('/member', function () {
     $csn         = request()->query('new_csn');
