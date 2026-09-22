@@ -655,6 +655,41 @@ Route::get('/works', function () {
     ]);
 })->name('works');
 
+Route::get('/works_view', function () {
+    $id   = request()->query('new_sn');
+    $lang = request()->query('lang', 'TS');
+
+    if (!$id) {
+        return redirect('/works');
+    }
+
+    $director = \App\Models\Director::active()->find($id);
+
+    if (!$director) {
+        return inertia('works-view', ['director' => null]);
+    }
+
+    $director->increment('views');
+
+    return inertia('works-view', [
+        'director' => [
+            'id'       => $director->id,
+            'sn'       => $director->sn,
+            'title'    => $director->title,
+            'name'     => $director->name,
+            'category' => $director->category,
+            'brief'    => $director->brief,
+            'content'  => $director->content,
+            'video'    => $director->video,
+            'has_photo'=> $director->has_photo,
+            'img'      => $director->img,
+            'imgW'     => $director->img_w,
+            'imgH'     => $director->img_h,
+            'views'    => $director->views,
+        ],
+    ]);
+})->name('works.view');
+
 Route::get('/member', function () {
     $csn         = request()->query('new_csn');
     $csn         = ($csn !== null && $csn !== '') ? (string) $csn : null;
