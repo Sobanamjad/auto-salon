@@ -41,10 +41,13 @@ class HandleInertiaRequests extends Middleware
             $parentShare = [];
         }
         
+        // Ensure auth.user is not null when passed to frontend
+        $authUser = $request->user();
+        
         return array_merge($parentShare, [
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $authUser,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ]);

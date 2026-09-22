@@ -32,7 +32,6 @@ class ClubNews extends Model
 
     protected $casts = [
         'is_excluded' => 'boolean',
-        'date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

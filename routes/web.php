@@ -417,11 +417,18 @@ Route::get('/uninews_view', function () {
         'img' => $news->img,
         'imgW' => $news->img_w,
         'imgH' => $news->img_h,
-        'date' => $news->date ?? null,
+        'date' => $news->date ? (is_string($news->date) ? substr($news->date, 0, 10) : $news->date->format('Y-m-d')) : null,
         'location' => $news->location,
         'excerpt' => $news->excerpt,
         'content' => $news->content,
     ];
+
+    // Ensure all values are properly formatted for Inertia
+    return inertia('uninews-view', [
+        'new_sn' => $newSn,
+        'lang' => $lang,
+        'news' => $newsData
+    ]);
 
     return inertia('uninews-view', [
         'new_sn' => $newSn,
