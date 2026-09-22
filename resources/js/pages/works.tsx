@@ -4,23 +4,38 @@ import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
 import {
-    filterWorksItems,
     getWorksCategoryLabel,
     worksCategories,
-    worksItemHref,
 } from '@/data/works-items';
+
+type Director = {
+    id: number;
+    sn?: string;
+    title: string;
+    name: string;
+    category: string;
+    brief?: string;
+    content?: string;
+    has_photo: boolean;
+    img?: string;
+    img_w?: number;
+    img_h?: number;
+    views: number;
+    sort_order: number;
+};
 
 type Props = {
     csn?: string | null;
     searchTitle?: string | null;
+    directors?: Director[];
 };
 
-export default function Works({ csn = null, searchTitle = null }: Props) {
+export default function Works({ csn = null, searchTitle = null, directors = [] }: Props) {
     useForceLightMode();
 
     const activeCsn = csn ?? null;
     const activeLabel = getWorksCategoryLabel(activeCsn);
-    const items = filterWorksItems(activeCsn, searchTitle);
+    const items = directors;
 
     return (
         <>
@@ -148,22 +163,35 @@ export default function Works({ csn = null, searchTitle = null }: Props) {
                                         {/* Main content: cards */}
                                         <div className="main-columns-right">
                                             <ul className="row row-cols-sm-2 row-cols-lg-3">
-                                                {items.map(member => (
-                                                    <li key={member.sn}>
+                                                {items.map(director => (
+                                                    <li key={director.id}>
                                                         <div className="card card_works effect_dec_vt fadeUp js-scroll">
                                                             <div className="row g-3">
                                                                 <div>
                                                                     <div className="card-photo">
-                                                                        <a href={worksItemHref(member.sn)} title={member.title}>
+                                                                        <a href={`/works_view?new_sn=${director.id}&lang=TS`} title={director.title}>
                                                                             <div className="item-fitimg" style={{ paddingBottom: '132%' }}>
-                                                                                <img
-                                                                                    src={member.img}
-                                                                                    alt={member.title}
-                                                                                    width={member.imgW}
-                                                                                    height={member.imgH}
-                                                                                    loading="lazy"
-                                                                                    className="fitimg"
-                                                                                />
+                                                                                {director.has_photo && director.img ? (
+                                                                                    <img
+                                                                                        src={director.img}
+                                                                                        alt={director.title}
+                                                                                        width={director.img_w || 775}
+                                                                                        height={director.img_h || 1024}
+                                                                                        loading="lazy"
+                                                                                        className="fitimg"
+                                                                                    />
+                                                                                ) : (
+                                                                                    <div className="fitimg-placeholder" style={{
+                                                                                        background: '#f0f0f0',
+                                                                                        display: 'flex',
+                                                                                        alignItems: 'center',
+                                                                                        justifyContent: 'center',
+                                                                                        height: '100%',
+                                                                                        color: '#999'
+                                                                                    }}>
+                                                                                        無照片
+                                                                                    </div>
+                                                                                )}
                                                                             </div>
                                                                             <div className="card-mask"></div>
                                                                         </a>
@@ -172,20 +200,25 @@ export default function Works({ csn = null, searchTitle = null }: Props) {
                                                                 <div>
                                                                     <div className="card-body">
                                                                         <h3 className="card-name">
-                                                                            <a href={worksItemHref(member.sn)} title={member.title}>
+                                                                            <a href={`/works_view?new_sn=${director.id}&lang=TS`} title={director.title}>
                                                                                 <span className="card-name-text">
-                                                                                    {member.title}
+                                                                                    {director.title}
                                                                                 </span>
                                                                             </a>
                                                                         </h3>
+                                                                        {director.name && (
+                                                                            <div className="card-text">
+                                                                                {director.name}
+                                                                            </div>
+                                                                        )}
                                                                     </div>
                                                                 </div>
                                                                 <div>
                                                                     <div className="card-btnbar card-btnbar_more">
                                                                         <a
-                                                                            href={worksItemHref(member.sn)}
+                                                                            href={`/works_view?new_sn=${director.id}&lang=TS`}
                                                                             className="card-btn card-btn_more"
-                                                                            title={member.title}
+                                                                            title={director.title}
                                                                         >
                                                                             <span className="card-btn-text">更多</span>
                                                                             <span className="iconsvg icon-view-more"></span>

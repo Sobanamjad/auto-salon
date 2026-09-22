@@ -10,8 +10,15 @@ return new class extends Migration
     {
         Schema::create('club_news', function (Blueprint $table) {
             $table->id();
+            $table->string('sn')->unique(); // Serial number from hard-coded data
             $table->string('language', 2)->default('TS');
             $table->string('title');
+            $table->string('img')->nullable(); // Image path
+            $table->integer('img_w')->nullable(); // Image width
+            $table->integer('img_h')->nullable(); // Image height
+            $table->date('date')->nullable(); // News date
+            $table->string('location')->nullable(); // Location (city/district)
+            $table->text('excerpt')->nullable(); // Brief description
             $table->string('city')->nullable();
             $table->string('district')->nullable();
             $table->string('village')->nullable();

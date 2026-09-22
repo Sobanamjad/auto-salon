@@ -1,12 +1,14 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { 
-    FaArrowLeft, FaSave, FaTimes, FaUsers, 
-    FaImage, FaVideo, FaHome, FaSort, FaCalendar, 
-    FaTag, FaUser, FaUserTie
+import { useRef, useState } from 'react';
+import {
+    FaArrowLeft, FaSave, FaTimes, FaUsers,
+    FaImage, FaVideo, FaHome, FaSort, FaCalendar,
+    FaTag, FaUser, FaUserTie, FaTimesCircle, FaTrash,
 } from 'react-icons/fa';
 
 interface Director {
     id: number;
+    sn?: string;
     language: string;
     status: boolean;
     show_on_home: boolean;
@@ -16,11 +18,14 @@ interface Director {
     category: string;
     title: string;
     name: string;
-    brief: string;
-    content: string;
-    video: string;
-    note: string;
+    brief: string | null;
+    content: string | null;
+    video: string | null;
+    note: string | null;
     has_photo: boolean;
+    img: string | null;
+    img_w: number | null;
+    img_h: number | null;
 }
 
 interface Props {
@@ -29,7 +34,26 @@ interface Props {
 }
 
 export default function DirectorEdit({ director, title }: Props) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<{
+        _method: string;
+        language: string;
+        status: boolean;
+        show_on_home: boolean;
+        sort_order: number;
+        published_date: string;
+        end_date: string;
+        category: string;
+        title: string;
+        name: string;
+        brief: string;
+        content: string;
+        video: string;
+        note: string;
+        has_photo: boolean;
+        image: File | null;
+        remove_image: boolean;
+    }>({
+        _method: 'PUT',
         language: director.language || 'TS',
         status: director.status ?? true,
         show_on_home: director.show_on_home ?? false,
@@ -44,29 +68,71 @@ export default function DirectorEdit({ director, title }: Props) {
         video: director.video || '',
         note: director.note || '',
         has_photo: director.has_photo || false,
+        image: null,
+        remove_image: false,
     });
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    // Track a new file chosen by user for preview
+    const [newPreviewUrl, setNewPreviewUrl] = useState<string | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        setData('image', file);
+        setData('remove_image', false);
+        setData('has_photo', file !== null || (director.has_photo && !data.remove_image));
+        if (file) {
+            setNewPreviewUrl(URL.createObjectURL(file));
+        } else {
+            setNewPreviewUrl(null);
+        }
+    };
+
+    const handleRemoveNewFile = () => {
+        setData('image', null);
+        setNewPreviewUrl(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+
+    const handleRemoveExistingImage = () => {
+        setData('remove_image', true);
+        setData('has_photo', false);
+    };
+
+    const handleUndoRemove = () => {
+        setData('remove_image', false);
+        setData('has_photo', true);
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/directors/${director.id}`, {
+        // Use post with _method:PUT so multipart/form-data works
+        post(`/admin/directors/${director.id}`, {
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/directors';
             },
-            onError: (errors) => {
-                console.error('Validation errors:', errors);
-            }
+            onError: (errs) => {
+                console.error('Validation errors:', errs);
+            },
         });
     };
+
+    // What image to show in the preview area
+    const existingImg = director.img;
+    const showExisting = existingImg && !data.remove_image && !newPreviewUrl;
+    const showNew      = newPreviewUrl !== null;
+    const showRemoved  = existingImg && data.remove_image && !newPreviewUrl;
 
     return (
         <>
             <Head title={title} />
-            
+
             <div className="bg-white rounded-xl shadow-sm p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
                     <div className="flex items-center gap-3">
-                        <Link 
+                        <Link
                             href="/admin/directors"
                             className="text-gray-500 hover:text-gray-700 transition-colors"
                         >
@@ -187,10 +253,11 @@ export default function DirectorEdit({ director, title }: Props) {
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
                                 >
                                     <option value="">選擇分類</option>
-                                    <option value="理監事">理監事</option>
                                     <option value="現任會長">現任會長</option>
+                                    <option value="理監事">理監事</option>
+                                    <option value="會務幹部">會務幹部</option>
+                                    <option value="會務顧問">會務顧問</option>
                                     <option value="歷屆會長">歷屆會長</option>
-                                    <option value="顧問團">顧問團</option>
                                 </select>
                                 {errors.category && (
                                     <p className="text-red-500 text-sm mt-1">{errors.category}</p>
@@ -239,7 +306,7 @@ export default function DirectorEdit({ director, title }: Props) {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    <FaUser className="inline mr-1" /> 姓名 <span className="text-red-500">*</span>
+                                    <FaUser className="inline mr-1" /> 姓名
                                 </label>
                                 <input
                                     type="text"
@@ -248,8 +315,7 @@ export default function DirectorEdit({ director, title }: Props) {
                                     className={`w-full border rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 ${
                                         errors.name ? 'border-red-500' : 'border-gray-300'
                                     }`}
-                                    placeholder="請輸入姓名"
-                                    required
+                                    placeholder="請輸入姓名 (可留空)"
                                 />
                                 {errors.name && (
                                     <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -285,29 +351,98 @@ export default function DirectorEdit({ director, title }: Props) {
                             placeholder="請輸入詳細內容..."
                         />
                         <p className="text-xs text-gray-500 mt-2">
-                            <i className="icon-book"></i> 
-                            <a 
-                                href="https://mypaper.52go.tw/17web/96/50461/" 
+                            <a
+                                href="https://mypaper.52go.tw/17web/96/50461/"
                                 target="_blank"
-                                className="text-blue-600 hover:underline ml-1"
+                                className="text-blue-600 hover:underline"
                             >
                                 上傳圖片說明
                             </a>
                         </p>
                     </div>
 
-                    {/* Photo */}
+                    {/* Photo Upload */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={data.has_photo}
-                                onChange={(e) => setData('has_photo', e.target.checked)}
-                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                            />
-                            <FaImage className="text-gray-500" />
-                            <span className="text-sm text-gray-700">有相片</span>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                            <FaImage className="inline mr-1 text-green-500" /> 相片
                         </label>
+
+                        <div className="flex items-start gap-4">
+                            {/* Image preview area */}
+                            <div className="shrink-0">
+                                {showNew && (
+                                    <div className="relative">
+                                        <img
+                                            src={newPreviewUrl!}
+                                            alt="新圖預覽"
+                                            className="w-32 h-40 object-cover rounded-lg border-2 border-blue-400"
+                                        />
+                                        <span className="absolute top-1 left-1 bg-blue-500 text-white text-xs px-1 rounded">新圖</span>
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveNewFile}
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
+                                            title="取消新圖片"
+                                        >
+                                            <FaTimesCircle size={16} />
+                                        </button>
+                                    </div>
+                                )}
+                                {showExisting && (
+                                    <div className="relative">
+                                        <img
+                                            src={existingImg!}
+                                            alt="現有圖片"
+                                            className="w-32 h-40 object-cover rounded-lg border border-gray-300"
+                                        />
+                                        <span className="absolute top-1 left-1 bg-gray-600 text-white text-xs px-1 rounded">現有</span>
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveExistingImage}
+                                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
+                                            title="刪除現有圖片"
+                                        >
+                                            <FaTrash size={14} />
+                                        </button>
+                                    </div>
+                                )}
+                                {showRemoved && (
+                                    <div className="w-32 h-40 border-2 border-dashed border-red-300 rounded-lg flex flex-col items-center justify-center text-red-400 gap-1">
+                                        <FaTrash size={20} />
+                                        <span className="text-xs">將刪除</span>
+                                        <button
+                                            type="button"
+                                            onClick={handleUndoRemove}
+                                            className="text-xs text-blue-600 hover:underline mt-1"
+                                        >
+                                            復原
+                                        </button>
+                                    </div>
+                                )}
+                                {!showNew && !showExisting && !showRemoved && (
+                                    <div className="w-32 h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
+                                        <FaImage size={24} />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* File input */}
+                            <div className="flex-1">
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/jpg,image/gif"
+                                    onChange={handleFileChange}
+                                    className="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                />
+                                <p className="text-xs text-gray-500 mt-2">
+                                    選擇新圖片將取代現有圖片。支援 JPEG、PNG、GIF，最大 5MB。
+                                </p>
+                                {errors.image && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.image}</p>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Video */}
@@ -323,8 +458,8 @@ export default function DirectorEdit({ director, title }: Props) {
                             placeholder="請輸入影音嵌入代碼..."
                         />
                         <p className="text-xs text-gray-500 mt-1">
-                            <a 
-                                href="https://mypaper.52go.tw/17web_gudate/96/14506/" 
+                            <a
+                                href="https://mypaper.52go.tw/17web_gudate/96/14506/"
                                 target="_blank"
                                 className="text-blue-600 hover:underline"
                             >
@@ -347,7 +482,7 @@ export default function DirectorEdit({ director, title }: Props) {
                         />
                     </div>
 
-                    {/* Submit Buttons */}
+                    {/* Submit */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                         <Link
                             href="/admin/directors"

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function SalonFooter() {
     const [fabOpen, setFabOpen] = useState(false);
+    const fabRef = useRef<HTMLDivElement>(null);
 
     // Scroll to top helper
     const scrollToTop = (e: React.MouseEvent) => {
@@ -16,6 +17,18 @@ export default function SalonFooter() {
         window.addEventListener('scroll', handler);
 
         return () => window.removeEventListener('scroll', handler);
+    }, []);
+
+    // Close FAB when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (fabRef.current && !fabRef.current.contains(event.target as Node)) {
+                setFabOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     return (
@@ -111,27 +124,28 @@ export default function SalonFooter() {
             </footer>
 
             {/* FAB container */}
-            <div className={`fab-container${fabOpen ? ' is-open' : ''}`} id="fabContainer">
-                <div className="fab-menu">
-                    <a className="fablink fablink_fb" href="https://www.facebook.com/profile.php?id=61558088173434" target="_blank" rel="noopener noreferrer" title="FaceBook">
-                        <span className="iconsvg icon-fb"></span>
-                    </a>
+            <div className="sticky-fab">
+                <div className="fabbox" ref={fabRef}>
+                    <div className={`fab-menu${fabOpen ? ' active' : ''}`}>
+                        <a className="fablink fablink_fb" href="https://www.facebook.com/profile.php?id=61558088173434" target="_blank" rel="noopener noreferrer" title="FaceBook">
+                            <span className="iconsvg icon-fb"></span>
+                        </a>
+                    </div>
+                    <button
+                        className={`fablink fab-trigger${fabOpen ? ' active' : ''}`}
+                        aria-label="選單"
+                        title="選單"
+                        onClick={() => setFabOpen(prev => !prev)}
+                    >
+                        <span className="iconsvg icon-share"></span>
+                        <span className="iconsvg icon-close"></span>
+                    </button>
+                    {showTop && (
+                        <a href="#" className="fablink fablink_top scrolltop is-show" title="永康國際同濟會 - 回頂端" onClick={scrollToTop}>
+                            <span className="iconsvg icon-scrolltop"></span>
+                        </a>
+                    )}
                 </div>
-                <button
-                    className="fablink fablink-main"
-                    id="fabMainBtn"
-                    aria-label="選單"
-                    title="選單"
-                    onClick={() => setFabOpen(prev => !prev)}
-                >
-                    <span className="iconsvg icon-share"></span>
-                    <span className="iconsvg icon-close"></span>
-                </button>
-                {showTop && (
-                    <a href="#" className="fablink fablink_top scrolltop" title="永康國際同濟會 - 回頂端" onClick={scrollToTop}>
-                        <span className="iconsvg icon-scrolltop"></span>
-                    </a>
-                )}
             </div>
 
             {/* Sticky bottom bar (mobile) */}

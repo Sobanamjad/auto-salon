@@ -36,7 +36,7 @@ function restoreThemeAfterSalon(): void {
  * sections black, breaking the layout.
  */
 export function useForceLightMode(dependencies: unknown[] = []) {
-     
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         salonPageCount += 1;
         applySalonLightMode();

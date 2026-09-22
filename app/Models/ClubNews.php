@@ -11,8 +11,15 @@ class ClubNews extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'sn',
         'language',
         'title',
+        'img',
+        'img_w',
+        'img_h',
+        'date',
+        'location',
+        'excerpt',
         'city',
         'district',
         'village',
@@ -42,6 +49,6 @@ class ClubNews extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('created_at', 'desc');
+        return $query->orderBy('date', 'desc')->orderBy('created_at', 'desc');
     }
 }

@@ -311,7 +311,7 @@ export default function AboutCreate() {
                         </div>
                         {data.image && (
                             <p className="text-sm text-green-600 mt-2">
-                                ✅ 已選擇: {data.image.name}
+                                 已選擇: {data.image.name}
                             </p>
                         )}
                     </div>

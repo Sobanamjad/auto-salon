@@ -139,7 +139,7 @@ export default function EventManagement() {
                             </div>
                         </div>
 
-                        {/* ✅ Add Event Button with Link - UPDATED */}
+                        {/*  Add Event Button with Link - UPDATED */}
                         <div className="flex items-end">
                             <Link
                                 href="/admin/events/create"

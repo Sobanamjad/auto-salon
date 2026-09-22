@@ -30,7 +30,25 @@ class DirectorController extends Controller
     {
         $validated = $request->validated();
 
+        // Handle image upload
+        $imgPath = null;
+        $imgW = null;
+        $imgH = null;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('works_files'), $imageName);
+            $imgPath = '/works_files/' . $imageName;
+
+            // Get image dimensions
+            list($width, $height) = getimagesize(public_path($imgPath));
+            $imgW = $width;
+            $imgH = $height;
+        }
+
         Director::create([
+            'sn' => $validated['sn'] ?? null,
             'language' => $validated['language'],
             'status' => $validated['status'],
             'show_on_home' => $validated['show_on_home'],
@@ -44,7 +62,10 @@ class DirectorController extends Controller
             'content' => $validated['content'] ?? null,
             'video' => $validated['video'] ?? null,
             'note' => $validated['note'] ?? null,
-            'has_photo' => $validated['has_photo'] ?? false,
+            'has_photo' => $request->hasFile('image') || ($validated['has_photo'] ?? false),
+            'img' => $imgPath,
+            'img_w' => $imgW,
+            'img_h' => $imgH,
             'views' => 0,
         ]);
 
@@ -67,21 +88,53 @@ class DirectorController extends Controller
         $director = Director::findOrFail($id);
         $validated = $request->validated();
 
+        // Handle image upload / removal
+        $imgPath = $director->img;
+        $imgW    = $director->img_w;
+        $imgH    = $director->img_h;
+
+        if ($request->hasFile('image')) {
+            // Delete old image file if it exists
+            if ($director->img && file_exists(public_path($director->img))) {
+                unlink(public_path($director->img));
+            }
+
+            $image     = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('works_files'), $imageName);
+            $imgPath   = '/works_files/' . $imageName;
+
+            [$imgW, $imgH] = getimagesize(public_path($imgPath));
+
+        } elseif ($request->boolean('remove_image')) {
+            // Admin explicitly removed the image
+            if ($director->img && file_exists(public_path($director->img))) {
+                unlink(public_path($director->img));
+            }
+            $imgPath = null;
+            $imgW    = null;
+            $imgH    = null;
+        }
+
         $director->update([
-            'language' => $validated['language'],
-            'status' => $validated['status'],
+            'sn'           => $validated['sn'] ?? $director->sn,
+            'language'     => $validated['language'],
+            'status'       => $validated['status'],
             'show_on_home' => $validated['show_on_home'],
-            'sort_order' => $validated['sort_order'],
+            'sort_order'   => $validated['sort_order'],
             'published_date' => $validated['published_date'] ?? now(),
-            'end_date' => $validated['end_date'] ?? '2200-12-31',
-            'category' => $validated['category'],
-            'title' => $validated['title'],
-            'name' => $validated['name'],
-            'brief' => $validated['brief'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'video' => $validated['video'] ?? null,
-            'note' => $validated['note'] ?? null,
-            'has_photo' => $validated['has_photo'] ?? false,
+            'end_date'     => $validated['end_date'] ?? '2200-12-31',
+            'category'     => $validated['category'],
+            'title'        => $validated['title'],
+            'name'         => $validated['name'],
+            'brief'        => $validated['brief'] ?? null,
+            'content'      => $validated['content'] ?? null,
+            'video'        => $validated['video'] ?? null,
+            'note'         => $validated['note'] ?? null,
+            'has_photo'    => $request->hasFile('image') || ($validated['has_photo'] ?? false),
+            'img'          => $imgPath,
+            'img_w'        => $imgW,
+            'img_h'        => $imgH,
         ]);
 
         return redirect()->route('admin.directors.index')

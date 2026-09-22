@@ -40,11 +40,11 @@ export default function SalonTimeline() {
                             <div className="timeline-event">
                                 <div className="timeline-area">
                                     {timelineItems.map((item, index) => (
-                                        <>
-                                            <div className="timeline-year fadeUp js-scroll" key={`year-${index}`}>
+                                        <div key={index}>
+                                            <div className="timeline-year fadeUp js-scroll">
                                                 <span className="timeline-year-text">{item.year}</span>
                                             </div>
-                                            <div className="timeline-box js-scroll" key={`box-${index}`}>
+                                            <div className="timeline-box js-scroll">
                                                 <div className="card card_timeline">
                                                     <div className="card_row">
                                                         <div className="card-one">
@@ -98,7 +98,7 @@ export default function SalonTimeline() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
