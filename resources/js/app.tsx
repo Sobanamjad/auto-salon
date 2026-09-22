@@ -31,6 +31,7 @@ createInertiaApp({
             case name === 'qa':
             case name === 'product':
             case name === 'article':
+            case name === 'article-view':
             case name === 'download':
             case name === 'works':
             case name === 'works-view':
