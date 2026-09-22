@@ -618,9 +618,40 @@ Route::get('/about', function () {
 
 Route::get('/works', function () {
     $csn = request()->query('new_csn');
+    $searchTitle = request()->query('sel_title');
+
+    $query = \App\Models\Director::active()->ordered();
+
+    // Map category codes
+    $categoryMap = [
+        '1694' => '現任會長',
+        '1700' => '理監事',
+        '1701' => '會務幹部',
+        '1695' => '會務顧問',
+        '1692' => '歷屆會長',
+    ];
+
+    if ($csn && isset($categoryMap[$csn])) {
+        $query->where('category', $categoryMap[$csn]);
+    }
+
+    if ($searchTitle && trim($searchTitle) !== '') {
+        $s = trim($searchTitle);
+        $query->where(function ($q) use ($s) {
+            $q->where('title', 'like', "%{$s}%")
+              ->orWhere('name', 'like', "%{$s}%");
+        });
+    }
+
+    $directors = $query->get([
+        'id', 'sn', 'title', 'name', 'category', 'brief', 'content',
+        'has_photo', 'img', 'img_w', 'img_h', 'views', 'sort_order'
+    ]);
+
     return inertia('works', [
         'csn' => $csn !== null && $csn !== '' ? (string) $csn : null,
-        'searchTitle' => request()->query('sel_title'),
+        'searchTitle' => $searchTitle,
+        'directors' => $directors,
     ]);
 })->name('works');
 

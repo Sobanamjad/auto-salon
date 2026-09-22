@@ -11,6 +11,7 @@ class Director extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'sn',
         'language',
         'status',
         'show_on_home',
@@ -25,6 +26,9 @@ class Director extends Model
         'video',
         'note',
         'has_photo',
+        'img',
+        'img_w',
+        'img_h',
         'views',
     ];
 
@@ -32,8 +36,6 @@ class Director extends Model
         'status' => 'boolean',
         'show_on_home' => 'boolean',
         'has_photo' => 'boolean',
-        'published_date' => 'date',
-        'end_date' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',

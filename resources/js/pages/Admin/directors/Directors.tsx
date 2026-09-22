@@ -224,12 +224,20 @@ export default function Directors({ directors = [], title = '理監事(組織)' 
                                             </button>
                                         </td>
                                         <td className="px-3 py-2 text-center">
-                                            <Link
-                                                href={`/admin/directors/${item.id}/promote`}
+                                            <a
+                                                href={`/works?new_csn=${
+                                                    item.category === '現任會長' ? '1694' :
+                                                    item.category === '理監事'   ? '1700' :
+                                                    item.category === '會務幹部' ? '1701' :
+                                                    item.category === '會務顧問' ? '1695' :
+                                                    item.category === '歷屆會長' ? '1692' : ''
+                                                }`}
+                                                target="_blank"
                                                 className="text-green-600 hover:text-green-800 text-sm flex items-center justify-center gap-1"
+                                                title="在前台查看"
                                             >
-                                                <FaShare size={14} /> 推廣
-                                            </Link>
+                                                <FaShare size={14} /> 預覽
+                                            </a>
                                         </td>
                                         <td className="px-3 py-2">
                                             <div className="flex flex-col items-center gap-1 text-sm">

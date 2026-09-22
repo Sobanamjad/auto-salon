@@ -1,12 +1,29 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { 
-    FaArrowLeft, FaSave, FaTimes, FaUsers, 
-    FaImage, FaVideo, FaHome, FaSort, FaCalendar, 
-    FaTag, FaUser, FaUserTie
+import { useRef, useState } from 'react';
+import {
+    FaArrowLeft, FaSave, FaTimes, FaUsers,
+    FaImage, FaVideo, FaHome, FaSort, FaCalendar,
+    FaTag, FaUser, FaUserTie, FaTimesCircle,
 } from 'react-icons/fa';
 
 export default function DirectorCreate() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<{
+        language: string;
+        status: boolean;
+        show_on_home: boolean;
+        sort_order: number;
+        published_date: string;
+        end_date: string;
+        category: string;
+        title: string;
+        name: string;
+        brief: string;
+        content: string;
+        video: string;
+        note: string;
+        has_photo: boolean;
+        image: File | null;
+    }>({
         language: 'TS',
         status: true,
         show_on_home: false,
@@ -21,29 +38,52 @@ export default function DirectorCreate() {
         video: '',
         note: '',
         has_photo: false,
+        image: null,
     });
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        setData('image', file);
+        setData('has_photo', file !== null);
+        if (file) {
+            setPreviewUrl(URL.createObjectURL(file));
+        } else {
+            setPreviewUrl(null);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setData('image', null);
+        setData('has_photo', false);
+        setPreviewUrl(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post('/admin/directors', {
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/directors';
             },
-            onError: (errors) => {
-                console.error('Validation errors:', errors);
-            }
+            onError: (errs) => {
+                console.error('Validation errors:', errs);
+            },
         });
     };
 
     return (
         <>
             <Head title="新增理監事" />
-            
+
             <div className="bg-white rounded-xl shadow-sm p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
                     <div className="flex items-center gap-3">
-                        <Link 
+                        <Link
                             href="/admin/directors"
                             className="text-gray-500 hover:text-gray-700 transition-colors"
                         >
@@ -164,10 +204,11 @@ export default function DirectorCreate() {
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
                                 >
                                     <option value="">選擇分類</option>
-                                    <option value="理監事">理監事</option>
                                     <option value="現任會長">現任會長</option>
+                                    <option value="理監事">理監事</option>
+                                    <option value="會務幹部">會務幹部</option>
+                                    <option value="會務顧問">會務顧問</option>
                                     <option value="歷屆會長">歷屆會長</option>
-                                    <option value="顧問團">顧問團</option>
                                 </select>
                                 {errors.category && (
                                     <p className="text-red-500 text-sm mt-1">{errors.category}</p>
@@ -207,7 +248,7 @@ export default function DirectorCreate() {
                                     className={`w-full border rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 ${
                                         errors.title ? 'border-red-500' : 'border-gray-300'
                                     }`}
-                                    placeholder="請輸入職稱 (如: 理事長、監事、顧問)"
+                                    placeholder="請輸入職稱 (如: [理事長] 王大明)"
                                     required
                                 />
                                 {errors.title && (
@@ -216,7 +257,7 @@ export default function DirectorCreate() {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    <FaUser className="inline mr-1" /> 姓名 <span className="text-red-500">*</span>
+                                    <FaUser className="inline mr-1" /> 姓名
                                 </label>
                                 <input
                                     type="text"
@@ -225,8 +266,7 @@ export default function DirectorCreate() {
                                     className={`w-full border rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500 ${
                                         errors.name ? 'border-red-500' : 'border-gray-300'
                                     }`}
-                                    placeholder="請輸入姓名"
-                                    required
+                                    placeholder="請輸入姓名 (可留空)"
                                 />
                                 {errors.name && (
                                     <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -262,29 +302,62 @@ export default function DirectorCreate() {
                             placeholder="請輸入詳細內容..."
                         />
                         <p className="text-xs text-gray-500 mt-2">
-                            <i className="icon-book"></i> 
-                            <a 
-                                href="https://mypaper.52go.tw/17web/96/50461/" 
+                            <a
+                                href="https://mypaper.52go.tw/17web/96/50461/"
                                 target="_blank"
-                                className="text-blue-600 hover:underline ml-1"
+                                className="text-blue-600 hover:underline"
                             >
                                 上傳圖片說明
                             </a>
                         </p>
                     </div>
 
-                    {/* Photo */}
+                    {/* Photo Upload */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={data.has_photo}
-                                onChange={(e) => setData('has_photo', e.target.checked)}
-                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                            />
-                            <FaImage className="text-gray-500" />
-                            <span className="text-sm text-gray-700">有相片</span>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                            <FaImage className="inline mr-1 text-green-500" /> 上傳相片
                         </label>
+
+                        <div className="flex items-start gap-4">
+                            {/* Preview */}
+                            {previewUrl ? (
+                                <div className="relative shrink-0">
+                                    <img
+                                        src={previewUrl}
+                                        alt="預覽"
+                                        className="w-32 h-40 object-cover rounded-lg border border-gray-300"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
+                                        title="移除圖片"
+                                    >
+                                        <FaTimesCircle size={16} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="w-32 h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 shrink-0">
+                                    <FaImage size={24} />
+                                </div>
+                            )}
+
+                            <div className="flex-1">
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/jpg,image/gif"
+                                    onChange={handleFileChange}
+                                    className="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                />
+                                <p className="text-xs text-gray-500 mt-2">
+                                    支援 JPEG、PNG、GIF，最大 5MB
+                                </p>
+                                {errors.image && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.image}</p>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Video */}
@@ -300,8 +373,8 @@ export default function DirectorCreate() {
                             placeholder="請輸入影音嵌入代碼..."
                         />
                         <p className="text-xs text-gray-500 mt-1">
-                            <a 
-                                href="https://mypaper.52go.tw/17web_gudate/96/14506/" 
+                            <a
+                                href="https://mypaper.52go.tw/17web_gudate/96/14506/"
                                 target="_blank"
                                 className="text-blue-600 hover:underline"
                             >
@@ -324,7 +397,7 @@ export default function DirectorCreate() {
                         />
                     </div>
 
-                    {/* Submit Buttons */}
+                    {/* Submit */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                         <Link
                             href="/admin/directors"
