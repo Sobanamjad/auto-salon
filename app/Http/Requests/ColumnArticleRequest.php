@@ -14,24 +14,41 @@ class ColumnArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'language' => 'required|in:TS,EN,JP',
-            'status' => 'required|boolean',
-            'show_on_home' => 'required|boolean',
-            'sort_order' => 'required|integer|min:0',
-            'published_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:published_date',
-            'category' => 'nullable|string|max:255',
-            'subject' => 'required|string|max:255',
-            'brief' => 'nullable|string',
-            'content' => 'required|string',
-            'keyword' => 'nullable|string|max:10',
-            'video' => 'nullable|string',
-            'map' => 'nullable|string',
-            'note' => 'nullable|string',
-            'has_photo' => 'boolean',
+            'language'          => 'required|in:TS,EN,JP',
+            'status'            => 'required|boolean',
+            'show_on_home'      => 'required|boolean',
+            'sort_order'        => 'required|integer|min:0',
+            'published_date'    => 'nullable|date',
+            'end_date'          => 'nullable|date|after_or_equal:published_date',
+            'category'          => 'nullable|string|max:255',
+            'subject'           => 'required|string|max:255',
+            'brief'             => 'nullable|string',
+            'content'           => 'required|string',
+            'keyword'           => 'nullable|string|max:10',
+            'video'             => 'nullable|string',
+            'map'               => 'nullable|string',
+            'note'              => 'nullable|string',
+            'has_photo'         => 'boolean',
+            'image'             => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'remove_image'      => 'nullable|boolean',
             'platform_category' => 'nullable|string',
-            'join_platform' => 'boolean',
+            'join_platform'     => 'boolean',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        foreach (['status', 'show_on_home', 'has_photo', 'join_platform', 'remove_image'] as $field) {
+            if ($this->has($field)) {
+                $this->merge([
+                    $field => filter_var($this->input($field), FILTER_VALIDATE_BOOLEAN),
+                ]);
+            }
+        }
+
+        if ($this->has('sort_order')) {
+            $this->merge(['sort_order' => (int) $this->input('sort_order')]);
+        }
     }
 
     public function messages(): array

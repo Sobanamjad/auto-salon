@@ -32,10 +32,10 @@ export default function Article({
 }: Props) {
     useForceLightMode();
 
-    const activeCsn    = normalizeArticleCsn(csn);
-    const activeLabel  = getArticleCategoryLabel(activeCsn);
-    const currentPage  = Math.min(Math.max(thisPage, 1), totalPages);
-    const nbsp         = '\u00A0';
+    const activeCsn   = normalizeArticleCsn(csn);
+    const activeLabel = getArticleCategoryLabel(activeCsn);
+    const currentPage = Math.min(Math.max(thisPage, 1), totalPages);
+    const nbsp        = '\u00A0';
 
     const pageHref = (page: number) => {
         const params = new URLSearchParams();
@@ -122,13 +122,13 @@ export default function Article({
                                         <h1 className="heading-text">{activeLabel}</h1>
                                     </div>
 
-                                    {/* Article cards */}
+                                    {/* Article cards — no js-scroll/fadeUp so legacy JS doesn't hide them */}
                                     <ul className="row row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                         {articles.map(article => {
                                             const href = `/article_view?new_sn=${article.id}&lang=TS`;
                                             return (
                                                 <li key={article.id}>
-                                                    <div className="card card_article fadeUp js-scroll">
+                                                    <div className="card card_article">
                                                         <div className="row g-3">
                                                             <div>
                                                                 <div className="card-photo">
