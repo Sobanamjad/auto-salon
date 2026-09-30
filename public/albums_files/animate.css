@@ -404,11 +404,11 @@
     		transition-property: opacity, transform;
     		transition-property: opacity, transform, -webkit-transform;
     
-	-webkit-transition-duration: 1s;
-    		transition-duration: 1s;
+	-webkit-transition-duration: 0.8s;
+    		transition-duration: 0.8s;
 			
-    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    -webkit-transition-timing-function: ease-in-out;
+    		transition-timing-function: ease-in-out;
 }
 .fadeUp.js-scroll.is-active {
     opacity: 1;
@@ -430,11 +430,11 @@
     		transition-property: opacity, transform;
     		transition-property: opacity, transform, -webkit-transform;
     
-	-webkit-transition-duration: 1s;
-    		transition-duration: 1s;
+	-webkit-transition-duration: 0.8s;
+    		transition-duration: 0.8s;
 			
-    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    -webkit-transition-timing-function: ease-in-out;
+    		transition-timing-function: ease-in-out;
 }
 .fadedown.js-scroll.is-active {
     opacity: 1;
@@ -457,11 +457,11 @@
     		transition-property: opacity, transform;
     		transition-property: opacity, transform, -webkit-transform;
     
-	-webkit-transition-duration: 1s;
-    		transition-duration: 1s;
+	-webkit-transition-duration: 0.8s;
+    		transition-duration: 0.8s;
 			
-    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    -webkit-transition-timing-function: ease-in-out;
+    		transition-timing-function: ease-in-out;
 }
 .fadeRight.js-scroll.is-active {
     opacity: 1;
@@ -484,11 +484,11 @@
     		transition-property: opacity, transform;
     		transition-property: opacity, transform, -webkit-transform;
     
-	-webkit-transition-duration: 1s;
-    		transition-duration: 1s;
+	-webkit-transition-duration: 0.8s;
+    		transition-duration: 0.8s;
 			
-    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    -webkit-transition-timing-function: ease-in-out;
+    		transition-timing-function: ease-in-out;
 }
 .fadeLeft.js-scroll.is-active {
     opacity: 1;

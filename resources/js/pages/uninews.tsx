@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
+import ScrollAnimate from '@/components/scroll-animate';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
@@ -95,8 +96,9 @@ export default function UniNews({ thisPage = 1, news = [], totalItems = 0, total
 
                                             return (
                                                 <li key={item.id}>
-                                                    <div className="card card_post fadeUp js-scroll">
-                                                        <div className="row g-3 align-center">
+                                                    <ScrollAnimate animation="fadeUp">
+                                                        <div className="card card_post fadeUp">
+                                                            <div className="row g-3 align-center">
                                                             <div className="col-4 col-lg-12">
                                                                 <div className="card-photo">
                                                                     <a href={href} title={item.title}>
@@ -166,6 +168,7 @@ export default function UniNews({ thisPage = 1, news = [], totalItems = 0, total
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </ScrollAnimate>
                                                 </li>
                                             );
                                         })}

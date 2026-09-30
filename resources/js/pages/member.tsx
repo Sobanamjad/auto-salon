@@ -174,7 +174,7 @@ export default function Member({
                                         {/* ── Member accordion ── */}
                                         <div className="main-columns-right">
                                             {/* Headline row */}
-                                            <div className="card_member card_member_headline">
+                                            <div className="card_member card_member_headline fadeUp js-scroll">
                                                 <div className="card-tr">
                                                     <div className="card-td name">姓名</div>
                                                     <div className="card-td company">單位</div>
@@ -198,7 +198,7 @@ export default function Member({
                                                         const nameSuffix = nameParts[1] ? `[${nameParts[1]}` : null;
 
                                                         return (
-                                                            <div key={member.id} className="accordion-item card_member">
+                                                            <div key={member.id} className="accordion-item card_member fadeUp js-scroll">
                                                                 <button
                                                                     className={`accordion-button card-header ${isOpen ? 'active' : ''}`}
                                                                     onClick={() => toggleAccordion(member.id)}

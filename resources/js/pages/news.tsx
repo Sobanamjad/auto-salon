@@ -129,7 +129,7 @@ export default function News({ csn = null, items }: Props) {
 
                                             return (
                                                 <li key={news.id}>
-                                                    <div className="card card_news js-scroll">
+                                                    <div className="card card_news fadeUp js-scroll">
                                                         <div className="row g-3 g-lg-4 align-center">
                                                             {/* Date box */}
                                                             <div className="col-lg-3">

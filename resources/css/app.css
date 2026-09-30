@@ -248,3 +248,61 @@
 .editor-toolbar button.bg-gray-800 {
     background-color: #e5e7eb !important;
 }
+
+/* Scroll Animation Styles */
+.scroll-animate {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.scroll-animate.fadeUp {
+    transform: translateY(30px);
+}
+
+.scroll-animate.fadeDown {
+    transform: translateY(-30px);
+}
+
+.scroll-animate.fadeLeft {
+    transform: translateX(30px);
+}
+
+.scroll-animate.fadeRight {
+    transform: translateX(-30px);
+}
+
+.scroll-animate.scaleIn {
+    transform: scale(0.9);
+}
+
+.scroll-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+}
+
+/* jQuery Scroll Animation Styles - keeps elements visible once animated */
+.js-scroll {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.js-scroll.fadeUp {
+    transform: translateY(30px);
+}
+
+.js-scroll.fadedown {
+    transform: translateY(-30px);
+}
+
+.js-scroll.fadeRight {
+    transform: translateX(-30px);
+}
+
+.js-scroll.fadeLeft {
+    transform: translateX(30px);
+}
+
+.js-scroll.is-active {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+}
