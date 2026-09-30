@@ -81,6 +81,7 @@ export default function DirectorEdit({ director, title }: Props) {
         setData('image', file);
         setData('remove_image', false);
         setData('has_photo', file !== null || (director.has_photo && !data.remove_image));
+
         if (file) {
             setNewPreviewUrl(URL.createObjectURL(file));
         } else {
@@ -91,7 +92,10 @@ export default function DirectorEdit({ director, title }: Props) {
     const handleRemoveNewFile = () => {
         setData('image', null);
         setNewPreviewUrl(null);
-        if (fileInputRef.current) fileInputRef.current.value = '';
+
+        if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
     };
 
     const handleRemoveExistingImage = () => {

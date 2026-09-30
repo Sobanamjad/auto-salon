@@ -61,15 +61,22 @@ export default function ColumnArticleCreate() {
         setData('image', null);
         setData('has_photo', false);
         setPreviewUrl(null);
-        if (fileInputRef.current) fileInputRef.current.value = '';
+
+        if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post('/admin/column-articles', {
             forceFormData: true,
-            onSuccess: () => { window.location.href = '/admin/column-articles'; },
-            onError: (errs) => { console.error('Validation errors:', errs); },
+            onSuccess: () => {
+ window.location.href = '/admin/column-articles'; 
+},
+            onError: (errs) => {
+ console.error('Validation errors:', errs); 
+},
         });
     };
 

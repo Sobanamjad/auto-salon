@@ -28,6 +28,7 @@ export default function SalonFooter() {
         };
 
         document.addEventListener('mousedown', handleClickOutside);
+
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 

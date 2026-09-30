@@ -42,7 +42,11 @@ export default function Article({
     const pageHref = (page: number) => {
         const params = new URLSearchParams();
         params.set('this_page', String(page));
-        if (activeCsn) params.set('new_csn', activeCsn);
+
+        if (activeCsn) {
+params.set('new_csn', activeCsn);
+}
+
         return `/article?${params.toString()}`;
     };
 
@@ -128,6 +132,7 @@ export default function Article({
                                     <ul className="row row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                         {articles.map(article => {
                                             const href = `/article_view?new_sn=${article.id}&lang=TS`;
+
                                             return (
                                                 <li key={article.id}>
                                                     <ScrollAnimate animation="fadeUp">
