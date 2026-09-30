@@ -614,13 +614,14 @@ Route::get('/article', function () {
     $articles = $query
         ->skip(($currentPage - 1) * $perPage)
         ->take($perPage)
-        ->get(['id', 'subject', 'brief', 'category', 'has_photo', 'published_date'])
+        ->get(['id', 'subject', 'brief', 'category', 'has_photo', 'img', 'published_date'])
         ->map(fn($a) => [
             'id'       => $a->id,
             'subject'  => $a->subject,
             'brief'    => $a->brief,
             'category' => $a->category,
             'has_photo'=> $a->has_photo,
+            'img'      => $a->img,
             'date'     => $a->published_date?->format('Y-m-d'),
         ]);
 
@@ -660,6 +661,7 @@ Route::get('/article_view', function () {
             'video'     => $article->video,
             'map'       => $article->map,
             'has_photo' => $article->has_photo,
+            'img'       => $article->img,
             'date'      => $article->published_date?->format('Y-m-d'),
             'views'     => $article->views,
         ],

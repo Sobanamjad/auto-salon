@@ -12,6 +12,7 @@ type ArticleItem = {
     brief: string | null;
     category: string | null;
     has_photo: boolean;
+    img: string | null;
     date: string | null;
 };
 
@@ -135,7 +136,7 @@ export default function Article({
                                                                     <a href={href} title={article.subject}>
                                                                         <div className="item-fitimg">
                                                                             <img
-                                                                                src="/asd_files/s2026072313114170.png"
+                                                                                src={article.img || "/asd_files/s2026072313114170.png"}
                                                                                 alt={article.subject}
                                                                                 width={1024}
                                                                                 height={1024}
