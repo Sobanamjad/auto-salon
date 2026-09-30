@@ -14,6 +14,7 @@ type ArticleDetail = {
     video: string | null;
     map: string | null;
     has_photo: boolean;
+    img: string | null;
     date: string | null;
     views: number;
 };
@@ -97,6 +98,17 @@ export default function ArticleView({ article }: Props) {
                                         </div>
                                     ) : (
                                         <div className="view-column">
+                                            {/* Image */}
+                                            {article.img && (
+                                                <div style={{ marginBottom: '24px' }}>
+                                                    <img
+                                                        src={article.img}
+                                                        alt={article.subject}
+                                                        style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                                                    />
+                                                </div>
+                                            )}
+
                                             {/* Title */}
                                             <div className="heading heading_pageview">
                                                 <h1 className="heading-text">{article.subject}</h1>

@@ -1,9 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { 
-    FaSearch, FaPlus, FaImage, 
+import {
+    FaSearch, FaPlus, FaImage,
     FaEdit, FaTrash, FaFilter,
-    FaChevronLeft, FaChevronRight, FaHome
+    FaChevronLeft, FaChevronRight, FaHome, FaSort
 } from 'react-icons/fa';
 
 interface Album {
