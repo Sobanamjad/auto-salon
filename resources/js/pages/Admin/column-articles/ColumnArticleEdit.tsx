@@ -94,7 +94,10 @@ export default function ColumnArticleEdit({ article, title }: Props) {
     const handleRemoveNewFile = () => {
         setData('image', null);
         setNewPreviewUrl(null);
-        if (fileInputRef.current) fileInputRef.current.value = '';
+
+        if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
     };
 
     const handleRemoveExisting = () => {
@@ -111,8 +114,12 @@ export default function ColumnArticleEdit({ article, title }: Props) {
         e.preventDefault();
         post(`/admin/column-articles/${article.id}`, {
             forceFormData: true,
-            onSuccess: () => { window.location.href = '/admin/column-articles'; },
-            onError: (errs) => { console.error('Validation errors:', errs); },
+            onSuccess: () => {
+ window.location.href = '/admin/column-articles'; 
+},
+            onError: (errs) => {
+ console.error('Validation errors:', errs); 
+},
         });
     };
 

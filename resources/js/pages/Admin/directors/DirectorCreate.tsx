@@ -48,6 +48,7 @@ export default function DirectorCreate() {
         const file = e.target.files?.[0] ?? null;
         setData('image', file);
         setData('has_photo', file !== null);
+
         if (file) {
             setPreviewUrl(URL.createObjectURL(file));
         } else {
@@ -59,7 +60,10 @@ export default function DirectorCreate() {
         setData('image', null);
         setData('has_photo', false);
         setPreviewUrl(null);
-        if (fileInputRef.current) fileInputRef.current.value = '';
+
+        if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
     };
 
     const handleSubmit = (e: React.FormEvent) => {
