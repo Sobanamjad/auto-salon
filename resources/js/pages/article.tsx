@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
+import ScrollAnimate from '@/components/scroll-animate';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
@@ -123,14 +124,15 @@ export default function Article({
                                         <h1 className="heading-text">{activeLabel}</h1>
                                     </div>
 
-                                    {/* Article cards — no js-scroll/fadeUp so legacy JS doesn't hide them */}
+                                    {/* Article cards — with React scroll animation */}
                                     <ul className="row row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                                         {articles.map(article => {
                                             const href = `/article_view?new_sn=${article.id}&lang=TS`;
                                             return (
                                                 <li key={article.id}>
-                                                    <div className="card card_article">
-                                                        <div className="row g-3">
+                                                    <ScrollAnimate animation="fadeUp">
+                                                        <div className="card card_article">
+                                                            <div className="row g-3">
                                                             <div>
                                                                 <div className="card-photo">
                                                                     <a href={href} title={article.subject}>
@@ -177,6 +179,7 @@ export default function Article({
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </ScrollAnimate>
                                                 </li>
                                             );
                                         })}

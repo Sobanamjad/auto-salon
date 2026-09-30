@@ -395,20 +395,20 @@
 
 .fadeUp.js-scroll{
     opacity: 0;
-    
+
 	-webkit-transform: translateY(3rem);
 			transform: translateY(3rem);
-    
+
 	-webkit-transition-property: opacity, -webkit-transform;
     		transition-property: opacity, -webkit-transform;
     		transition-property: opacity, transform;
     		transition-property: opacity, transform, -webkit-transform;
-    
-	-webkit-transition-duration: 1s;
-    		transition-duration: 1s;
-			
-    -webkit-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
-    		transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+
+	-webkit-transition-duration: 0.8s;
+    		transition-duration: 0.8s;
+
+    -webkit-transition-timing-function: ease-in-out;
+    		transition-timing-function: ease-in-out;
 }
 .fadeUp.js-scroll.is-active {
     opacity: 1;

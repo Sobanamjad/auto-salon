@@ -176,7 +176,7 @@ export default function Qa({ csn = null, thisPage = 1 }: Props) {
 
                                     <div className="accordion_faq" id="accordion-faq">
                                         {items.map(item => (
-                                            <div key={item.question} className="accordion-item card_qa">
+                                            <div key={item.question} className="accordion-item card_qa fadeUp js-scroll">
                                                 <button type="button" className="accordion-button card-header">
                                                     <span className="card-sign card-sign_q"></span>
                                                     <h3 className="card-name">

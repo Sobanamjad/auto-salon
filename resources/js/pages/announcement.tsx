@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { useForceLightMode } from '@/hooks/use-force-light-mode';
+import ScrollAnimate from '@/components/scroll-animate';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
@@ -121,8 +122,9 @@ export default function Announcement({ new_csn = null, sel_nncsn = null, searchT
                                     <ul className="row cardlist_jsscroll">
                                         {items.map(item => (
                                             <li key={item.sn}>
-                                                <div className="card card_activity effect_dec_hz js-scroll">
-                                                    <div className="row g-3 g-lg-4 align-lg-center">
+                                                <ScrollAnimate animation="fadeUp">
+                                                    <div className="card card_activity effect_dec_hz">
+                                                        <div className="row g-3 g-lg-4 align-lg-center">
                                                         <div className="col-sm-2">
                                                             <div className="card-status">
                                                                 <span className="card-status-icon">
@@ -194,6 +196,7 @@ export default function Announcement({ new_csn = null, sel_nncsn = null, searchT
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </ScrollAnimate>
                                             </li>
                                         ))}
                                     </ul>

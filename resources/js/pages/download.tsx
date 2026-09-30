@@ -140,7 +140,7 @@ export default function Download({ csn = null, thisPage = 1 }: Props) {
                                         <ul className="row cardlist_jsscroll">
                                             {items.map(item => (
                                                 <li key={item.id}>
-                                                    <div className="card card_download js-scroll">
+                                                    <div className="card card_download fadeUp js-scroll">
                                                         <div className="row g-3 g-lg-4 align-center">
                                                             <div className="col-lg-10">
                                                                 <div className="card-body">
