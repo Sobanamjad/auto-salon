@@ -5,17 +5,35 @@ import { useForceLightMode } from '@/hooks/use-force-light-mode';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import {
-    getQaCategoryLabel,
-    getQaPageItems,
-    getQaTotal,
-    getQaTotalPages,
-    qaCategories,
-} from '@/data/qa-items';
+
+type QaItem = {
+    id: number;
+    category: string | null;
+    question: string;
+    answer_html: string;
+    status: boolean;
+    sort_order: number;
+    views: number;
+    created_at: string;
+};
 
 type Props = {
     csn?: string | null;
     thisPage?: number;
+    totalPages?: number;
+    totalItems?: number;
+    items?: QaItem[];
+};
+
+// Get unique categories from items
+const getCategories = (items: QaItem[]) => {
+    const categories = new Set();
+    items.forEach(item => {
+        if (item.category) {
+            categories.add(item.category);
+        }
+    });
+    return Array.from(categories).sort();
 };
 
 function initFaqAccordion(): () => void {
@@ -55,15 +73,13 @@ function initFaqAccordion(): () => void {
     };
 }
 
-export default function Qa({ csn = null, thisPage = 1 }: Props) {
+export default function Qa({ csn = null, thisPage = 1, totalPages = 1, totalItems = 0, items = [] }: Props) {
     useForceLightMode();
 
     const activeCsn = csn ?? null;
-    const activeLabel = getQaCategoryLabel(activeCsn);
-    const totalPages = getQaTotalPages(activeCsn);
-    const totalItems = getQaTotal(activeCsn);
+    const categories = getCategories(items);
+    const activeLabel = activeCsn || '全部';
     const currentPage = Math.min(Math.max(thisPage, 1), totalPages);
-    const items = getQaPageItems(activeCsn, currentPage);
     const nbsp = '\u00A0';
 
     const pageHref = (page: number) => {
@@ -148,22 +164,23 @@ export default function Qa({ csn = null, thisPage = 1 }: Props) {
                                 <div className="secbox_inner">
                                     <div className="category_box">
                                         <ul className="category_list">
-                                            {qaCategories.map(category => (
+                                            <li
+                                                className={activeCsn === null ? 'active' : ''}
+                                            >
+                                                <a href="/qa" title="全部">
+                                                    <span className="cate-text">全部</span>
+                                                </a>
+                                            </li>
+                                            {categories.map(category => (
                                                 <li
-                                                    key={category.label}
-                                                    className={
-                                                        (category.csn ?? null) === activeCsn ? 'active' : ''
-                                                    }
+                                                    key={category}
+                                                    className={activeCsn === category ? 'active' : ''}
                                                 >
                                                     <a
-                                                        href={
-                                                            category.csn
-                                                                ? `/qa?new_csn=${category.csn}`
-                                                                : '/qa'
-                                                        }
-                                                        title={category.label}
+                                                        href={`/qa?new_csn=${category}`}
+                                                        title={category}
                                                     >
-                                                        <span className="cate-text">{category.label}</span>
+                                                        <span className="cate-text">{category}</span>
                                                     </a>
                                                 </li>
                                             ))}
@@ -174,30 +191,36 @@ export default function Qa({ csn = null, thisPage = 1 }: Props) {
                                         <h1 className="heading-text">{activeLabel}</h1>
                                     </div>
 
-                                    <div className="accordion_faq" id="accordion-faq">
-                                        {items.map(item => (
-                                            <div key={item.question} className="accordion-item card_qa fadeUp js-scroll">
-                                                <button type="button" className="accordion-button card-header">
-                                                    <span className="card-sign card-sign_q"></span>
-                                                    <h3 className="card-name">
-                                                        <span className="card-name-text">{item.question}</span>
-                                                    </h3>
-                                                    <div className="accordion-icon"></div>
-                                                </button>
-                                                <div className="accordion-content">
-                                                    <div className="card-body">
-                                                        <span className="card-sign card-sign_a"></span>
-                                                        <div
-                                                            className="card-text editor"
-                                                            dangerouslySetInnerHTML={{
-                                                                __html: item.answerHtml,
-                                                            }}
-                                                        />
+                                    {items.length === 0 ? (
+                                        <div style={{ textAlign: 'center', padding: '60px 0', color: '#999' }}>
+                                            暫無常見問題
+                                        </div>
+                                    ) : (
+                                        <div className="accordion_faq" id="accordion-faq">
+                                            {items.map(item => (
+                                                <div key={item.id} className="accordion-item card_qa fadeUp js-scroll">
+                                                    <button type="button" className="accordion-button card-header">
+                                                        <span className="card-sign card-sign_q"></span>
+                                                        <h3 className="card-name">
+                                                            <span className="card-name-text">{item.question}</span>
+                                                        </h3>
+                                                        <div className="accordion-icon"></div>
+                                                    </button>
+                                                    <div className="accordion-content">
+                                                        <div className="card-body">
+                                                            <span className="card-sign card-sign_a"></span>
+                                                            <div
+                                                                className="card-text editor"
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: item.answer_html,
+                                                                }}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                            ))}
+                                        </div>
+                                    )}
 
                                     <div className="page">
                                         <Link href={pageHref(1)} preserveScroll={false}>

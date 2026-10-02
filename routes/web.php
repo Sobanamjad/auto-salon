@@ -26,6 +26,8 @@ use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\PublicSliderController;
 use App\Http\Controllers\PublicJobController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\PublicFaqController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -302,9 +304,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
         Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
-        Route::get('/faq', [AdminController::class, 'faq'])->name('faq');
         Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
         Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
+
+        // FAQ (常見問題)
+        Route::prefix('faq')->name('faq.')->group(function () {
+            Route::get('/', [FaqController::class, 'index'])->name('index');
+            Route::get('/create', [FaqController::class, 'create'])->name('create');
+            Route::post('/', [FaqController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [FaqController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [FaqController::class, 'update'])->name('update');
+            Route::delete('/{id}', [FaqController::class, 'destroy'])->name('destroy');
+        });
         
         // 會員收費
         Route::get('/basic-setting', function () {
@@ -482,12 +493,7 @@ Route::get('/link', function () {
     ]);
 })->name('link');
 
-Route::get('/qa', function () {
-    return inertia('qa', [
-        'csn' => request()->query('new_csn'),
-        'thisPage' => max(1, (int) request()->query('this_page', 1)),
-    ]);
-})->name('qa');
+Route::get('/qa', [PublicFaqController::class, 'index'])->name('qa');
 
 Route::get('/product', function () {
     $csn        = (string) request()->query('new_csn', '7519');
