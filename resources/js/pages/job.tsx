@@ -33,6 +33,7 @@ type Props = {
 export default function Job({ jobs }: Props) {
     useForceLightMode();
 
+    // Default to first job if viewing list
     const job = jobs.length > 0 ? jobs[0] : null;
 
     return (
