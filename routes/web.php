@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\PublicSliderController;
+use App\Http\Controllers\PublicJobController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -437,12 +438,8 @@ Route::get('/uninews_view', function () {
     ]);
 })->name('uninews.view');
 
-Route::get('/job', function () {
-    return inertia('job', [
-        'newSn' => (string) request()->query('new_sn', '1100'),
-        'lang' => request()->query('lang'),
-    ]);
-})->name('job');
+Route::get('/job', [PublicJobController::class, 'index'])->name('job');
+Route::get('/job/{id}', [PublicJobController::class, 'show'])->name('job.show');
 
 Route::get('/link', function () {
     $csn = request()->query('new_csn');

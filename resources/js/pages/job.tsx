@@ -5,57 +5,35 @@ import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
 
 type JobListing = {
-    sn: string;
-    title: string;
+    id: number;
+    job_no: string;
+    job_title: string;
     salary: string;
-    hours: string;
-    quota: string;
-    requirementsHtml: string;
-    dutiesHtml: string;
-    department: string;
-    contactPerson: string;
-    contactPhone: string;
-    contactMobile: string;
-    workLocation: string;
-    region: string;
-    nearbySchools: string[];
-    email: string;
-    websiteUrl: string;
-    websiteLabel: string;
+    work_hours: string;
+    vacancies: string;
+    job_requirements: string;
+    job_content: string;
+    company: string;
+    contact_person: string;
+    contact_gender: string;
+    contact_phone: string;
+    contact_mobile: string;
+    work_location: string;
+    work_area: string;
+    nearby_school_1: string;
+    nearby_school_2: string;
+    contact_email: string;
+    contact_web: string;
 };
-
-const jobListings: JobListing[] = [
-    {
-        sn: '1100',
-        title: '行政專員[內容示意]',
-        salary: '29500',
-        hours: 'am8:30-pm5:30',
-        quota: '',
-        requirementsHtml:
-            '<p>1.熟電腦文書軟體</p><p>2.打字60字以上</p><p>3.台語流利</p><p>&nbsp;</p>',
-        dutiesHtml:
-            '<p>[內容示意]</p><p>1.文件收發</p><p>2.會議記錄</p><p>3.行政庶務</p><p>4.電話接聽協助諮詢回覆與轉接對應部門</p><p>5.主管交辦事項</p>',
-        department: '行政部',
-        contactPerson: '陳 先生',
-        contactPhone: '06-2667100',
-        contactMobile: '',
-        workLocation: '本會',
-        region: '台南市安平區',
-        nearbySchools: ['嘉南藥理大學', ''],
-        email: 'service@posu.com.tw',
-        websiteUrl: 'http://posu.tw/',
-        websiteLabel: 'posu.tw',
-    },
-];
 
 type Props = {
-    newSn?: string;
+    jobs: JobListing[];
 };
 
-export default function Job({ newSn = '1100' }: Props) {
+export default function Job({ jobs }: Props) {
     useForceLightMode();
 
-    const job = jobListings.find(item => item.sn === newSn) ?? jobListings[0];
+    const job = jobs.length > 0 ? jobs[0] : null;
 
     return (
         <>
@@ -108,7 +86,7 @@ export default function Job({ newSn = '1100' }: Props) {
                                                 </li>
                                                 <li className="breadcrumb-item">人才招募</li>
                                                 <li className="breadcrumb-item active" aria-current="page">
-                                                    {job.title}
+                                                    {job?.job_title || '職缺列表'}
                                                 </li>
                                             </ol>
                                         </nav>
@@ -120,16 +98,16 @@ export default function Job({ newSn = '1100' }: Props) {
                                 <div className="secbox_inner">
                                     <div className="category_box">
                                         <ul className="category_list">
-                                            {jobListings.map(item => (
+                                            {jobs.map(item => (
                                                 <li
-                                                    key={item.sn}
-                                                    className={item.sn === job.sn ? 'active' : ''}
+                                                    key={item.id}
+                                                    className={item.id === job?.id ? 'active' : ''}
                                                 >
                                                     <a
-                                                        href={`/job?new_sn=${item.sn}`}
-                                                        title={item.title}
+                                                        href={`/job/${item.id}`}
+                                                        title={item.job_title}
                                                     >
-                                                        <span className="cate-text">{item.title}</span>
+                                                        <span className="cate-text">{item.job_title}</span>
                                                     </a>
                                                 </li>
                                             ))}
@@ -137,10 +115,12 @@ export default function Job({ newSn = '1100' }: Props) {
                                     </div>
 
                                     <div className="heading heading_main">
-                                        <h1 className="heading-text">{job.title}</h1>
+                                        <h1 className="heading-text">{job?.job_title || '職缺列表'}</h1>
                                     </div>
 
-                                    <div className="card card_job jobperson fadeUp js-scroll">
+                                    {job ? (
+                                        <>
+                                            <div className="card card_job jobperson fadeUp js-scroll">
                                         <div className="card-body">
                                             <div className="card-name">
                                                 <h2 className="card-name-text">徵才內容</h2>
@@ -150,7 +130,7 @@ export default function Job({ newSn = '1100' }: Props) {
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">職務名稱</span>
-                                                        <span className="card-info-text">{job.title}</span>
+                                                        <span className="card-info-text">{job.job_title}</span>
                                                     </div>
                                                 </li>
                                                 <li>
@@ -162,13 +142,13 @@ export default function Job({ newSn = '1100' }: Props) {
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">上班時段</span>
-                                                        <span className="card-info-text">{job.hours}</span>
+                                                        <span className="card-info-text">{job.work_hours}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">名額</span>
-                                                        <span className="card-info-text">{job.quota}</span>
+                                                        <span className="card-info-text">{job.vacancies}</span>
                                                     </div>
                                                 </li>
                                                 <li className="w-100">
@@ -177,7 +157,7 @@ export default function Job({ newSn = '1100' }: Props) {
                                                         <div
                                                             className="card-info-text editor"
                                                             dangerouslySetInnerHTML={{
-                                                                __html: job.requirementsHtml,
+                                                                __html: job.job_requirements,
                                                             }}
                                                         />
                                                     </div>
@@ -188,7 +168,7 @@ export default function Job({ newSn = '1100' }: Props) {
                                                         <div
                                                             className="card-info-text editor"
                                                             dangerouslySetInnerHTML={{
-                                                                __html: job.dutiesHtml,
+                                                                __html: job.job_content,
                                                             }}
                                                         />
                                                     </div>
@@ -207,65 +187,75 @@ export default function Job({ newSn = '1100' }: Props) {
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">徵才單位</span>
-                                                        <span className="card-info-text">{job.department}</span>
+                                                        <span className="card-info-text">{job.company}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">聯絡人</span>
-                                                        <span className="card-info-text">{job.contactPerson}</span>
+                                                        <span className="card-info-text">{job.contact_person} {job.contact_gender}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">聯絡電話</span>
-                                                        <span className="card-info-text">{job.contactPhone}</span>
+                                                        <span className="card-info-text">{job.contact_phone}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">聯絡手機</span>
-                                                        <span className="card-info-text">{job.contactMobile}</span>
+                                                        <span className="card-info-text">{job.contact_mobile}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">工作地點</span>
-                                                        <span className="card-info-text">{job.workLocation}</span>
+                                                        <span className="card-info-text">{job.work_location}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">所在地區</span>
-                                                        <span className="card-info-text">{job.region}</span>
+                                                        <span className="card-info-text">{job.work_area}</span>
                                                     </div>
                                                 </li>
-                                                {job.nearbySchools.map((school, index) => (
-                                                    <li key={index}>
+                                                {job.nearby_school_1 && (
+                                                    <li>
                                                         <div className="card-info">
                                                             <span className="card-info-title">鄰近學校</span>
-                                                            <span className="card-info-text">{school}</span>
+                                                            <span className="card-info-text">{job.nearby_school_1}</span>
                                                         </div>
                                                     </li>
-                                                ))}
+                                                )}
+                                                {job.nearby_school_2 && (
+                                                    <li>
+                                                        <div className="card-info">
+                                                            <span className="card-info-title">鄰近學校</span>
+                                                            <span className="card-info-text">{job.nearby_school_2}</span>
+                                                        </div>
+                                                    </li>
+                                                )}
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">E-Mail</span>
-                                                        <span className="card-info-text">{job.email}</span>
+                                                        <span className="card-info-text">{job.contact_email}</span>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="card-info">
                                                         <span className="card-info-title">網址</span>
                                                         <span className="card-info-text">
-                                                            <a
-                                                                href={job.websiteUrl}
-                                                                target="_blank"
-                                                                rel="noreferrer"
-                                                                title="網址"
-                                                            >
-                                                                {job.websiteLabel}
-                                                            </a>
+                                                            {job.contact_web && (
+                                                                <a
+                                                                    href={job.contact_web}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                    title="網址"
+                                                                >
+                                                                    {job.contact_web}
+                                                                </a>
+                                                            )}
                                                         </span>
                                                     </div>
                                                 </li>
@@ -273,17 +263,23 @@ export default function Job({ newSn = '1100' }: Props) {
                                         </div>
                                     </div>
 
-                                    <div className="consult consult_view">
-                                        <div className="btnbar btnbar_consult">
-                                            <a
-                                                href={`/contact?new_sn=${job.sn}&tmp_table=web_job`}
-                                                className="btn btn_consult"
-                                            >
-                                                <span className="iconsvg icon-question"></span>
-                                                <span className="btn-text">問題諮詢</span>
-                                            </a>
+                                        <div className="consult consult_view">
+                                            <div className="btnbar btnbar_consult">
+                                                <a
+                                                    href={`/contact?new_sn=${job.job_no}&tmp_table=web_job`}
+                                                    className="btn btn_consult"
+                                                >
+                                                    <span className="iconsvg icon-question"></span>
+                                                    <span className="btn-text">問題諮詢</span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                        </>
+                                    ) : (
+                                        <div style={{ textAlign: 'center', padding: '60px 0', color: '#999' }}>
+                                            暫無職缺資料
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </section>
