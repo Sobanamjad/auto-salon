@@ -13,7 +13,7 @@ class PublicJobController extends Controller
             ->ordered()
             ->get();
 
-        return Inertia::render('Job', [
+        return Inertia::render('job', [
             'jobs' => $jobs,
         ]);
     }
@@ -23,7 +23,7 @@ class PublicJobController extends Controller
         $job = Job::findOrFail($id);
         $job->increment('views');
 
-        return Inertia::render('Job', [
+        return Inertia::render('job', [
             'jobs' => [$job],
         ]);
     }
