@@ -43,6 +43,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             category: '管理者',
             children: [
                 { text: '基本設定', href: '/admin/basic-setting', subcategory: '使用者' },
+                { text: '聯絡資訊', href: '/admin/contact-settings', subcategory: '聯絡設定' },
             ]
         },
         {

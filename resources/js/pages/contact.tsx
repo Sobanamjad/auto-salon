@@ -5,8 +5,17 @@ import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
 
-const MAP_EMBED_URL =
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.865656820449!2d120.18385617484994!3d22.991967117470566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e7672361574f7%3A0x2f6a8a6f784ac0db!2zNzA46Ie65Y2X5biC5a6J5bmz5Y2A5Y2U6YCy6YeM5Lit6I-v6KW_6Lev5LqM5q61MzE16Jmf!5e0!3m2!1szh-TW!2stw!4v1784613868430!5m2!1szh-TW!2stw';
+interface ContactSettings {
+    phone: string | null;
+    email: string | null;
+    facebook_url: string | null;
+    address: string | null;
+    map_embed_url: string | null;
+}
+
+interface ContactPageProps {
+    contactSettings: ContactSettings;
+}
 
 declare global {
     interface Window {
@@ -15,9 +24,12 @@ declare global {
     }
 }
 
-export default function Contact() {
+export default function Contact({ contactSettings }: ContactPageProps) {
     useForceLightMode();
     const { errors } = usePage().props as { errors?: Record<string, string> };
+
+    const MAP_EMBED_URL = contactSettings?.map_embed_url ||
+        'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.865656820449!2d120.18385617484994!3d22.991967117470566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346e7672361574f7%3A0x2f6a8a6f784ac0db!2zNzA46Ie65Y2X5biC5a6J5bmz5Y2A5Y2U6YCy6YeM5Lit6I-v6KW_6Lev5LqM5q61MzE16Jmf!5e0!3m2!1szh-TW!2stw!4v1784613868430!5m2!1szh-TW!2stw';
 
     const { data, setData, post, processing, reset } = useForm({
         name: '',
@@ -109,7 +121,9 @@ export default function Contact() {
                                                                         <span className="info-icon iconsvg icon-phone"></span>
                                                                         <span className="info-title">電話</span>
                                                                         <span className="info-text">
-                                                                            <a href="tel:+886920776819">0920-776-819</a>
+                                                                            <a href={`tel:${contactSettings?.phone || ''}`}>
+                                                                                {contactSettings?.phone || '0920-776-819'}
+                                                                            </a>
                                                                         </span>
                                                                     </div>
                                                                 </li>
@@ -118,7 +132,9 @@ export default function Contact() {
                                                                         <span className="info-icon iconsvg icon-mail"></span>
                                                                         <span className="info-title">信箱</span>
                                                                         <span className="info-text">
-                                                                            <a href="mailto:bear50197@gmail.com">bear50197@gmail.com</a>
+                                                                            <a href={`mailto:${contactSettings?.email || ''}`}>
+                                                                                {contactSettings?.email || 'bear50197@gmail.com'}
+                                                                            </a>
                                                                         </span>
                                                                     </div>
                                                                 </li>
@@ -128,7 +144,7 @@ export default function Contact() {
                                                                         <span className="info-title">FB</span>
                                                                         <span className="info-text">
                                                                             <a
-                                                                                href="https://www.facebook.com/profile.php?id=61558088173434"
+                                                                                href={contactSettings?.facebook_url || 'https://www.facebook.com/profile.php?id=61558088173434'}
                                                                                 target="_blank"
                                                                                 rel="noopener noreferrer"
                                                                             >
@@ -143,11 +159,11 @@ export default function Contact() {
                                                                         <span className="info-title">地址</span>
                                                                         <span className="info-text">
                                                                             <a
-                                                                                href="https://www.google.com/maps?q=708%20%E8%87%BA%E5%8D%97%E5%B8%82%E5%AE%89%E5%B9%B3%E5%8D%80%E4%B8%AD%E8%8F%AF%E8%A5%BF%E8%B7%AF%E4%BA%8C%E6%AE%B5315%E8%99%9F5%E6%A8%93"
+                                                                                href={`https://www.google.com/maps?q=${encodeURIComponent(contactSettings?.address || '708 臺南市安平區中華西路二段315號5樓')}`}
                                                                                 target="_blank"
                                                                                 rel="noopener noreferrer"
                                                                             >
-                                                                                708 臺南市安平區中華西路二段315號5樓
+                                                                                {contactSettings?.address || '708 臺南市安平區中華西路二段315號5樓'}
                                                                             </a>
                                                                         </span>
                                                                     </div>
