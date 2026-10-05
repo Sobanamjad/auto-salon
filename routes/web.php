@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\PublicSliderController;
 use App\Http\Controllers\PublicJobController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ContactSettingController;
 use App\Http\Controllers\PublicFaqController;
 
 use Illuminate\Support\Facades\Route;
@@ -315,6 +316,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/edit', [FaqController::class, 'edit'])->name('edit');
             Route::put('/{id}', [FaqController::class, 'update'])->name('update');
             Route::delete('/{id}', [FaqController::class, 'destroy'])->name('destroy');
+        });
+
+        // Contact Settings (聯絡資訊設定)
+        Route::prefix('contact-settings')->name('contact-settings.')->group(function () {
+            Route::get('/', [ContactSettingController::class, 'edit'])->name('edit');
+            Route::put('/', [ContactSettingController::class, 'update'])->name('update');
         });
         
         // 會員收費

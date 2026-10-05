@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -10,7 +11,11 @@ class ContactController extends Controller
 {
     public function show()
     {
-        return Inertia::render('contact');
+        $settings = ContactSetting::getSettings();
+
+        return Inertia::render('contact', [
+            'contactSettings' => $settings,
+        ]);
     }
 
     public function store(Request $request)
