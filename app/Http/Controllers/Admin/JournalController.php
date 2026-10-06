@@ -11,15 +11,42 @@ class JournalController extends Controller
 {
     public function index()
     {
-        $journals = Journal::ordered()
-            ->paginate(20);
+        $selStart   = request('sel_start');
+        $selStop    = request('sel_stop');
+        $selTitle   = request('sel_title');
+        $selSerial  = request('sel_serial');
+        $selInvoice = request('sel_invoice');
+
+        $query = Journal::ordered();
+
+        if ($selStart && $selStop) {
+            $query->whereBetween('transaction_date', [$selStart, $selStop]);
+        } elseif ($selStart) {
+            $query->where('transaction_date', '>=', $selStart);
+        } elseif ($selStop) {
+            $query->where('transaction_date', '<=', $selStop);
+        }
+
+        if ($selTitle) {
+            $query->where('customer_name', 'LIKE', "%{$selTitle}%");
+        }
+
+        if ($selSerial) {
+            $query->where('serial_no', 'LIKE', "%{$selSerial}%");
+        }
+
+        if ($selInvoice) {
+            $query->where('invoice_no', 'LIKE', "%{$selInvoice}%");
+        }
+
+        $journals = $query->paginate(20)->withQueryString();
 
         $totalBalance = Journal::getTotalBalance();
 
         return Inertia::render('Admin/journal/Journal', [
-            'title' => '會計日記簿',
-            'data' => $journals,
-            'totalBalance' => $totalBalance,
+            'title'           => '會計日記簿',
+            'data'            => $journals,
+            'totalBalance'    => $totalBalance,
             'accountSubjects' => $this->getAccountSubjects(),
         ]);
     }
