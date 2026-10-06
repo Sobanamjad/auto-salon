@@ -20,8 +20,23 @@ class EventController extends Controller
                        ->get();
 
         return Inertia::render('Admin/EventManagement', [
-            'title' => '活動管理',
-            'events' => $events
+            'title'    => '活動管理',
+            'events'   => $events,
+            'category' => '本會活動',
+        ]);
+    }
+
+    public function friendEvents()
+    {
+        $events = Event::where('category', '好友活動')
+                       ->orderBy('sort_order', 'asc')
+                       ->orderBy('date_start', 'desc')
+                       ->get();
+
+        return Inertia::render('Admin/EventManagement', [
+            'title'    => '好友活動',
+            'events'   => $events,
+            'category' => '好友活動',
         ]);
     }
 
@@ -106,5 +121,26 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('admin.events.index')->with('success', '活動刪除成功');
+    }
+
+    public function toggleOpen($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->update(['is_open' => !$event->is_open]);
+        return redirect()->back()->with('success', '報名狀態已更新');
+    }
+
+    public function toggleFeatured($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->update(['is_featured' => !$event->is_featured]);
+        return redirect()->back()->with('success', '精選狀態已更新');
+    }
+
+    public function updateSort($id)
+    {
+        $event = Event::findOrFail($id);
+        $event->update(['sort_order' => (int) request('sort_order', 999)]);
+        return redirect()->back()->with('success', '排序已更新');
     }
 }

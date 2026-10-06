@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import {
     FaCalendar, FaImage, FaLeaf, FaBullhorn, FaPencilAlt,
     FaGift, FaLaptop, FaUser, FaComments, FaSearch,
-    FaLink, FaArrowsAltV, FaUserMd, FaCoffee, FaTags, FaEdit, FaBuilding
+    FaLink, FaArrowsAltV, FaUserMd, FaCoffee, FaTags, FaEdit, FaBuilding, FaFileAlt, FaRegComments
 } from 'react-icons/fa';
 
 export default function Dashboard() {
@@ -12,13 +12,15 @@ export default function Dashboard() {
     
     // Navigation items data - Chinese Traditional
     const navItems = [
-        { icon: FaCalendar, label: '活動管理', href: '/admin/events' }, 
+        { icon: FaCalendar, label: '活動管理', href: '/admin/events' },
         { icon: FaImage, label: '活動花絮', href: '/admin/albums' },
         { icon: FaLeaf, label: '關於本會', href: '/admin/about' },
         { icon: FaBullhorn, label: '最新消息', href: '/admin/news' },
         { icon: FaBullhorn, label: '會員公告', href: '/admin/member-announcements' },
         { icon: FaPencilAlt, label: '專欄園地', href: '/admin/column-articles' },
         { icon: FaGift, label: '會員商品', href: '/admin/products' },
+        { icon: FaFileAlt, label: '公文與表單', href: '/admin/downloads' },
+        { icon: FaRegComments, label: '相片留言', href: '/admin/album-comments' },
         { icon: FaLaptop, label: '理監事(組織)', href: '/admin/directors' },
         { icon: FaUser, label: '會員資訊', href: '/admin/members' },
         { icon: FaComments, label: '留言板', href: '/admin/guestbook' },
