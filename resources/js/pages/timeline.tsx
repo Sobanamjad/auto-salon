@@ -34,17 +34,9 @@ type Props = {
 export default function Timeline({ csn, newSn, timelines = [], categories = [] }: Props) {
     useForceLightMode();
 
-    // Map category codes back to labels
-    const categoryMap: Record<string, string> = {};
-    categories.forEach(cat => {
-        if (cat.csn) {
-            categoryMap[cat.csn] = cat.label;
-        }
-    });
-
-    // Filter timelines by category
-    const filtered = csn && categoryMap[csn]
-        ? timelines.filter(item => item.category === categoryMap[csn])
+    // Filter timelines by category (csn is now the category string directly e.g. "2026年")
+    const filtered = csn
+        ? timelines.filter(item => item.category === csn)
         : timelines;
 
     // Find selected item by id
@@ -130,7 +122,7 @@ export default function Timeline({ csn, newSn, timelines = [], categories = [] }
                                                 onChange={(e) => {
                                                     const val = e.target.value;
                                                     window.location.href = val
-                                                        ? `/timeline?new_csn=${val}`
+                                                        ? `/timeline?new_csn=${encodeURIComponent(val)}`
                                                         : '/timeline';
                                                 }}
                                             >
@@ -217,82 +209,84 @@ export default function Timeline({ csn, newSn, timelines = [], categories = [] }
                                     ) : (
                                         <div className="timeline-event">
                                             <div className="timeline-area">
-                                                {filtered.map((item, index) => {
-                                                    // Parse event_date to year, month, day
-                                                    const year = item.event_date ? item.event_date.substring(0, 4) : '2025';
-                                                    const month = item.event_date ? item.event_date.substring(5, 7) : '01';
-                                                    const day = item.event_date ? item.event_date.substring(8, 10) : '01';
+                                                {filtered.map((item) => {
+                                                    const year  = item.event_date ? item.event_date.substring(0, 4) : '';
+                                                    const month = item.event_date ? item.event_date.substring(5, 7) : '';
+                                                    const day   = item.event_date ? item.event_date.substring(8, 10) : '';
+                                                    const viewHref = `/timeline?new_sn=${item.id}`;
 
                                                     return (
-                                                        <div key={item.id}>
-                                                            <div className="timeline-year fadeUp js-scroll">
-                                                                <span className="timeline-year-text">{item.category || year + '年'}</span>
+                                                        <>
+                                                            {/* Year label — exactly matching reference HTML structure */}
+                                                            <div key={`year-${item.id}`} className="timeline-year fadeUp js-scroll">
+                                                                <span className="timeline-year-text">{item.category || `${year}年`}</span>
                                                             </div>
-                                                            <div className="timeline-box js-scroll">
-                                                                <a href={`/timeline?new_sn=${item.id}`} title={item.title} className="card card_timeline">
+
+                                                            {/* Timeline card */}
+                                                            <div key={item.id} className="timeline-box js-scroll">
+                                                                <div className="card card_timeline">
                                                                     <div className="card_row">
+
+                                                                        {/* card-one: photo */}
                                                                         <div className="card-one">
                                                                             <div className="card-photo">
-                                                                                {item.img ? (
-                                                                                    <img
-                                                                                        src={item.img}
-                                                                                        width={item.img_w || 1024}
-                                                                                        height={item.img_h || 576}
-                                                                                        alt={item.title}
-                                                                                        loading="lazy"
-                                                                                    />
-                                                                                ) : (
-                                                                                    <div className="placeholder-image" style={{
-                                                                                        width: item.img_w || 1024,
-                                                                                        height: item.img_h || 576,
-                                                                                        backgroundColor: '#f0f0f0',
-                                                                                        display: 'flex',
-                                                                                        alignItems: 'center',
-                                                                                        justifyContent: 'center',
-                                                                                        color: '#999'
-                                                                                    }}>
-                                                                                        無相片
-                                                                                    </div>
-                                                                                )}
+                                                                                <a href={viewHref} title={item.title}>
+                                                                                    {item.img ? (
+                                                                                        <img
+                                                                                            src={item.img}
+                                                                                            width={item.img_w || 1024}
+                                                                                            height={item.img_h || 576}
+                                                                                            alt={item.title}
+                                                                                            loading="lazy"
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <div style={{ width: '100%', paddingBottom: '56%', background: '#f0f0f0' }} />
+                                                                                    )}
+                                                                                </a>
                                                                             </div>
                                                                         </div>
+
+                                                                        {/* card-two: date + title + brief */}
                                                                         <div className="card-two">
                                                                             <div className="card-header">
                                                                                 <div className="header_row">
                                                                                     <div className="header-one">
                                                                                         <div className="card-date-box">
                                                                                             <div className="card-date-item">
+                                                                                                <span className="card-date day">{day}</span>
                                                                                                 <span className="card-date year">{year}</span>
                                                                                                 <span className="card-date month">{month}</span>
-                                                                                                <span className="card-date day">{day}</span>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div className="header-two">
-                                                                                        <h3 className="card-name" style={{ transition: 'color 0.3s' }} onMouseEnter={(e) => e.currentTarget.style.color = '#f97316'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
-                                                                                            {item.title}
+                                                                                        <h3 className="card-name">
+                                                                                            <a href={viewHref} title={item.title}>
+                                                                                                <span className="card-name-text">{item.title}</span>
+                                                                                            </a>
                                                                                         </h3>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="card-body">
                                                                                 <div className="card-text img-hidden text-limit limit-line-3">
-                                                                                    {item.brief || item.content || ''}
+                                                                                    {item.brief || ''}
                                                                                 </div>
                                                                             </div>
                                                                             <div className="hidden">
                                                                                 <div className="card-btnbar card-btnbar_readmore">
-                                                                                    <span className="card-btn card-btn_readmore">
+                                                                                    <a href={viewHref} title={item.title} className="card-btn card-btn_readmore">
                                                                                         <span className="card-btn-text">繼續閱讀</span>
                                                                                         <span className="iconsvg icon-read-more"></span>
-                                                                                    </span>
+                                                                                    </a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+
                                                                     </div>
-                                                                </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </>
                                                     );
                                                 })}
                                             </div>

@@ -360,69 +360,58 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/timeline', function () {
-    $csn = request()->query('new_csn');
+    $csn   = request()->query('new_csn');
     $newSn = request()->query('new_sn');
 
-    // Map category codes to database category values
-    $categoryMap = [
-        '538' => '2025年',
-        '539' => '2024年',
-    ];
+    // Build category list dynamically from the DB
+    $dbCategories = \App\Models\Timeline::active()
+        ->whereNotNull('category')
+        ->distinct()
+        ->orderBy('category', 'desc')
+        ->pluck('category');
+
+    // csn is just the category string itself (e.g. "2025年")
+    // kept for URL compatibility — we use the value directly
+    $filterCategory = $csn ?: null;
 
     $query = \App\Models\Timeline::active()->ordered();
 
-    // Filter by category if csn is provided
-    if ($csn && isset($categoryMap[$csn])) {
-        $query->where('category', $categoryMap[$csn]);
+    if ($filterCategory) {
+        $query->where('category', $filterCategory);
     }
 
     $timelines = $query->get()->map(function ($item) {
-        // Format image URL if it exists
         $img = null;
         if ($item->img) {
-            $img = '/storage/' . $item->img;
+            // Already a storage path — prepend /storage/
+            $img = str_starts_with($item->img, '/storage/')
+                ? $item->img
+                : '/storage/' . $item->img;
         }
         return [
-            'id' => $item->id,
-            'title' => $item->title,
-            'category' => $item->category,
+            'id'         => $item->id,
+            'title'      => $item->title,
+            'category'   => $item->category,
             'event_date' => $item->event_date ? $item->event_date->format('Y-m-d') : null,
-            'brief' => $item->brief,
-            'content' => $item->content,
-            'video' => $item->video,
-            'img' => $img,
-            'img_w' => $item->img_w,
-            'img_h' => $item->img_h,
-            'has_photo' => $item->has_photo,
-            'views' => $item->views,
+            'brief'      => $item->brief,
+            'content'    => $item->content,
+            'video'      => $item->video,
+            'img'        => $img,
+            'img_w'      => $item->img_w,
+            'img_h'      => $item->img_h,
+            'has_photo'  => $item->has_photo,
+            'views'      => $item->views,
         ];
     });
 
-    // Get unique categories from database
-    $categories = \App\Models\Timeline::active()
-        ->whereNotNull('category')
-        ->distinct()
-        ->pluck('category')
-        ->map(function ($category) {
-            // Map category back to csn codes
-            if ($category === '2025年') {
-                return ['csn' => '538', 'label' => '2025年'];
-            } elseif ($category === '2024年') {
-                return ['csn' => '539', 'label' => '2024年'];
-            }
-            return ['csn' => $category, 'label' => $category];
-        })
-        ->sortBy('label')
-        ->values()
-        ->toArray();
-
-    // Add "全部" option at the beginning
+    // Build categories for the filter dropdown — csn = category string itself
+    $categories = $dbCategories->map(fn($cat) => ['csn' => $cat, 'label' => $cat])->values()->toArray();
     array_unshift($categories, ['csn' => null, 'label' => '全部']);
 
     return inertia('timeline', [
-        'csn' => $csn,
-        'newSn' => $newSn,
-        'timelines' => $timelines,
+        'csn'        => $filterCategory,
+        'newSn'      => $newSn,
+        'timelines'  => $timelines,
         'categories' => $categories,
     ]);
 })->name('timeline');
@@ -505,12 +494,6 @@ Route::get('/uninews_view', function () {
     ];
 
     // Ensure all values are properly formatted for Inertia
-    return inertia('uninews-view', [
-        'new_sn' => $newSn,
-        'lang' => $lang,
-        'news' => $newsData
-    ]);
-
     return inertia('uninews-view', [
         'new_sn' => $newSn,
         'lang' => $lang,
