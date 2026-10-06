@@ -15,7 +15,7 @@ class JournalRequest extends FormRequest
     {
         $rules = [
             'account_subject' => 'nullable|string|max:255',
-            'serial_no' => 'required|string|max:50|unique:journals,serial_no,' . $this->id,
+            'serial_no' => 'required|string|max:50|unique:journals,serial_no,' . ($this->route('id') ?? 'NULL'),
             'invoice_no' => 'nullable|string|max:50',
             'invoice_date' => 'nullable|date',
             'transaction_date' => 'required|date',

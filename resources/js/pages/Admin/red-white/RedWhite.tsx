@@ -1,10 +1,9 @@
-// resources/js/pages/Admin/red-white/RedWhite.tsx
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { 
-    FaTrash, FaNewspaper, FaCheck, FaTimes,
+import {
+    FaTrash, FaNewspaper, FaCheck, FaTimes, FaPlus, FaEdit,
     FaChevronLeft, FaChevronRight, FaUser, FaCalendar,
-    FaTag
+    FaTag, FaSearch
 } from 'react-icons/fa';
 
 interface RedWhiteItem {
@@ -22,6 +21,13 @@ interface RedWhiteItem {
     created_at: string;
 }
 
+interface Category {
+    id: number;
+    name: string;
+    color: string;
+    icon: string;
+}
+
 interface Props {
     data: {
         data: RedWhiteItem[];
@@ -30,10 +36,11 @@ interface Props {
         total: number;
         per_page: number;
     };
+    categories: Category[];
     title?: string;
 }
 
-export default function RedWhite({ data, title = '紅白帖' }: Props) {
+export default function RedWhite({ data, categories = [], title = '紅白帖' }: Props) {
     const [searchName, setSearchName] = useState('');
     const [searchDate, setSearchDate] = useState('');
     const [searchCategory, setSearchCategory] = useState('');
@@ -53,8 +60,15 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
             sel_title: searchName,
             sel_issuedate: searchDate,
             sel_csn: searchCategory,
-            this_page: 1
+            this_page: 1,
         });
+    };
+
+    const handleReset = () => {
+        setSearchName('');
+        setSearchDate('');
+        setSearchCategory('');
+        router.get('/admin/red-white', { this_page: 1 });
     };
 
     const handlePageChange = (page: number) => {
@@ -62,107 +76,118 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
             sel_title: searchName,
             sel_issuedate: searchDate,
             sel_csn: searchCategory,
-            this_page: page
+            this_page: page,
         });
     };
 
-    const getCategoryColor = (category: string) => {
-        const colors: Record<string, string> = {
-            '喜事': 'bg-red-100 text-red-800',
-            '喪事': 'bg-gray-100 text-gray-800',
-            '會員開幕': 'bg-green-100 text-green-800',
-        };
-
-        return colors[category] || 'bg-blue-100 text-blue-800';
+    const handleSortUpdate = (id: number, sortOrder: number) => {
+        router.put(`/admin/red-white/${id}/sort`, { sort_order: sortOrder });
     };
 
-    const getCategoryIcon = (category: string) => {
-        const icons: Record<string, string> = {
-            '喜事': '🎉',
-            '喪事': '🕊️',
-            '會員開幕': '🏪',
+    const getCategoryStyle = (catName: string) => {
+        const cat = categories.find(c => c.name === catName);
+        if (cat?.color) return { bg: cat.color, icon: cat.icon };
+        const defaults: Record<string, { bg: string; icon: string }> = {
+            '喜事':     { bg: 'bg-red-100 text-red-800',    icon: '🎉' },
+            '喪事':     { bg: 'bg-gray-100 text-gray-700',  icon: '🕊️' },
+            '會員開幕': { bg: 'bg-green-100 text-green-800', icon: '🏪' },
         };
-
-        return icons[category] || '📋';
+        return defaults[catName] ?? { bg: 'bg-blue-100 text-blue-800', icon: '📋' };
     };
 
     return (
         <>
             <Head title={title} />
-            
+
             <div className="bg-white rounded-xl shadow-sm p-6 text-gray-900">
                 {/* Header */}
                 <div className="border-b border-gray-200 pb-4 mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <FaNewspaper className="text-pink-500" /> {title}
-                        <span className="text-sm font-normal text-gray-500 ml-2">
-                            [ 過期 5 天自動隱藏 ]
-                        </span>
-                    </h2>
-                    <p className="text-sm text-gray-500 mt-1">管理紅白帖資料</p>
-                    <div className="text-sm text-gray-600 mt-2">總筆數：{data.total} 筆</div>
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                                <FaNewspaper className="text-pink-500" /> {title}
+                                <span className="text-sm font-normal text-gray-500 ml-2">[ 過期 5 天自動隱藏 ]</span>
+                            </h2>
+                            <p className="text-sm text-gray-500 mt-1">管理紅白帖資料</p>
+                            <div className="text-sm text-gray-600 mt-2">總筆數：{data.total} 筆</div>
+                        </div>
+                        <Link
+                            href="/admin/red-white-categories"
+                            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                        >
+                            <FaTag size={12} /> 管理分類
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Tools Bar */}
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                     <div className="flex flex-wrap items-center gap-3">
-                        {/* Search by Name */}
                         <div className="relative">
                             <input
                                 type="text"
                                 placeholder="姓名..."
                                 value={searchName}
                                 onChange={(e) => setSearchName(e.target.value)}
-                                className="border rounded-lg px-3 py-2 pl-9 text-sm w-40 focus:ring-2 focus:ring-blue-500"
+                                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                                className="border rounded-lg px-3 py-2 pl-9 text-sm w-36 focus:ring-2 focus:ring-blue-500"
                             />
-                            <FaUser className="absolute left-3 top-3 text-gray-400" size={14} />
+                            <FaUser className="absolute left-3 top-3 text-gray-400" size={13} />
                         </div>
 
-                        {/* Search by Date */}
                         <div className="relative">
                             <input
                                 type="date"
                                 value={searchDate}
                                 onChange={(e) => setSearchDate(e.target.value)}
-                                className="border rounded-lg px-3 py-2 pl-9 text-sm w-40 focus:ring-2 focus:ring-blue-500"
+                                className="border rounded-lg px-3 py-2 pl-9 text-sm focus:ring-2 focus:ring-blue-500"
                             />
-                            <FaCalendar className="absolute left-3 top-3 text-gray-400" size={14} />
+                            <FaCalendar className="absolute left-3 top-3 text-gray-400" size={13} />
                         </div>
 
-                        {/* Search by Category */}
                         <div className="relative">
                             <select
                                 value={searchCategory}
                                 onChange={(e) => setSearchCategory(e.target.value)}
-                                className="border rounded-lg px-3 py-2 pl-9 text-sm w-40 focus:ring-2 focus:ring-blue-500 appearance-none"
+                                className="border rounded-lg px-3 py-2 pl-9 text-sm w-36 focus:ring-2 focus:ring-blue-500 appearance-none"
                             >
                                 <option value="">全部分類</option>
-                                <option value="喜事">喜事</option>
-                                <option value="喪事">喪事</option>
-                                <option value="會員開幕">會員開幕</option>
+                                {categories.length > 0
+                                    ? categories.map(c => (
+                                        <option key={c.id} value={c.name}>{c.icon} {c.name}</option>
+                                    ))
+                                    : (
+                                        <>
+                                            <option value="喜事">🎉 喜事</option>
+                                            <option value="喪事">🕊️ 喪事</option>
+                                            <option value="會員開幕">🏪 會員開幕</option>
+                                        </>
+                                    )
+                                }
                             </select>
-                            <FaTag className="absolute left-3 top-3 text-gray-400" size={14} />
+                            <FaTag className="absolute left-3 top-3 text-gray-400" size={13} />
                         </div>
 
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 flex items-center gap-1"
                         >
-                            查詢
+                            <FaSearch size={12} /> 查詢
                         </button>
-
                         <button
-                            onClick={() => {
-                                setSearchName('');
-                                setSearchDate('');
-                                setSearchCategory('');
-                                router.get('/admin/red-white', { this_page: 1 });
-                            }}
+                            onClick={handleReset}
                             className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-400"
                         >
                             全部
                         </button>
                     </div>
+
+                    <Link
+                        href="/admin/red-white/create"
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2 text-sm"
+                    >
+                        <FaPlus /> 新增資料
+                    </Link>
                 </div>
 
                 {/* Table */}
@@ -171,7 +196,7 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase w-10">No.</th>
-                                <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase w-16">排序</th>
+                                <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase w-20">排序</th>
                                 <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase w-24">分類</th>
                                 <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase">當事者</th>
                                 <th className="px-2 py-2 text-center text-xs font-medium text-gray-500 uppercase w-32">活動日</th>
@@ -190,95 +215,107 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
                                         <div className="flex flex-col items-center gap-2">
                                             <FaNewspaper size={32} className="text-gray-300" />
                                             <p>暫無紅白帖資料</p>
+                                            <Link href="/admin/red-white/create" className="text-blue-600 hover:underline text-sm">
+                                                點此新增
+                                            </Link>
                                         </div>
                                     </td>
                                 </tr>
                             ) : (
-                                data.data.map((item, index) => (
-                                    <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-2 py-2 text-center text-sm">
-                                            {(data.current_page - 1) * data.per_page + index + 1}.
-                                        </td>
-                                        <td className="px-2 py-2 text-center text-sm">
-                                            <input
-                                                type="number"
-                                                value={item.sort_order}
-                                                onChange={(e) => {
-                                                    router.put(`/admin/red-white/${item.id}/sort`, {
-                                                        sort_order: parseInt(e.target.value) || 0
-                                                    });
-                                                }}
-                                                className="w-12 text-center border rounded px-1 py-0.5 text-sm"
-                                            />
-                                        </td>
-                                        <td className="px-2 py-2 text-center">
-                                            <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(item.category)}`}>
-                                                {getCategoryIcon(item.category)} {item.category || '-'}
-                                            </span>
-                                        </td>
-                                        <td className="px-2 py-2 text-sm font-medium">
-                                            {item.person_name}
-                                        </td>
-                                        <td className="px-2 py-2 text-center text-sm">
-                                            {item.event_date_start && (
-                                                <div className="text-xs">
-                                                    <div>{item.event_date_start}</div>
-                                                    {item.event_date_end && item.event_date_end !== item.event_date_start && (
-                                                        <div className="text-gray-400">→ {item.event_date_end}</div>
-                                                    )}
+                                data.data.map((item, index) => {
+                                    const catStyle = getCategoryStyle(item.category);
+                                    return (
+                                        <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-2 py-2 text-center text-sm">
+                                                {(data.current_page - 1) * data.per_page + index + 1}.
+                                            </td>
+                                            <td className="px-2 py-2 text-center">
+                                                <div className="flex items-center justify-center gap-1">
+                                                    <input
+                                                        type="number"
+                                                        defaultValue={item.sort_order}
+                                                        className="w-12 border rounded px-1 py-0.5 text-xs text-center"
+                                                        id={`sort_${item.id}`}
+                                                    />
+                                                    <button
+                                                        onClick={() => {
+                                                            const el = document.getElementById(`sort_${item.id}`) as HTMLInputElement;
+                                                            handleSortUpdate(item.id, parseInt(el.value) || 0);
+                                                        }}
+                                                        className="bg-blue-500 text-white px-1.5 py-0.5 rounded text-xs hover:bg-blue-600"
+                                                    >
+                                                        更
+                                                    </button>
                                                 </div>
-                                            )}
-                                        </td>
-                                        <td className="px-2 py-2 text-center text-sm">
-                                            {item.attend_status || '-'}
-                                        </td>
-                                        <td className="px-2 py-2 text-sm">
-                                            {item.attendees || '-'}
-                                        </td>
-                                        <td className="px-2 py-2 text-right text-sm font-medium">
-                                            {item.amount > 0 ? `$${item.amount.toLocaleString()}` : '-'}
-                                        </td>
-                                        <td className="px-2 py-2 text-sm text-gray-500 max-w-24 truncate">
-                                            {item.remark || '-'}
-                                        </td>
-                                        <td className="px-2 py-2 text-center">
-                                            <button
-                                                onClick={() => handleToggleClose(item.id)}
-                                                className={`px-2 py-1 rounded text-xs flex items-center justify-center gap-1 ${
-                                                    item.is_closed
-                                                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                                }`}
-                                            >
-                                                {item.is_closed ? (
-                                                    <><FaCheck size={10} /> 已結案</>
-                                                ) : (
-                                                    <><FaTimes size={10} /> 未結案</>
+                                            </td>
+                                            <td className="px-2 py-2 text-center">
+                                                <span className={`px-2 py-1 rounded text-xs font-medium ${catStyle.bg}`}>
+                                                    {catStyle.icon} {item.category || '-'}
+                                                </span>
+                                            </td>
+                                            <td className="px-2 py-2 text-sm font-medium">{item.person_name}</td>
+                                            <td className="px-2 py-2 text-center text-xs">
+                                                {item.event_date_start && (
+                                                    <>
+                                                        <div>{item.event_date_start}</div>
+                                                        {item.event_date_end && item.event_date_end !== item.event_date_start && (
+                                                            <div className="text-gray-400">→ {item.event_date_end}</div>
+                                                        )}
+                                                    </>
                                                 )}
-                                            </button>
-                                        </td>
-                                        <td className="px-2 py-2">
-                                            <div className="flex flex-col items-center gap-0.5 text-xs">
+                                            </td>
+                                            <td className="px-2 py-2 text-center text-sm">{item.attend_status || '-'}</td>
+                                            <td className="px-2 py-2 text-sm">{item.attendees || '-'}</td>
+                                            <td className="px-2 py-2 text-right text-sm font-medium">
+                                                {item.amount > 0 ? `$${Number(item.amount).toLocaleString()}` : '-'}
+                                            </td>
+                                            <td className="px-2 py-2 text-sm text-gray-500 max-w-[96px] truncate">
+                                                {item.remark || '-'}
+                                            </td>
+                                            <td className="px-2 py-2 text-center">
                                                 <button
-                                                    onClick={() => handleDelete(item.id, item.person_name)}
-                                                    className="text-red-600 hover:text-red-800 flex items-center gap-0.5"
+                                                    onClick={() => handleToggleClose(item.id)}
+                                                    className={`px-2 py-1 rounded text-xs flex items-center justify-center gap-1 mx-auto ${
+                                                        item.is_closed
+                                                            ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                    }`}
                                                 >
-                                                    <FaTrash size={12} /> 刪除
+                                                    {item.is_closed
+                                                        ? <><FaCheck size={10} /> 已結案</>
+                                                        : <><FaTimes size={10} /> 未結案</>
+                                                    }
                                                 </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
+                                            </td>
+                                            <td className="px-2 py-2">
+                                                <div className="flex flex-col items-center gap-0.5 text-xs">
+                                                    <Link
+                                                        href={`/admin/red-white/${item.id}/edit`}
+                                                        className="text-blue-600 hover:text-blue-800 flex items-center gap-0.5"
+                                                    >
+                                                        <FaEdit size={12} /> 編輯
+                                                    </Link>
+                                                    <div className="border-t border-dashed border-gray-300 w-full" />
+                                                    <button
+                                                        onClick={() => handleDelete(item.id, item.person_name)}
+                                                        className="text-red-600 hover:text-red-800 flex items-center gap-0.5"
+                                                    >
+                                                        <FaTrash size={12} /> 刪除
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                         <tfoot className="bg-gray-50">
                             <tr>
                                 <td colSpan={11} className="px-3 py-2 text-center text-xs text-gray-500">
-                                    {data.total > 0 ? (
-                                        `共 ${data.total} 筆 - 在 ${data.current_page} 頁 - 共 ${data.last_page} 頁`
-                                    ) : (
-                                        '沒有資料'
-                                    )}
+                                    {data.total > 0
+                                        ? `共 ${data.total} 筆 - 在 ${data.current_page} 頁 - 共 ${data.last_page} 頁`
+                                        : '沒有資料'
+                                    }
                                 </td>
                             </tr>
                         </tfoot>
@@ -289,40 +326,14 @@ export default function RedWhite({ data, title = '紅白帖' }: Props) {
                 {data.last_page > 1 && (
                     <div className="flex items-center justify-between mt-4">
                         <div className="text-sm text-gray-600">
-                            共 {data.total} 筆 - 在 {data.current_page} 頁 - 共 {data.last_page} 頁
+                            共 {data.total} 筆 - 第 {data.current_page} / {data.last_page} 頁
                         </div>
                         <div className="flex gap-2">
-                            <button
-                                onClick={() => handlePageChange(1)}
-                                disabled={data.current_page === 1}
-                                className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                首頁
-                            </button>
-                            <button
-                                onClick={() => handlePageChange(data.current_page - 1)}
-                                disabled={data.current_page === 1}
-                                className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                <FaChevronLeft size={12} />
-                            </button>
-                            <span className="px-3 py-1 border rounded text-sm bg-blue-600 text-white">
-                                {data.current_page}
-                            </span>
-                            <button
-                                onClick={() => handlePageChange(data.current_page + 1)}
-                                disabled={data.current_page === data.last_page}
-                                className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                <FaChevronRight size={12} />
-                            </button>
-                            <button
-                                onClick={() => handlePageChange(data.last_page)}
-                                disabled={data.current_page === data.last_page}
-                                className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                末頁
-                            </button>
+                            <button onClick={() => handlePageChange(1)} disabled={data.current_page === 1} className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50">首頁</button>
+                            <button onClick={() => handlePageChange(data.current_page - 1)} disabled={data.current_page === 1} className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"><FaChevronLeft size={12} /></button>
+                            <span className="px-3 py-1 border rounded text-sm bg-blue-600 text-white">{data.current_page}</span>
+                            <button onClick={() => handlePageChange(data.current_page + 1)} disabled={data.current_page === data.last_page} className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"><FaChevronRight size={12} /></button>
+                            <button onClick={() => handlePageChange(data.last_page)} disabled={data.current_page === data.last_page} className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50">末頁</button>
                         </div>
                     </div>
                 )}
