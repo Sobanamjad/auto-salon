@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MemberAnnouncementRequest;
 use App\Models\MemberAnnouncement;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class MemberAnnouncementController extends Controller
@@ -36,11 +37,17 @@ class MemberAnnouncementController extends Controller
             'sort_order' => $validated['sort_order'],
             'published_date' => $validated['published_date'] ?? now(),
             'end_date' => $validated['end_date'] ?? '2200-12-31',
+            'category' => $validated['category'] ?? null,
             'subject' => $validated['subject'],
             'content' => $validated['content'],
             'target_audience' => $validated['target_audience'] ?? null,
             'has_attachment' => $validated['has_attachment'] ?? false,
             'has_photo' => $validated['has_photo'] ?? false,
+            'photo' => $validated['photo'] ?? null,
+            'photo_w' => $validated['photo_w'] ?? null,
+            'photo_h' => $validated['photo_h'] ?? null,
+            'external_link' => $validated['external_link'] ?? null,
+            'event_status' => $validated['event_status'] ?? '報名期間',
             'note' => $validated['note'] ?? null,
             'views' => 0,
         ]);
@@ -70,11 +77,17 @@ class MemberAnnouncementController extends Controller
             'sort_order' => $validated['sort_order'],
             'published_date' => $validated['published_date'] ?? now(),
             'end_date' => $validated['end_date'] ?? '2200-12-31',
+            'category' => $validated['category'] ?? null,
             'subject' => $validated['subject'],
             'content' => $validated['content'],
             'target_audience' => $validated['target_audience'] ?? null,
             'has_attachment' => $validated['has_attachment'] ?? false,
             'has_photo' => $validated['has_photo'] ?? false,
+            'photo' => $validated['photo'] ?? null,
+            'photo_w' => $validated['photo_w'] ?? null,
+            'photo_h' => $validated['photo_h'] ?? null,
+            'external_link' => $validated['external_link'] ?? null,
+            'event_status' => $validated['event_status'] ?? '報名期間',
             'note' => $validated['note'] ?? null,
         ]);
 
@@ -99,5 +112,32 @@ class MemberAnnouncementController extends Controller
             'title' => '預覽會員公告',
             'announcement' => $announcement
         ]);
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            // Store in public/images/announcements directory
+            $path = $image->storeAs('images/announcements', $filename, 'public');
+
+            // Get image dimensions
+            list($width, $height) = getimagesize($image->getPathname());
+
+            return response()->json([
+                'success' => true,
+                'path' => '/storage/' . $path,
+                'width' => $width,
+                'height' => $height,
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No image uploaded'], 400);
     }
 }

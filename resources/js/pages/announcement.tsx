@@ -4,26 +4,54 @@ import ScrollAnimate from '@/components/scroll-animate';
 import SalonHeader from '@/components/salon/SalonHeader';
 import SalonMarquee from '@/components/salon/SalonMarquee';
 import SalonFooter from '@/components/salon/SalonFooter';
-import {
-    filterAnnouncementItems,
-    getAnnouncementCategoryLabel,
-    announcementCategories,
-} from '@/data/announcement-items';
+
+interface AnnouncementCategory {
+    csn: string | null;
+    label: string;
+    param: string | null;
+}
+
+interface AnnouncementItem {
+    id: number;
+    subject: string;
+    category: string | null;
+    photo: string | null;
+    photo_w: number | null;
+    photo_h: number | null;
+    external_link: string | null;
+    event_status: string | null;
+    published_date: string | null;
+    end_date: string | null;
+}
 
 type Props = {
     new_csn?: string | null;
     sel_nncsn?: string | null;
     searchTitle?: string | null;
+    announcements: AnnouncementItem[];
+    categories: AnnouncementCategory[];
 };
 
-export default function Announcement({ new_csn = null, sel_nncsn = null, searchTitle = null }: Props) {
+const STATUS_ICON = '/announcement_files/time.png';
+
+export default function Announcement({
+    new_csn = null,
+    sel_nncsn = null,
+    searchTitle = null,
+    announcements = [],
+    categories = [],
+}: Props) {
     useForceLightMode();
 
-    // Determine active category and parameter type
-    const activeCsn = new_csn || sel_nncsn || null;
+    const activeCsn   = new_csn || sel_nncsn || null;
     const activeParam = new_csn ? 'new_csn' : sel_nncsn ? 'sel_nncsn' : null;
-    const activeLabel = getAnnouncementCategoryLabel(activeCsn, activeParam);
-    const items = filterAnnouncementItems(activeCsn, activeParam, searchTitle);
+
+    // Active label from categories prop
+    const activeLabel = (() => {
+        if (!activeCsn) return '全部';
+        const cat = categories.find(c => c.csn === activeCsn && c.param === activeParam);
+        return cat?.label ?? '全部';
+    })();
 
     return (
         <>
@@ -70,14 +98,10 @@ export default function Announcement({ new_csn = null, sel_nncsn = null, searchT
                                         <nav className="breadcrumb-nav" aria-label="導覽路徑-活動資訊">
                                             <ol className="breadcrumb">
                                                 <li className="breadcrumb-item">
-                                                    <a href="/" title="永康國際同濟會 - 首頁">
-                                                        首頁
-                                                    </a>
+                                                    <a href="/" title="永康國際同濟會 - 首頁">首頁</a>
                                                 </li>
                                                 <li className="breadcrumb-item">
-                                                    <a href="/announcement" title="永康國際同濟會 - 活動資訊">
-                                                        活動資訊
-                                                    </a>
+                                                    <a href="/announcement" title="永康國際同濟會 - 活動資訊">活動資訊</a>
                                                 </li>
                                                 <li className="breadcrumb-item active" aria-current="page">
                                                     {activeLabel}
@@ -91,18 +115,15 @@ export default function Announcement({ new_csn = null, sel_nncsn = null, searchT
                             <div className="container">
                                 <div className="secbox_inner">
 
-                                    {/* Category buttons (horizontal) */}
+                                    {/* Category buttons */}
                                     <div className="category_box">
                                         <ul className="category_list">
-                                            {announcementCategories.map(category => {
+                                            {categories.map(category => {
                                                 let href = '/announcement';
-
-                                                if (category.csn) {
+                                                if (category.csn && category.param) {
                                                     href += `?${category.param}=${category.csn}`;
                                                 }
-
                                                 const isActive = (category.csn ?? null) === activeCsn;
-                                                
                                                 return (
                                                     <li key={category.label} className={isActive ? 'active' : ''}>
                                                         <a href={href} title={category.label}>
@@ -118,100 +139,121 @@ export default function Announcement({ new_csn = null, sel_nncsn = null, searchT
                                         <h1 className="heading-text">{activeLabel}</h1>
                                     </div>
 
-                                    {/* Announcement cards */}
+                                    {/* Announcement cards — DB se */}
                                     <ul className="row cardlist_jsscroll">
-                                        {items.map(item => (
-                                            <li key={item.sn}>
-                                                <ScrollAnimate animation="fadeUp">
-                                                    <div className="card card_activity effect_dec_hz">
-                                                        <div className="row g-3 g-lg-4 align-lg-center">
-                                                        <div className="col-sm-2">
-                                                            <div className="card-status">
-                                                                <span className="card-status-icon">
-                                                                    <img
-                                                                        src={item.statusIcon}
-                                                                        alt={item.status}
-                                                                        width={19}
-                                                                        height={19}
-                                                                        style={{ verticalAlign: 'middle' }}
-                                                                    />
-                                                                </span>
-                                                                <span className="card-status-text"> {item.status}</span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-3 col-lg-2">
-                                                            <div className="card-photo">
-                                                                <a
-                                                                    href={item.link}
-                                                                    title={item.title}
-                                                                    target={item.isExternal ? '_blank' : undefined}
-                                                                    rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                                                                >
-                                                                    <div className="item-fitimg">
-                                                                        <img
-                                                                            src={item.photo}
-                                                                            alt={item.title}
-                                                                            width={item.photoW}
-                                                                            height={item.photoH}
-                                                                            loading="lazy"
-                                                                            className="fitimg"
-                                                                        />
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-sm-7 col-lg-6">
-                                                            <div className="card-body">
-                                                                <h3 className="card-name">
-                                                                    <a
-                                                                        href={item.link}
-                                                                        title={item.title}
-                                                                        target={item.isExternal ? '_blank' : undefined}
-                                                                        rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                                                                    >
-                                                                        <span className="card-name-text">
-                                                                            {item.title}
-                                                                        </span>
-                                                                    </a>
-                                                                </h3>
-                                                                <ul className="card-infolist"></ul>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-lg-2">
-                                                            <div className="card-btnbar card-btnbar_more">
-                                                                <a
-                                                                    href={item.link}
-                                                                    className="card-btn card-btn_more"
-                                                                    title={item.title}
-                                                                    target={item.isExternal ? '_blank' : undefined}
-                                                                    rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                                                                >
-                                                                    <span className="card-btn-text">更多</span>
-                                                                    <span className="iconsvg icon-view-more"></span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ScrollAnimate>
+                                        {announcements.length === 0 ? (
+                                            <li style={{ padding: '2rem', textAlign: 'center', color: '#999' }}>
+                                                暫無活動資訊
                                             </li>
-                                        ))}
+                                        ) : (
+                                            announcements.map(item => {
+                                                const link = item.external_link ?? '#';
+                                                const isExternal = !!item.external_link;
+                                                const status = item.event_status ?? '報名期間';
+
+                                                return (
+                                                    <li key={item.id}>
+                                                        <ScrollAnimate animation="fadeUp">
+                                                            <div className="card card_activity effect_dec_hz">
+                                                                <div className="row g-3 g-lg-4 align-lg-center">
+
+                                                                    {/* Status badge */}
+                                                                    <div className="col-sm-2">
+                                                                        <div className="card-status">
+                                                                            <span className="card-status-icon">
+                                                                                <img
+                                                                                    src={STATUS_ICON}
+                                                                                    alt={status}
+                                                                                    width={19}
+                                                                                    height={19}
+                                                                                    style={{ verticalAlign: 'middle' }}
+                                                                                />
+                                                                            </span>
+                                                                            <span className="card-status-text"> {status}</span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {/* Photo */}
+                                                                    <div className="col-sm-3 col-lg-2">
+                                                                        <div className="card-photo">
+                                                                            <a
+                                                                                href={link}
+                                                                                title={item.subject}
+                                                                                target={isExternal ? '_blank' : undefined}
+                                                                                rel={isExternal ? 'noopener noreferrer' : undefined}
+                                                                            >
+                                                                                <div className="item-fitimg">
+                                                                                    {item.photo ? (
+                                                                                        <img
+                                                                                            src={item.photo}
+                                                                                            alt={item.subject}
+                                                                                            width={item.photo_w ?? undefined}
+                                                                                            height={item.photo_h ?? undefined}
+                                                                                            loading="lazy"
+                                                                                            className="fitimg"
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <div style={{ width: '100%', paddingBottom: '80%', background: '#f0f0f0' }} />
+                                                                                    )}
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {/* Title */}
+                                                                    <div className="col-sm-7 col-lg-6">
+                                                                        <div className="card-body">
+                                                                            <h3 className="card-name">
+                                                                                <a
+                                                                                    href={link}
+                                                                                    title={item.subject}
+                                                                                    target={isExternal ? '_blank' : undefined}
+                                                                                    rel={isExternal ? 'noopener noreferrer' : undefined}
+                                                                                >
+                                                                                    <span className="card-name-text">
+                                                                                        {item.subject}
+                                                                                    </span>
+                                                                                </a>
+                                                                            </h3>
+                                                                            <ul className="card-infolist"></ul>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {/* More button */}
+                                                                    <div className="col-lg-2">
+                                                                        <div className="card-btnbar card-btnbar_more">
+                                                                            <a
+                                                                                href={link}
+                                                                                className="card-btn card-btn_more"
+                                                                                title={item.subject}
+                                                                                target={isExternal ? '_blank' : undefined}
+                                                                                rel={isExternal ? 'noopener noreferrer' : undefined}
+                                                                            >
+                                                                                <span className="card-btn-text">更多</span>
+                                                                                <span className="iconsvg icon-view-more"></span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </ScrollAnimate>
+                                                    </li>
+                                                );
+                                            })
+                                        )}
                                     </ul>
 
                                     <div className="page">
-                                        <a href="/announcement" target="_self">首頁</a>
+                                        <a href="/announcement">首頁</a>
                                         {'\u00A0'}
                                         <span>1</span>
                                         {'\u00A0'}
                                         <a href="/announcement">末頁</a>
-                                        <br />
-                                        <br />
-                                        Total {items.length} - 1 / 1
-                                        <br />
+                                        <br /><br />
+                                        Total {announcements.length} - 1 / 1<br />
                                     </div>
+
                                 </div>
                             </div>
                         </section>
