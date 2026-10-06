@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TimelineRequest;
 use App\Models\Timeline;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class TimelineController extends Controller
 {
     public function index()
     {
-        $timelines = Timeline::ordered()->get();
+        $timelines = Timeline::ordered()->get()->map(function ($item) {
+            // Format image URL if it exists
+            if ($item->img) {
+                $item->img = '/storage/' . $item->img;
+            }
+            return $item;
+        });
 
         return Inertia::render('Admin/timeline/Timeline', [
             'title' => '本會記事',
@@ -30,6 +37,22 @@ class TimelineController extends Controller
     {
         $validated = $request->validated();
 
+        // Handle image upload
+        $imagePath = null;
+        $imageWidth = null;
+        $imageHeight = null;
+
+        if ($request->hasFile('img')) {
+            $imagePath = $request->file('img')->store('timeline_photos', 'public');
+
+            // Get image dimensions
+            $imageInfo = getimagesize($request->file('img')->getPathname());
+            if ($imageInfo) {
+                $imageWidth = $imageInfo[0];
+                $imageHeight = $imageInfo[1];
+            }
+        }
+
         Timeline::create([
             'language' => $validated['language'],
             'status' => $validated['status'],
@@ -43,6 +66,9 @@ class TimelineController extends Controller
             'video' => $validated['video'] ?? null,
             'note' => $validated['note'] ?? null,
             'has_photo' => $validated['has_photo'] ?? false,
+            'img' => $imagePath,
+            'img_w' => $imageWidth,
+            'img_h' => $imageHeight,
             'views' => 0,
         ]);
 
@@ -54,6 +80,11 @@ class TimelineController extends Controller
     {
         $timeline = Timeline::findOrFail($id);
 
+        // Format image URL if it exists
+        if ($timeline->img) {
+            $timeline->img = '/storage/' . $timeline->img;
+        }
+
         return Inertia::render('Admin/timeline/TimelineEdit', [
             'title' => '編輯記事',
             'timeline' => $timeline
@@ -64,6 +95,27 @@ class TimelineController extends Controller
     {
         $timeline = Timeline::findOrFail($id);
         $validated = $request->validated();
+
+        // Handle image upload
+        $imagePath = $timeline->img;
+        $imageWidth = $timeline->img_w;
+        $imageHeight = $timeline->img_h;
+
+        if ($request->hasFile('img')) {
+            // Delete old image if exists
+            if ($timeline->img && Storage::disk('public')->exists($timeline->img)) {
+                Storage::disk('public')->delete($timeline->img);
+            }
+
+            $imagePath = $request->file('img')->store('timeline_photos', 'public');
+
+            // Get image dimensions
+            $imageInfo = getimagesize($request->file('img')->getPathname());
+            if ($imageInfo) {
+                $imageWidth = $imageInfo[0];
+                $imageHeight = $imageInfo[1];
+            }
+        }
 
         $timeline->update([
             'language' => $validated['language'],
@@ -78,6 +130,9 @@ class TimelineController extends Controller
             'video' => $validated['video'] ?? null,
             'note' => $validated['note'] ?? null,
             'has_photo' => $validated['has_photo'] ?? false,
+            'img' => $imagePath,
+            'img_w' => $imageWidth,
+            'img_h' => $imageHeight,
         ]);
 
         return redirect()->route('admin.timeline.index')

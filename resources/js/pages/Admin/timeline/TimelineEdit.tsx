@@ -19,6 +19,9 @@ interface Timeline {
     video: string;
     note: string;
     has_photo: boolean;
+    img?: string;
+    img_w?: number;
+    img_h?: number;
     created_at: string;
     updated_at: string;
 }
@@ -42,11 +45,25 @@ export default function TimelineEdit({ timeline, title }: Props) {
         video: timeline.video || '',
         note: timeline.note || '',
         has_photo: timeline.has_photo || false,
+        img: null as File | null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const formData = new FormData();
+
+        // Add all form fields
+        Object.keys(data).forEach(key => {
+            if (key === 'img' && data.img instanceof File) {
+                formData.append('img', data.img);
+            } else if (key !== 'img') {
+                formData.append(key, String(data[key as keyof typeof data]));
+            }
+        });
+
         put(`/admin/timeline/${timeline.id}`, {
+            data: formData,
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/timeline';
             },
@@ -241,16 +258,30 @@ export default function TimelineEdit({ timeline, title }: Props) {
 
                     {/* Photo */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={data.has_photo}
-                                onChange={(e) => setData('has_photo', e.target.checked)}
-                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                            />
-                            <FaImage className="text-gray-500" />
-                            <span className="text-sm text-gray-700">有相片</span>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <FaImage className="inline mr-1 text-blue-500" /> 相片
                         </label>
+                        {timeline.img && (
+                            <div className="mb-3">
+                                <img
+                                    src={timeline.img}
+                                    alt="Current photo"
+                                    className="w-48 h-32 object-cover rounded border"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">目前相片</p>
+                            </div>
+                        )}
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setData('img', file);
+                                setData('has_photo', !!file || !!timeline.img);
+                            }}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">支援 JPG, PNG, GIF 格式，最大 5MB</p>
                     </div>
 
                     {/* Video */}

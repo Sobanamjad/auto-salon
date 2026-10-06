@@ -21,6 +21,9 @@ interface Timeline {
     category: string;
     brief: string;
     note: string;
+    img?: string;
+    img_w?: number;
+    img_h?: number;
 }
 
 interface Props {
@@ -201,8 +204,15 @@ export default function Timeline({ timelines = [], title = '本會記事' }: Pro
                                             </Link>
                                         </td>
                                         <td className="px-2 py-2 text-center">
-                                            {item.has_photo ? (
-                                                <FaImage className="text-green-500 mx-auto" title="有相片" />
+                                            {item.img ? (
+                                                <img
+                                                    src={item.img}
+                                                    alt={item.title}
+                                                    className="w-12 h-12 object-cover mx-auto rounded"
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = 'none';
+                                                    }}
+                                                />
                                             ) : (
                                                 <span className="text-gray-300 text-xs">無</span>
                                             )}

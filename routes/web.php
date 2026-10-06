@@ -362,7 +362,69 @@ Route::get('/', function () {
 Route::get('/timeline', function () {
     $csn = request()->query('new_csn');
     $newSn = request()->query('new_sn');
-    return inertia('timeline', ['csn' => $csn, 'newSn' => $newSn]);
+
+    // Map category codes to database category values
+    $categoryMap = [
+        '538' => '2025年',
+        '539' => '2024年',
+    ];
+
+    $query = \App\Models\Timeline::active()->ordered();
+
+    // Filter by category if csn is provided
+    if ($csn && isset($categoryMap[$csn])) {
+        $query->where('category', $categoryMap[$csn]);
+    }
+
+    $timelines = $query->get()->map(function ($item) {
+        // Format image URL if it exists
+        $img = null;
+        if ($item->img) {
+            $img = '/storage/' . $item->img;
+        }
+        return [
+            'id' => $item->id,
+            'title' => $item->title,
+            'category' => $item->category,
+            'event_date' => $item->event_date ? $item->event_date->format('Y-m-d') : null,
+            'brief' => $item->brief,
+            'content' => $item->content,
+            'video' => $item->video,
+            'img' => $img,
+            'img_w' => $item->img_w,
+            'img_h' => $item->img_h,
+            'has_photo' => $item->has_photo,
+            'views' => $item->views,
+        ];
+    });
+
+    // Get unique categories from database
+    $categories = \App\Models\Timeline::active()
+        ->whereNotNull('category')
+        ->distinct()
+        ->pluck('category')
+        ->map(function ($category) {
+            // Map category back to csn codes
+            if ($category === '2025年') {
+                return ['csn' => '538', 'label' => '2025年'];
+            } elseif ($category === '2024年') {
+                return ['csn' => '539', 'label' => '2024年'];
+            }
+            return ['csn' => $category, 'label' => $category];
+        })
+        ->sortBy('label')
+        ->values()
+        ->toArray();
+
+    // Add "全部" option at the beginning
+    array_unshift($categories, ['csn' => null, 'label' => '全部']);
+
+    return inertia('timeline', [
+        'csn' => $csn,
+        'newSn' => $newSn,
+        'timelines' => $timelines,
+        'categories' => $categories,
+    ]);
 })->name('timeline');
 
 Route::inertia('/people', 'people')->name('people');

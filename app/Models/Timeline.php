@@ -23,6 +23,9 @@ class Timeline extends Model
         'video',
         'note',
         'has_photo',
+        'img',
+        'img_w',
+        'img_h',
         'views',
     ];
 

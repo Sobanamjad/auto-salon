@@ -1,12 +1,28 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { 
-    FaArrowLeft, FaSave, FaTimes, FaClock, 
+import {
+    FaArrowLeft, FaSave, FaTimes, FaClock,
     FaImage, FaHome, FaSort, FaTag, FaFileAlt,
     FaCalendar, FaVideo
 } from 'react-icons/fa';
 
+interface TimelineFormData {
+    language: string;
+    status: boolean;
+    show_on_home: boolean;
+    sort_order: number;
+    category: string;
+    event_date: string;
+    title: string;
+    brief: string;
+    content: string;
+    video: string;
+    note: string;
+    has_photo: boolean;
+    img: File | null;
+}
+
 export default function TimelineCreate() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<TimelineFormData>({
         language: 'TS',
         status: true,
         show_on_home: true,
@@ -19,11 +35,25 @@ export default function TimelineCreate() {
         video: '',
         note: '',
         has_photo: false,
+        img: null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const formData = new FormData();
+
+        // Add all form fields
+        Object.keys(data).forEach(key => {
+            if (key === 'img' && data.img instanceof File) {
+                formData.append('img', data.img);
+            } else if (key !== 'img') {
+                formData.append(key, String(data[key as keyof TimelineFormData]));
+            }
+        });
+
         post('/admin/timeline', {
+            data: formData,
+            forceFormData: true,
             onSuccess: () => {
                 window.location.href = '/admin/timeline';
             },
@@ -218,16 +248,20 @@ export default function TimelineCreate() {
 
                     {/* Photo */}
                     <div className="bg-gray-50 rounded-lg p-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={data.has_photo}
-                                onChange={(e) => setData('has_photo', e.target.checked)}
-                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                            />
-                            <FaImage className="text-gray-500" />
-                            <span className="text-sm text-gray-700">有相片</span>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <FaImage className="inline mr-1 text-blue-500" /> 相片
                         </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setData('img', file);
+                                setData('has_photo', !!file);
+                            }}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">支援 JPG, PNG, GIF 格式，最大 5MB</p>
                     </div>
 
                     {/* Video */}
