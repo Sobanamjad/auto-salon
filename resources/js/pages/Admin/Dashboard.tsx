@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import {
     FaCalendar, FaImage, FaLeaf, FaBullhorn, FaPencilAlt,
     FaGift, FaLaptop, FaUser, FaComments, FaSearch,
-    FaLink, FaArrowsAltV, FaUserMd, FaCoffee, FaTags, FaEdit, FaBuilding, FaFileAlt, FaRegComments
+    FaLink, FaArrowsAltV, FaUserMd, FaCoffee, FaTags, FaEdit, FaFileAlt, FaRegComments
 } from 'react-icons/fa';
 
 export default function Dashboard() {

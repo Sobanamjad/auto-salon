@@ -48,6 +48,7 @@ export default function RedWhiteForm({ title = '紅白帖', item, categories = [
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit && item?.id) {
             put(`/admin/red-white/${item.id}`);
         } else {

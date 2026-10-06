@@ -43,6 +43,7 @@ export default function MemberCategoryForm({ title = '會員分類', item }: Pro
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit && item?.id) {
             put(`/admin/member-categories/${item.id}`);
         } else {

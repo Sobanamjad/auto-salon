@@ -39,6 +39,7 @@ export default function RedWhiteCategoryForm({ title = '紅白帖分類', item }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit && item?.id) {
             put(`/admin/red-white-categories/${item.id}`);
         } else {

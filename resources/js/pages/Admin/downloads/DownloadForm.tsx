@@ -31,7 +31,7 @@ export default function DownloadForm({ title = '公文與表單', item, categori
     const isEdit = !!item;
     const [newCategory, setNewCategory] = useState('');
 
-    const { data, setData, post, put, processing, errors } = useForm<any>({
+    const { data, setData, post, processing, errors } = useForm<any>({
         title:          item?.title          ?? '',
         language:       item?.language       ?? 'TS',
         status:         item?.status         ?? true,
@@ -48,6 +48,7 @@ export default function DownloadForm({ title = '公文與表單', item, categori
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit && item?.id) {
             post(`/admin/downloads/${item.id}`, { forceFormData: true, _method: 'PUT' } as any);
         } else {
@@ -95,7 +96,9 @@ export default function DownloadForm({ title = '公文與表單', item, categori
                                 </select>
                             </div>
                             <input type="text" placeholder="或輸入新分類名稱" value={newCategory}
-                                onChange={(e) => { setNewCategory(e.target.value); setData('category', e.target.value); }}
+                                onChange={(e) => {
+ setNewCategory(e.target.value); setData('category', e.target.value); 
+}}
                                 className="mt-1 w-full border rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500" />
                         </div>
                         <div>

@@ -52,7 +52,9 @@ export default function AlbumCommentList({ title = '相片留言', data, albums 
     };
 
     const handleDelete = (id: number, name: string) => {
-        if (confirm(`確定要刪除 ${name} 的留言嗎？`)) router.delete(`/admin/album-comments/${id}`);
+        if (confirm(`確定要刪除 ${name} 的留言嗎？`)) {
+router.delete(`/admin/album-comments/${id}`);
+}
     };
 
     const toggleSelect = (id: number) => {
@@ -64,8 +66,14 @@ export default function AlbumCommentList({ title = '相片留言', data, albums 
     };
 
     const handleBulk = (action: 'approve' | 'reject' | 'delete') => {
-        if (selected.length === 0) return;
-        if (action === 'delete' && !confirm(`確定要刪除 ${selected.length} 筆留言嗎？`)) return;
+        if (selected.length === 0) {
+return;
+}
+
+        if (action === 'delete' && !confirm(`確定要刪除 ${selected.length} 筆留言嗎？`)) {
+return;
+}
+
         router.post(`/admin/album-comments/bulk-${action}`, { ids: selected });
         setSelected([]);
     };
@@ -90,7 +98,9 @@ export default function AlbumCommentList({ title = '相片留言', data, albums 
                         { label: '已通過', count: stats.approved, color: 'bg-green-50', textColor: 'text-green-600', filter: 'approved' },
                         { label: '已拒絕', count: stats.rejected, color: 'bg-red-50', textColor: 'text-red-600', filter: 'rejected' },
                     ].map(s => (
-                        <button key={s.label} onClick={() => { setStatus(s.filter); router.get('/admin/album-comments', { sel_status: s.filter }); }}
+                        <button key={s.label} onClick={() => {
+ setStatus(s.filter); router.get('/admin/album-comments', { sel_status: s.filter }); 
+}}
                             className={`${s.color} rounded-lg p-3 text-center cursor-pointer hover:opacity-80 transition`}>
                             <div className={`text-2xl font-bold ${s.textColor}`}>{s.count}</div>
                             <div className="text-xs text-gray-500">{s.label}</div>
@@ -174,6 +184,7 @@ export default function AlbumCommentList({ title = '相片留言', data, albums 
                             ) : (
                                 data.data.map((item) => {
                                     const st = statuses[item.status] ?? { label: item.status, color: 'bg-gray-100 text-gray-600' };
+
                                     return (
                                         <tr key={item.id} className={`hover:bg-gray-50 transition-colors ${item.is_pinned ? 'bg-yellow-50' : ''}`}>
                                             <td className="px-2 py-2 text-center">

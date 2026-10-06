@@ -95,6 +95,7 @@ export default function Payments({
 
     const handleBatchCreate = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (confirm(`確定為所有啟用會員建立 ${batchPeriod} 期繳費記錄？`)) {
             router.post('/admin/payments/batch-create', {
                 period: batchPeriod,
@@ -250,6 +251,7 @@ export default function Payments({
                             ) : (
                                 data.data.map((item, index) => {
                                     const statusInfo = statuses[item.status] ?? { label: item.status, color: 'bg-gray-100 text-gray-600' };
+
                                     return (
                                         <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-2 py-2 text-center text-sm">

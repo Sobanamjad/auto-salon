@@ -44,8 +44,14 @@ function fileIcon(type: string | null): string {
 }
 
 function formatSize(bytes: number): string {
-    if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
-    if (bytes >= 1024)    return (bytes / 1024).toFixed(1) + ' KB';
+    if (bytes >= 1048576) {
+return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+    if (bytes >= 1024)    {
+return (bytes / 1024).toFixed(1) + ' KB';
+}
+
     return bytes + ' B';
 }
 
@@ -67,7 +73,9 @@ export default function DownloadList({ title = '公文與表單', data, categori
     };
 
     const handleDelete = (id: number, title: string) => {
-        if (confirm(`確定要刪除「${title}」嗎？`)) router.delete(`/admin/downloads/${id}`);
+        if (confirm(`確定要刪除「${title}」嗎？`)) {
+router.delete(`/admin/downloads/${id}`);
+}
     };
 
     const handleSort = (id: number, val: number) => {

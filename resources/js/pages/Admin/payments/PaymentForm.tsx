@@ -49,6 +49,7 @@ export default function PaymentForm({ title = '繳費記錄', item, members = []
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         if (isEdit && item?.id) {
             put(`/admin/payments/${item.id}`);
         } else {

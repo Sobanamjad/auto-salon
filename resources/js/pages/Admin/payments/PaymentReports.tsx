@@ -192,6 +192,7 @@ export default function PaymentReports({
                                 ) : (
                                     payments.map((p, i) => {
                                         const st = statuses[p.status] ?? { label: p.status, color: 'bg-gray-100 text-gray-600' };
+
                                         return (
                                             <tr key={p.id} className="hover:bg-gray-50">
                                                 <td className="px-3 py-1.5 text-center text-xs">{i + 1}.</td>
