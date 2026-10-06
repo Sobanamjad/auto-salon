@@ -29,6 +29,7 @@ use App\Http\Controllers\PublicJobController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ContactSettingController;
 use App\Http\Controllers\PublicFaqController;
+use App\Http\Controllers\PublicGuestbookController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -418,6 +419,9 @@ Route::get('/timeline', function () {
 })->name('timeline');
 
 Route::inertia('/people', 'people')->name('people');
+
+Route::get('/guestbook', [PublicGuestbookController::class, 'index'])->name('guestbook');
+Route::get('/guestbook/{id}', [PublicGuestbookController::class, 'show'])->name('guestbook.show');
 
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
