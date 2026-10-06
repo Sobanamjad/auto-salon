@@ -25,6 +25,9 @@ return new class extends Migration
             $table->text('map')->nullable();
             $table->text('note')->nullable();
             $table->boolean('has_photo')->default(false);
+            $table->string('img')->nullable();
+            $table->integer('img_w')->nullable();
+            $table->integer('img_h')->nullable();
             $table->integer('views')->default(0);
             $table->string('platform_category')->nullable();
             $table->boolean('join_platform')->default(false);
