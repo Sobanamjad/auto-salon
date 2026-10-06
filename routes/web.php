@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ClubNewsController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\RedWhiteController;
+use App\Http\Controllers\Admin\RedWhiteCategoryController;
 use App\Http\Controllers\Admin\JournalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\OrganizationController;
@@ -249,9 +250,24 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Red White (紅白帖)
         Route::prefix('red-white')->name('red-white.')->group(function () {
             Route::get('/', [RedWhiteController::class, 'index'])->name('index');
+            Route::get('/create', [RedWhiteController::class, 'create'])->name('create');
+            Route::post('/', [RedWhiteController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [RedWhiteController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [RedWhiteController::class, 'update'])->name('update');
             Route::delete('/{id}', [RedWhiteController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/toggle-close', [RedWhiteController::class, 'toggleClose'])->name('toggle-close');
             Route::put('/{id}/sort', [RedWhiteController::class, 'updateSort'])->name('update-sort');
+        });
+
+        // Red White Categories (紅白帖分類)
+        Route::prefix('red-white-categories')->name('red-white-categories.')->group(function () {
+            Route::get('/', [RedWhiteCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [RedWhiteCategoryController::class, 'create'])->name('create');
+            Route::post('/', [RedWhiteCategoryController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [RedWhiteCategoryController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [RedWhiteCategoryController::class, 'update'])->name('update');
+            Route::delete('/{id}', [RedWhiteCategoryController::class, 'destroy'])->name('destroy');
+            Route::put('/{id}/sort', [RedWhiteCategoryController::class, 'updateSort'])->name('update-sort');
         });
 
         // Journal (日記簿)
