@@ -29,6 +29,7 @@ export default function Faq({ faqs: faqItems }: FaqListProps) {
     const filteredItems = faqItems.filter(item => {
         const matchQuestion = searchQuestion === '' || item.question.includes(searchQuestion);
         const matchCategory = searchCategory === '' || (item.category && item.category.includes(searchCategory));
+
         return matchQuestion && matchCategory;
     });
 

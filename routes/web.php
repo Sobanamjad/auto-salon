@@ -21,6 +21,10 @@ use App\Http\Controllers\Admin\ClubNewsController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\RedWhiteController;
 use App\Http\Controllers\Admin\RedWhiteCategoryController;
+use App\Http\Controllers\Admin\MemberCategoryController;
+use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\DownloadController;
+use App\Http\Controllers\Admin\AlbumCommentController;
 use App\Http\Controllers\Admin\JournalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\OrganizationController;
@@ -55,6 +59,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/{id}/edit', [EventController::class, 'edit'])->name('edit');
             Route::put('/{id}', [EventController::class, 'update'])->name('update');
             Route::delete('/{id}', [EventController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/toggle-open', [EventController::class, 'toggleOpen'])->name('toggle-open');
+            Route::get('/{id}/toggle-featured', [EventController::class, 'toggleFeatured'])->name('toggle-featured');
+            Route::put('/{id}/sort', [EventController::class, 'updateSort'])->name('update-sort');
         });
         
         // Album Management
@@ -320,11 +327,43 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
             
         // 網頁模組
-        Route::get('/album-comments', [AdminController::class, 'albumComments'])->name('album-comments');
+        Route::get('/album-comments', [AlbumCommentController::class, 'index'])->name('album-comments');
+        Route::get('/album-comments/{id}/approve', [AlbumCommentController::class, 'approve'])->name('album-comments.approve');
+        Route::get('/album-comments/{id}/reject', [AlbumCommentController::class, 'reject'])->name('album-comments.reject');
+        Route::get('/album-comments/{id}/toggle-pinned', [AlbumCommentController::class, 'togglePinned'])->name('album-comments.toggle-pinned');
+        Route::delete('/album-comments/{id}', [AlbumCommentController::class, 'destroy'])->name('album-comments.destroy');
+        Route::post('/album-comments/bulk-approve', [AlbumCommentController::class, 'bulkApprove'])->name('album-comments.bulk-approve');
+        Route::post('/album-comments/bulk-reject', [AlbumCommentController::class, 'bulkReject'])->name('album-comments.bulk-reject');
+        Route::post('/album-comments/bulk-delete', [AlbumCommentController::class, 'bulkDelete'])->name('album-comments.bulk-delete');
+
+        Route::get('/downloads', [DownloadController::class, 'index'])->name('downloads');
+        Route::get('/downloads/create', [DownloadController::class, 'create'])->name('downloads.create');
+        Route::post('/downloads', [DownloadController::class, 'store'])->name('downloads.store');
+        Route::get('/downloads/{id}/edit', [DownloadController::class, 'edit'])->name('downloads.edit');
+        Route::put('/downloads/{id}', [DownloadController::class, 'update'])->name('downloads.update');
+        Route::delete('/downloads/{id}', [DownloadController::class, 'destroy'])->name('downloads.destroy');
+        Route::get('/downloads/{id}/toggle-status', [DownloadController::class, 'toggleStatus'])->name('downloads.toggle-status');
+        Route::put('/downloads/{id}/sort', [DownloadController::class, 'updateSort'])->name('downloads.update-sort');
+        Route::get('/downloads/{id}/reset-views', [DownloadController::class, 'resetViews'])->name('downloads.reset-views');
         Route::get('/articles', [AdminController::class, 'articles'])->name('articles');
-        Route::get('/downloads', [AdminController::class, 'downloads'])->name('downloads');
-        Route::get('/member-categories', [AdminController::class, 'memberCategories'])->name('member-categories');
-        Route::get('/friend-events', [AdminController::class, 'friendEvents'])->name('friend-events');
+        Route::get('/downloads', [DownloadController::class, 'index'])->name('downloads');
+        Route::get('/downloads/create', [DownloadController::class, 'create'])->name('downloads.create');
+        Route::post('/downloads', [DownloadController::class, 'store'])->name('downloads.store');
+        Route::get('/downloads/{id}/edit', [DownloadController::class, 'edit'])->name('downloads.edit');
+        Route::put('/downloads/{id}', [DownloadController::class, 'update'])->name('downloads.update');
+        Route::delete('/downloads/{id}', [DownloadController::class, 'destroy'])->name('downloads.destroy');
+        Route::get('/downloads/{id}/toggle-status', [DownloadController::class, 'toggleStatus'])->name('downloads.toggle-status');
+        Route::put('/downloads/{id}/sort', [DownloadController::class, 'updateSort'])->name('downloads.update-sort');
+        Route::get('/downloads/{id}/reset-views', [DownloadController::class, 'resetViews'])->name('downloads.reset-views');
+        Route::get('/member-categories', [MemberCategoryController::class, 'index'])->name('member-categories');
+        Route::get('/member-categories/create', [MemberCategoryController::class, 'create'])->name('member-categories.create');
+        Route::post('/member-categories', [MemberCategoryController::class, 'store'])->name('member-categories.store');
+        Route::get('/member-categories/{id}/edit', [MemberCategoryController::class, 'edit'])->name('member-categories.edit');
+        Route::put('/member-categories/{id}', [MemberCategoryController::class, 'update'])->name('member-categories.update');
+        Route::delete('/member-categories/{id}', [MemberCategoryController::class, 'destroy'])->name('member-categories.destroy');
+        Route::put('/member-categories/{id}/sort', [MemberCategoryController::class, 'updateSort'])->name('member-categories.update-sort');
+        Route::get('/member-categories/{id}/toggle-active', [MemberCategoryController::class, 'toggleActive'])->name('member-categories.toggle-active');
+        Route::get('/friend-events', [EventController::class, 'friendEvents'])->name('friend-events');
 
         // FAQ (常見問題)
         Route::prefix('faq')->name('faq.')->group(function () {
@@ -346,9 +385,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/basic-setting', function () {
             return Inertia::render('Admin/BasicSettings');
         })->name('basic-setting');
+        Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
+        Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+        Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+        Route::get('/payments/{id}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
+        Route::put('/payments/{id}', [PaymentController::class, 'update'])->name('payments.update');
+        Route::delete('/payments/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+        Route::get('/payments/{id}/mark-paid', [PaymentController::class, 'markPaid'])->name('payments.mark-paid');
+        Route::post('/payments/batch-create', [PaymentController::class, 'batchCreate'])->name('payments.batch-create');
+        Route::get('/payment-reports', [PaymentController::class, 'report'])->name('payment-reports');
         Route::get('/payment-settings', [AdminController::class, 'paymentSettings'])->name('payment-settings');
-        Route::get('/payments', [AdminController::class, 'payments'])->name('payments');
-        Route::get('/payment-reports', [AdminController::class, 'paymentReports'])->name('payment-reports');
         
         // 記帳系統
         Route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');

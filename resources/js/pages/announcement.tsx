@@ -27,7 +27,6 @@ interface AnnouncementItem {
 type Props = {
     new_csn?: string | null;
     sel_nncsn?: string | null;
-    searchTitle?: string | null;
     announcements: AnnouncementItem[];
     categories: AnnouncementCategory[];
 };
@@ -37,7 +36,6 @@ const STATUS_ICON = '/announcement_files/time.png';
 export default function Announcement({
     new_csn = null,
     sel_nncsn = null,
-    searchTitle = null,
     announcements = [],
     categories = [],
 }: Props) {
@@ -48,8 +46,12 @@ export default function Announcement({
 
     // Active label from categories prop
     const activeLabel = (() => {
-        if (!activeCsn) return '全部';
+        if (!activeCsn) {
+return '全部';
+}
+
         const cat = categories.find(c => c.csn === activeCsn && c.param === activeParam);
+
         return cat?.label ?? '全部';
     })();
 
@@ -120,10 +122,13 @@ export default function Announcement({
                                         <ul className="category_list">
                                             {categories.map(category => {
                                                 let href = '/announcement';
+
                                                 if (category.csn && category.param) {
                                                     href += `?${category.param}=${category.csn}`;
                                                 }
+
                                                 const isActive = (category.csn ?? null) === activeCsn;
+
                                                 return (
                                                     <li key={category.label} className={isActive ? 'active' : ''}>
                                                         <a href={href} title={category.label}>

@@ -86,12 +86,17 @@ export default function RedWhite({ data, categories = [], title = '紅白帖' }:
 
     const getCategoryStyle = (catName: string) => {
         const cat = categories.find(c => c.name === catName);
-        if (cat?.color) return { bg: cat.color, icon: cat.icon };
+
+        if (cat?.color) {
+return { bg: cat.color, icon: cat.icon };
+}
+
         const defaults: Record<string, { bg: string; icon: string }> = {
             '喜事':     { bg: 'bg-red-100 text-red-800',    icon: '🎉' },
             '喪事':     { bg: 'bg-gray-100 text-gray-700',  icon: '🕊️' },
             '會員開幕': { bg: 'bg-green-100 text-green-800', icon: '🏪' },
         };
+
         return defaults[catName] ?? { bg: 'bg-blue-100 text-blue-800', icon: '📋' };
     };
 
@@ -224,6 +229,7 @@ export default function RedWhite({ data, categories = [], title = '紅白帖' }:
                             ) : (
                                 data.data.map((item, index) => {
                                     const catStyle = getCategoryStyle(item.category);
+
                                     return (
                                         <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-2 py-2 text-center text-sm">

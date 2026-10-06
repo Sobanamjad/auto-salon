@@ -43,7 +43,11 @@ export default function Guestbook({
     const pageHref = (page: number) => {
         const params = new URLSearchParams();
         params.set('this_page', String(page));
-        if (activeCsn) params.set('new_csn', activeCsn);
+
+        if (activeCsn) {
+params.set('new_csn', activeCsn);
+}
+
         return `/guestbook?${params.toString()}`;
     };
 

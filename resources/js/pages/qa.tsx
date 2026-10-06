@@ -33,6 +33,7 @@ const getCategories = (items: QaItem[]) => {
             categories.add(item.category);
         }
     });
+
     return Array.from(categories).sort();
 };
 
