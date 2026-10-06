@@ -360,9 +360,60 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/timeline', function () {
-    $csn = request()->query('new_csn');
+    $csn   = request()->query('new_csn');
     $newSn = request()->query('new_sn');
-    return inertia('timeline', ['csn' => $csn, 'newSn' => $newSn]);
+
+    // Build category list dynamically from the DB
+    $dbCategories = \App\Models\Timeline::active()
+        ->whereNotNull('category')
+        ->distinct()
+        ->orderBy('category', 'desc')
+        ->pluck('category');
+
+    // csn is just the category string itself (e.g. "2025年")
+    // kept for URL compatibility — we use the value directly
+    $filterCategory = $csn ?: null;
+
+    $query = \App\Models\Timeline::active()->ordered();
+
+    if ($filterCategory) {
+        $query->where('category', $filterCategory);
+    }
+
+    $timelines = $query->get()->map(function ($item) {
+        $img = null;
+        if ($item->img) {
+            // Already a storage path — prepend /storage/
+            $img = str_starts_with($item->img, '/storage/')
+                ? $item->img
+                : '/storage/' . $item->img;
+        }
+        return [
+            'id'         => $item->id,
+            'title'      => $item->title,
+            'category'   => $item->category,
+            'event_date' => $item->event_date ? $item->event_date->format('Y-m-d') : null,
+            'brief'      => $item->brief,
+            'content'    => $item->content,
+            'video'      => $item->video,
+            'img'        => $img,
+            'img_w'      => $item->img_w,
+            'img_h'      => $item->img_h,
+            'has_photo'  => $item->has_photo,
+            'views'      => $item->views,
+        ];
+    });
+
+    // Build categories for the filter dropdown — csn = category string itself
+    $categories = $dbCategories->map(fn($cat) => ['csn' => $cat, 'label' => $cat])->values()->toArray();
+    array_unshift($categories, ['csn' => null, 'label' => '全部']);
+
+    return inertia('timeline', [
+        'csn'        => $filterCategory,
+        'newSn'      => $newSn,
+        'timelines'  => $timelines,
+        'categories' => $categories,
+    ]);
 })->name('timeline');
 
 Route::inertia('/people', 'people')->name('people');
@@ -443,12 +494,6 @@ Route::get('/uninews_view', function () {
     ];
 
     // Ensure all values are properly formatted for Inertia
-    return inertia('uninews-view', [
-        'new_sn' => $newSn,
-        'lang' => $lang,
-        'news' => $newsData
-    ]);
-
     return inertia('uninews-view', [
         'new_sn' => $newSn,
         'lang' => $lang,

@@ -26,6 +26,7 @@ class TimelineRequest extends FormRequest
             'video' => 'nullable|string',
             'note' => 'nullable|string',
             'has_photo' => 'boolean',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ];
     }
 
