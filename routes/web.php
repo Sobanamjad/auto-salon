@@ -98,6 +98,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/{id}', [MemberAnnouncementController::class, 'update'])->name('update');
             Route::delete('/{id}', [MemberAnnouncementController::class, 'destroy'])->name('destroy');
             Route::get('/{id}/preview', [MemberAnnouncementController::class, 'preview'])->name('preview');
+            Route::post('/upload-image', [MemberAnnouncementController::class, 'uploadImage'])->name('upload-image');
         });
 
         // Column Articles (專欄園地)
@@ -930,12 +931,52 @@ Route::get('/news_view', function () {
 })->name('news.view');
 
 Route::get('/announcement', function () {
-    $newCsn = request()->query('new_csn');
-    $selNncsn = request()->query('sel_nncsn');
+    $newCsn    = request()->query('new_csn');
+    $selNncsn  = request()->query('sel_nncsn');
+    $searchTitle = request()->query('sel_title');
+
+    // Active category: new_csn (本會活動) ya sel_nncsn (baaki)
+    $activeCsn   = $newCsn ?: $selNncsn ?: null;
+    $activeParam = $newCsn ? 'new_csn' : ($selNncsn ? 'sel_nncsn' : null);
+
+    $query = \App\Models\MemberAnnouncement::active()
+        ->ordered()
+        ->where('published_date', '<=', now())
+        ->where('end_date', '>=', now());
+
+    if ($activeCsn) {
+        $query->where('category', $activeCsn);
+    }
+
+    if ($searchTitle && trim($searchTitle) !== '') {
+        $query->where('subject', 'like', '%' . trim($searchTitle) . '%');
+    }
+
+    $announcements = $query->get([
+        'id', 'subject', 'category', 'photo', 'photo_w', 'photo_h',
+        'external_link', 'event_status', 'published_date', 'end_date',
+    ])->map(function ($item) {
+        // photo path handle karo
+        if ($item->photo && !str_starts_with($item->photo, '/') && !str_starts_with($item->photo, 'http')) {
+            $item->photo = '/storage/' . $item->photo;
+        }
+        return $item;
+    });
+
+    $categories = [
+        ['csn' => null,  'label' => '全部',     'param' => null],
+        ['csn' => '3',   'label' => '行事曆',   'param' => 'sel_nncsn'],
+        ['csn' => '1',   'label' => '總會活動', 'param' => 'sel_nncsn'],
+        ['csn' => '733', 'label' => '本會活動', 'param' => 'new_csn'],
+        ['csn' => '2',   'label' => '好友的活動', 'param' => 'sel_nncsn'],
+    ];
+
     return inertia('announcement', [
-        'new_csn' => $newCsn !== null && $newCsn !== '' ? (string) $newCsn : null,
-        'sel_nncsn' => $selNncsn !== null && $selNncsn !== '' ? (string) $selNncsn : null,
-        'searchTitle' => request()->query('sel_title'),
+        'new_csn'       => $newCsn   !== null && $newCsn   !== '' ? (string) $newCsn   : null,
+        'sel_nncsn'     => $selNncsn !== null && $selNncsn !== '' ? (string) $selNncsn : null,
+        'searchTitle'   => $searchTitle,
+        'announcements' => $announcements,
+        'categories'    => $categories,
     ]);
 })->name('announcement');
 

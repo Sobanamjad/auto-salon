@@ -19,11 +19,17 @@ class MemberAnnouncementRequest extends FormRequest
             'sort_order' => 'required|integer|min:0',
             'published_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:published_date',
+            'category' => 'nullable|string|max:255',
             'subject' => 'required|string|max:255',
             'content' => 'required|string',
             'target_audience' => 'nullable|string|max:255',
             'has_attachment' => 'boolean',
             'has_photo' => 'boolean',
+            'photo' => 'nullable|string',
+            'photo_w' => 'nullable|integer',
+            'photo_h' => 'nullable|integer',
+            'external_link' => 'nullable|string|max:500',
+            'event_status' => 'nullable|string|max:255',
             'note' => 'nullable|string',
         ];
     }

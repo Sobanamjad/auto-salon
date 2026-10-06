@@ -7,55 +7,77 @@ use Illuminate\Database\Seeder;
 
 class MemberAnnouncementSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
+        // category codes match the public /announcement route filter:
+        // 733 = 本會活動, 1 = 總會活動, 2 = 好友的活動
+        // event_status: 報名期間 / 即將開始 / 活動結束 / 進行中
+
         $announcements = [
             [
-                'language' => 'TS',
-                'status' => true,
-                'sort_order' => 1,
-                'published_date' => '2026-08-01',
-                'end_date' => '2200-12-31',
-                'subject' => '2026年度會員大會通知',
-                'content' => '<p>各位會員大家好：</p><p>本會將於2026年12月15日舉辦年度會員大會，敬請各位會員踴躍參加。</p><p>時間：2026年12月15日 下午2:00</p><p>地點：本會會館</p>',
-                'target_audience' => '全部會員',
-                'has_attachment' => true,
-                'has_photo' => false,
-                'views' => 45,
-                'note' => '重要通知',
+                'language'        => 'TS',
+                'status'          => true,
+                'sort_order'      => 1,
+                'published_date'  => '2026-07-22',
+                'end_date'        => '2200-12-31',
+                'category'        => '733',
+                'subject'         => '我要申請入會',
+                'content'         => '<p>歡迎有意加入永康國際同濟會的朋友，請點擊下方連結填寫申請表。</p>',
+                'target_audience' => '一般民眾',
+                'has_attachment'  => false,
+                'has_photo'       => true,
+                'photo'           => '/announcement_files/s2026072213350710.png',
+                'photo_w'         => 1024,
+                'photo_h'         => 824,
+                'external_link'   => 'https://gudate.com/2236/3905',
+                'event_status'    => '報名期間',
+                'views'           => 0,
+                'note'            => null,
             ],
             [
-                'language' => 'TS',
-                'status' => true,
-                'sort_order' => 2,
-                'published_date' => '2026-08-15',
-                'end_date' => '2200-12-31',
-                'subject' => '會員會費繳交通知',
-                'content' => '<p>親愛的會員：</p><p>2026年度會費已開始繳交，請於2026年10月31日前完成繳費。</p><p>繳費方式：銀行轉帳或現場繳交</p>',
+                'language'        => 'TS',
+                'status'          => true,
+                'sort_order'      => 2,
+                'published_date'  => '2026-07-22',
+                'end_date'        => '2200-12-31',
+                'category'        => '733',
+                'subject'         => '2025年度會員大會',
+                'content'         => '<p>本會將舉辦2025年度會員大會，請各位會員踴躍參加。</p>',
                 'target_audience' => '全部會員',
-                'has_attachment' => true,
-                'has_photo' => false,
-                'views' => 38,
-                'note' => '會費通知',
+                'has_attachment'  => false,
+                'has_photo'       => true,
+                'photo'           => '/announcement_files/s2026072213350710.png',
+                'photo_w'         => 1024,
+                'photo_h'         => 824,
+                'external_link'   => 'https://gudate.com/2236/3904',
+                'event_status'    => '即將開始',
+                'views'           => 0,
+                'note'            => null,
             ],
             [
-                'language' => 'TS',
-                'status' => true,
-                'sort_order' => 3,
-                'published_date' => '2026-08-20',
-                'end_date' => '2200-12-31',
-                'subject' => '中秋節聯歡晚會活動',
-                'content' => '<p>慶祝中秋佳節，本會舉辦中秋聯歡晚會</p><p>日期：2026年9月28日</p><p>時間：晚上6:00</p><p>地點：本會會館</p>',
+                'language'        => 'TS',
+                'status'          => true,
+                'sort_order'      => 3,
+                'published_date'  => '2026-07-22',
+                'end_date'        => '2200-12-31',
+                'category'        => '1',
+                'subject'         => '國際同濟會臺灣總會年會',
+                'content'         => '<p>國際同濟會臺灣總會年會即將舉行，歡迎各分會踴躍參加。</p>',
                 'target_audience' => '全部會員',
-                'has_attachment' => false,
-                'has_photo' => true,
-                'views' => 52,
-                'note' => '活動通知',
+                'has_attachment'  => false,
+                'has_photo'       => true,
+                'photo'           => '/announcement_files/s2026072213350710.png',
+                'photo_w'         => 1024,
+                'photo_h'         => 824,
+                'external_link'   => 'https://gudate.com/2236/3903',
+                'event_status'    => '活動結束',
+                'views'           => 0,
+                'note'            => null,
             ],
         ];
 
-        foreach ($announcements as $announcement) {
-            MemberAnnouncement::create($announcement);
+        foreach ($announcements as $data) {
+            MemberAnnouncement::create($data);
         }
     }
 }
